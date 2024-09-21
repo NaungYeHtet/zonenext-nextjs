@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { cn } from "../utils/helpers";
 import { TfiClose } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
+import LanguageSwitch from "./LanguageSwitch";
 
 type NavbarItemProps = {
   text: string;
@@ -55,7 +56,8 @@ export default function Navbar() {
             alt="Zone Next Logo"
             priority
           />
-          <div className="inline-flex gap-2 md:gap-7 p-1 items-end h-full">
+          <div className="inline-flex items-center gap-2 md:gap-7 p-1 h-full">
+            <LanguageSwitch />
             <Link
               className="text-gray-800 text-sm md:text-xl focus:ring-2 font-medium rounded-lg focus:outline-none dark:focus:ring-blue-800 focus:ring-purple-300 focus:ring-offset-2"
               href={"/login"}

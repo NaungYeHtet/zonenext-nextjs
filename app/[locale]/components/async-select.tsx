@@ -2,22 +2,21 @@ import { AsyncPaginate } from "react-select-async-paginate";
 import { fetchGet } from "../utils/helpers";
 import { API_PATH_TYPE } from "../utils";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 
 type AsyncSelectProps = {
   path: API_PATH_TYPE;
   params: Object;
   optionsKey: string;
+  placeholder: string;
 };
 
 export default function AsyncSelect({
   path,
   params,
   optionsKey,
+  placeholder,
 }: AsyncSelectProps) {
   const { i18n } = useTranslation();
-
-  console.log("AsyncSelect params:", params);
 
   async function loadOptions(search: any, loadedOptions: any, addtional: any) {
     const data = await fetchGet(path, {
@@ -44,6 +43,7 @@ export default function AsyncSelect({
         page: 1,
       }}
       key={JSON.stringify(params)}
+      placeholder={placeholder}
     />
   );
 }

@@ -75,6 +75,7 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
       <AsyncSelect
         params={townshipParams}
         path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
+        placeholder={t("general:choose_township")}
         optionsKey="townships"
       />
       <Select
