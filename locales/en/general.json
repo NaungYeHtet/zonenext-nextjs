@@ -12,5 +12,8 @@
   "search": "Search",
   "search_placeholder": "Search with any word",
   "sign_up": "Sign up",
-  "to_price": "To price"
+  "to_price": "To price",
+  "bedroom": "Bedroom",
+  "bathroom": "Bathroom",
+  "sqft": "Sqft"
 }

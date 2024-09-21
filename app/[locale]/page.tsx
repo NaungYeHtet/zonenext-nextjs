@@ -1,7 +1,10 @@
+import Image, { StaticImageData } from "next/image";
 import Navbar from "./components/navbar";
 import PropertyFilter from "./components/property-filter";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
+import SectionFeaturedListing from "./section-featured-listing";
+import SectionWelcome from "./section-welcome";
 
 const i18nNamespaces = ["general"];
 
@@ -22,8 +25,6 @@ export default async function Home({ params: { locale } }: HomePageProps) {
   );
   let filters = await data.json();
 
-  console.log(filters);
-
   return (
     <TranslationsProvider
       resources={resources}
@@ -34,15 +35,21 @@ export default async function Home({ params: { locale } }: HomePageProps) {
         <div className="">
           <Navbar />
         </div>
-        <main
-          className="pt-24 md:pt-20 h-full md:h-[450px] bg-no-repeat bg-cover bg-center
+        <main>
+          <div
+            className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
 		bg-[url('../../public/images/home-banner.jpg')]"
-        >
-          <div className="compact-container flex justify-center md:align-middle h-full w-full bg-transparent">
-            <div className="m-12 mb-28 w-full">
-              <PropertyFilter filters={filters.data} />
+          >
+            <div className="compact-container flex justify-center md:align-middle h-full w-full bg-transparent">
+              <div className="m-12 mb-28 w-full">
+                <PropertyFilter filters={filters.data} />
+              </div>
             </div>
           </div>
+
+          <SectionWelcome />
+
+          <SectionFeaturedListing locale={locale} />
         </main>
       </div>
     </TranslationsProvider>

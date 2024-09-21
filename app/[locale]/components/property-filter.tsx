@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
-import { AsyncPaginate } from "react-select-async-paginate";
 import { Option } from "../utils";
-import { fetchGet, transformParamsToQueryString } from "../utils/helpers";
 import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../utils/api-paths";
 import AsyncSelect from "./async-select";
 
@@ -29,7 +27,7 @@ type TopshipParams = {
 };
 
 export default function PropertyFilter({ filters }: PropertyFilterProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [priceOptions, setPriceOptions] = useState<SingleValue<Option>[]>();
   const [townshipParams, setTownshipParams] = useState<TopshipParams>({});
 

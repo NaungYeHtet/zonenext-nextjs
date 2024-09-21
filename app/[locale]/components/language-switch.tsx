@@ -41,7 +41,7 @@ export default function LanguageSwitch() {
   return (
     <button onClick={updateLanguage}>
       <Image
-        className="w-10"
+        className="w-5 md:w-10"
         src={i18n.language == "my" ? englishUkIcon : myanmarIcon}
         alt="Language"
       />
