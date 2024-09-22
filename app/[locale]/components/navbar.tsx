@@ -42,7 +42,7 @@ export default function Navbar() {
 
   return (
     <nav className="">
-      <section className="p-1 py-2 flex md:p-3 fixed bg-white w-full z-50 md:shadow-none shadow-sm border-b border-b-primary-50">
+      <section className="p-1 py-2 flex md:p-3 bg-white w-full md:shadow-none shadow-sm border-b border-b-primary-50">
         <button
           className="block md:hidden ml-1 mr-3"
           onClick={() => setShowNavbar(true)}
@@ -78,7 +78,7 @@ export default function Navbar() {
       <div
         className={cn(
           true &&
-            "compact-container py-4 md:pt-28 hidden md:block bg-primary-100 w-full text-lg text-gray-900 hover:text-gray-600 transition-colors md:justify-between",
+            "compact-container py-4 md:pt-3 hidden md:block bg-primary-100 w-full text-lg text-gray-900 hover:text-gray-600 transition-colors md:justify-between",
           {
             "flex inset-0 w-full h-screen top-0 left-0 justify-around z-50 fixed":
               showNavbar,

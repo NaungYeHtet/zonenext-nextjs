@@ -9,7 +9,7 @@ interface CarouselProps {
 
 export default function CarouselSlider({
   children,
-  interval = 5000,
+  interval = 2000,
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = children.length;
@@ -42,7 +42,7 @@ export default function CarouselSlider({
       <div
         className="flex transition-transform duration-500"
         style={{
-          transform: `translateX(-${(currentSlide * 300) / visibleSlides}%)`,
+          transform: `translateX(-${(currentSlide * 270) / visibleSlides}%)`,
         }}
       >
         {children.map((child, index) => (

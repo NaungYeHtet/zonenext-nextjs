@@ -44,7 +44,7 @@ export default function PropertyCard({
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[340px] sm:w-[360px] flex flex-col shadow-lg bg-white rounded-md gap-3 h-[480px]">
+    <div className="w-[302px] flex flex-col shadow-lg bg-white rounded-md gap-3 h-[480px]">
       <div className="relative group">
         <Image
           className="rounded-t-md"
