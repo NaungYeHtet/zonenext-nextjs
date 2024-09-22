@@ -7,6 +7,7 @@ import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import CarouselSlider from "./carousel-slider";
 
 type PropertyCardProps = {
   property: Property;
@@ -41,18 +42,28 @@ export default function PropertyCard({
     bedroomsCount,
     bathroomsCount,
     squareFeet,
+    gallery,
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[302px] flex flex-col shadow-lg bg-white rounded-md gap-3 h-[480px]">
+    <div className="w-[340px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
       <div className="relative group">
-        <Image
-          className="rounded-t-md"
-          src={coverImage}
-          width={360}
-          height={200}
-          alt="title"
-        />
+        <CarouselSlider
+          spaceBetween={0}
+          pagination={false}
+          slidesPerView={1}
+          navigation={{}}
+        >
+          {[coverImage, ...gallery].map((url) => (
+            <Image
+              className="rounded-t-md"
+              src={url}
+              width={360}
+              height={200}
+              alt="Gallery"
+            />
+          ))}
+        </CarouselSlider>
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0 rounded-b-md"></div>
         <div className="absolute bottom-0 left-0 w-full text-white p-4 rounded-b-md">
           {/* Gradient shadow that smoothly spreads to the middle */}

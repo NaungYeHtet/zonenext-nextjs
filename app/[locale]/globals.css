@@ -27,6 +27,24 @@ body {
 
 @layer components {
   .compact-container {
-    @apply px-2 md:px-24 lg:px-48;
+    @apply px-3 sm:px-6 md:px-12 lg:px-40;
   }
+}
+
+/* Customize navigation arrow colors */
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgb(199, 199, 199) !important; /* Change the arrow color */
+}
+
+/* Change arrow color on hover */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: white !important; /* Hover color */
+}
+
+/* Customize arrow icon size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 24px !important;
 }

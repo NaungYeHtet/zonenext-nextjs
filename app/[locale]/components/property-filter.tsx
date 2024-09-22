@@ -84,13 +84,13 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
       />
       <Select
         options={priceOptions}
-        className="w-full md:col-span-2 text-sm"
+        className="w-full md:col-span-1 text-sm"
         placeholder={t("general:from_price")}
         instanceId="from_price"
       />
       <Select
         options={priceOptions}
-        className="w-full md:col-span-2 text-sm"
+        className="w-full md:col-span-1 text-sm"
         placeholder={t("general:to_price")}
         instanceId="to_price"
       />
