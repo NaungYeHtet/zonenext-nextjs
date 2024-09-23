@@ -9,8 +9,9 @@ import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import CarouselSlider from "./carousel-slider";
 
-type PropertyCardProps = {
+export type PropertyCardProps = {
   property: Property;
+  pathname: string;
 };
 
 type IconDetailType = {
@@ -19,12 +20,46 @@ type IconDetailType = {
   children: ReactNode;
 };
 
-const IconDetail = ({ value, text, children }: IconDetailType) => {
+type PropertyCardImageProps = {
+  images: string[];
+  width?: number;
+  height?: number;
+  className?: string;
+};
+
+export const PropertyCardImage = ({
+  images,
+  width,
+  height,
+  className,
+}: PropertyCardImageProps) => {
+  return (
+    <CarouselSlider
+      spaceBetween={0}
+      pagination={false}
+      slidesPerView={1}
+      navigation={{}}
+    >
+      {images.map((url, index) => (
+        <Image
+          key={index}
+          className={className}
+          src={url}
+          width={width ?? 360}
+          height={height ?? 200}
+          alt="Gallery"
+        />
+      ))}
+    </CarouselSlider>
+  );
+};
+
+export const IconDetail = ({ value, text, children }: IconDetailType) => {
   const { t } = useTranslation();
   return (
-    <span className="flex flex-col justify-center gap-2 pr-3 items-center">
+    <span className="flex flex-col items-center justify-center gap-2 pr-3">
       <span className="inline-flex gap-3">
-        <span className="text-lg md:text-xl text-gray-900">{value}</span>
+        <span className="text-lg text-gray-900 md:text-xl">{value}</span>
         {children}
       </span>
       <span className="text-xs">{t(text)}</span>
@@ -48,29 +83,17 @@ export default function PropertyCard({
   return (
     <div className="w-[340px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
       <div className="relative group">
-        <CarouselSlider
-          spaceBetween={0}
-          pagination={false}
-          slidesPerView={1}
-          navigation={{}}
-        >
-          {[coverImage, ...gallery].map((url) => (
-            <Image
-              className="rounded-t-md"
-              src={url}
-              width={360}
-              height={200}
-              alt="Gallery"
-            />
-          ))}
-        </CarouselSlider>
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0 rounded-b-md"></div>
-        <div className="absolute bottom-0 left-0 w-full text-white p-4 rounded-b-md">
+        <PropertyCardImage
+          images={[coverImage, ...gallery]}
+          className="rounded-t-md"
+        />
+        <div className="absolute bottom-0 left-0 w-full transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
+        <div className="absolute bottom-0 left-0 w-full p-4 text-white rounded-b-md">
           {/* Gradient shadow that smoothly spreads to the middle */}
 
           {/* Price Text */}
           <span className="relative z-10 inline-flex justify-between w-full">
-            <span className="inline-flex flex-col text-sm text-left font-bold">
+            <span className="inline-flex flex-col text-sm font-bold text-left">
               <b>{price.rent}</b>
               <b>{price.sell}</b>
             </span>
@@ -80,7 +103,7 @@ export default function PropertyCard({
         </div>
       </div>
 
-      <div className="px-4 py-4 text-left flex space-y-4 flex-col justify-between h-full">
+      <div className="flex flex-col justify-between h-full px-4 py-4 space-y-4 text-left">
         <div className="inline-flex flex-col space-y-3">
           <p className="truncate">{title}</p>
           <p className="text-xs text-gray-600">{address}</p>

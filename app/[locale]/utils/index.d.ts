@@ -12,6 +12,17 @@ export type GroupData<GroupType> = {
   };
 };
 
+export type MetaType = {
+  hasMore: boolean;
+  nextPage: string;
+  total: number;
+};
+
+export type CollectionData<T> = {
+  [key: string]: T[];
+  meta: MetaType;
+};
+
 export type ResponseData<DataType> = {
   data: DataType;
   message: string;

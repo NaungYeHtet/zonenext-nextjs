@@ -8,17 +8,19 @@ import { Option } from "../utils";
 import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../utils/api-paths";
 import AsyncSelect from "./async-select";
 
-type PropertyFilterProps = {
-  filters: {
-    listTypes: MultiValue<Option>;
-    states: MultiValue<Option>;
-    types: MultiValue<Option>;
-    priceRanges: {
-      forSale: MultiValue<Option>;
-      forRent: MultiValue<Option>;
-      newest: MultiValue<Option>;
-    };
+export type PropertyFilterValues = {
+  listTypes: MultiValue<Option>;
+  states: MultiValue<Option>;
+  types: MultiValue<Option>;
+  priceRanges: {
+    forSale: MultiValue<Option>;
+    forRent: MultiValue<Option>;
+    newest: MultiValue<Option>;
   };
+};
+
+type PropertyFilterProps = {
+  filters: PropertyFilterValues;
 };
 
 type TopshipParams = {
@@ -48,9 +50,9 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-1 w-full">
+    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 md:gap-1">
       <input
-        className="p-2 w-full md:col-span-2 bg-white border border-gray-300 focus:ring-primary-500 focus:border-primary-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 focus:outline-none"
+        className="block w-full p-2 bg-white border border-gray-300 md:col-span-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 focus:outline-none"
         type="text"
         name="search"
         id="search"
@@ -58,39 +60,41 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
       />
       <Select
         options={filters.listTypes}
-        className="w-full md:col-span-2 text-sm"
+        className="w-full text-sm lg:col-span-2"
         defaultValue={filters.listTypes[0]}
         onChange={(option) => handleListTypeChange(option)}
         instanceId="listTypes"
       />
       <Select
+        aria-label={t("general:choose_type", { lng: "en" })}
+        options={filters.types}
+        className="w-full text-sm lg:col-span-2"
+        placeholder={t("general:choose_type")}
+        instanceId="types"
+      />
+      <Select
         options={filters.states}
-        className="w-full md:col-span-2 text-sm"
+        className="w-full text-sm lg:col-span-2"
         placeholder={t("general:choose_state")}
         onChange={handleStateChange}
         instanceId="states"
       />
       <AsyncSelect
+        className="w-full text-sm lg:col-span-2"
         params={townshipParams}
         path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
         placeholder={t("general:choose_township")}
         optionsKey="townships"
       />
       <Select
-        options={filters.types}
-        className="w-full md:col-span-2 text-sm"
-        placeholder={t("general:choose_type")}
-        instanceId="types"
-      />
-      <Select
         options={priceOptions}
-        className="w-full md:col-span-1 text-sm"
+        className="w-full text-sm md:col-span-1 lg:col-span-2"
         placeholder={t("general:from_price")}
         instanceId="from_price"
       />
       <Select
         options={priceOptions}
-        className="w-full md:col-span-1 text-sm"
+        className="w-full text-sm md:col-span-1 lg:col-span-2"
         placeholder={t("general:to_price")}
         instanceId="to_price"
       />

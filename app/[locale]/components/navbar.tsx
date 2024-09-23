@@ -100,6 +100,7 @@ export default function Navbar() {
             }
           )}
         >
+          <NavbarItem text={t("general:home_nav")} href="/" />
           <NavbarItem text={t("general:for_sale")} href="/for-sale" />
           <NavbarItem text={t("general:for_rent")} href="/for-rent" />
           <NavbarItem

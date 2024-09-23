@@ -38,7 +38,7 @@ export default function SectionWelcome() {
       className="compact-container bg-gray-50 px-4 md:px-4 py-20 text-center"
       aria-label="Types"
     >
-      <h2 className="text-xl md:text-2xl mb-3">{t("welcome")}</h2>
+      <h2 className="text-xl md:text-2xl mb-3">{t("default:welcome")}</h2>
       <p className="text-sm md:text-md text-gray-500">
         Search and browse your properties by one click
       </p>

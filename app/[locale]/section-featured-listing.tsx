@@ -53,7 +53,10 @@ export default async function SectionFeaturedListing({
           }}
         >
           {group.items.map((property: Property) => (
-            <PropertyCard property={property} />
+            <PropertyCard
+              property={property}
+              pathname={`property/${property.slug}`}
+            />
           ))}
         </CarouselSlider>
       </div>

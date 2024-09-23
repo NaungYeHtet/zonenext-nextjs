@@ -1,4 +1,3 @@
-import Image, { StaticImageData } from "next/image";
 import Navbar from "./components/navbar";
 import PropertyFilter from "./components/property-filter";
 import TranslationsProvider from "./components/translation-provider";
@@ -6,7 +5,7 @@ import initTranslations from "./utils/i18n";
 import SectionFeaturedListing from "./section-featured-listing";
 import SectionWelcome from "./section-welcome";
 
-const i18nNamespaces = ["general"];
+const i18nNamespaces = ["general", "default"];
 
 type HomePageProps = {
   params: {
@@ -40,8 +39,8 @@ export default async function Home({ params: { locale } }: HomePageProps) {
             className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
 		bg-[url('../../public/images/home-banner.jpg')]"
           >
-            <div className="compact-container flex justify-center md:align-middle h-full w-full bg-transparent">
-              <div className="m-12 mb-28 w-full">
+            <div className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle">
+              <div className="w-full m-12 mb-28">
                 <PropertyFilter filters={filters.data} />
               </div>
             </div>

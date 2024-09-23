@@ -1,4 +1,4 @@
-import { AsyncPaginate } from "react-select-async-paginate";
+import { AsyncPaginate, AsyncPaginateProps } from "react-select-async-paginate";
 import { fetchGet } from "../utils/helpers";
 import { API_PATH_TYPE } from "../utils";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ type AsyncSelectProps = {
   params: Object;
   optionsKey: string;
   placeholder: string;
+  [key: string]: any;
 };
 
 export default function AsyncSelect({
@@ -15,6 +16,7 @@ export default function AsyncSelect({
   params,
   optionsKey,
   placeholder,
+  ...otherProps
 }: AsyncSelectProps) {
   const { i18n } = useTranslation();
 
@@ -37,13 +39,13 @@ export default function AsyncSelect({
 
   return (
     <AsyncPaginate
-      className="w-full md:col-span-2 text-sm"
       loadOptions={loadOptions}
       additional={{
         page: 1,
       }}
       key={JSON.stringify(params)}
       placeholder={placeholder}
+      {...otherProps}
     />
   );
 }
