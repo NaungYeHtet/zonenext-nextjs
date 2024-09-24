@@ -50,7 +50,7 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
   }, []);
 
   return (
-    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 md:gap-1">
+    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 lg:gap-1">
       <input
         className="block w-full p-2 bg-white border border-gray-300 md:col-span-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 focus:outline-none"
         type="text"
@@ -67,7 +67,10 @@ export default function PropertyFilter({ filters }: PropertyFilterProps) {
       />
       <Select
         aria-label={t("general:choose_type", { lng: "en" })}
-        options={filters.types}
+        options={[
+          { label: t("general:choose_type"), value: "" },
+          ...filters.types,
+        ]}
         className="w-full text-sm lg:col-span-2"
         placeholder={t("general:choose_type")}
         instanceId="types"

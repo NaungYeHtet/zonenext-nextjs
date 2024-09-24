@@ -14,8 +14,6 @@ export default function LanguageSwitch() {
     const currentLocale = i18n.language;
     const newLocale = i18n.language == "en" ? "my" : "en";
 
-    console.log(newLocale);
-
     // set cookie for next-i18n-router
     const days = 30;
     const date = new Date();

@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import Navbar from "../components/navbar";
 import PropertyFilter from "../components/property-filter";
 import TranslationsProvider from "../components/translation-provider";
@@ -13,6 +14,7 @@ type HomePageProps = {
 
 export default async function ForRent({ params: { locale } }: HomePageProps) {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
+  const searchParams = useSearchParams();
 
   let data = await fetch(
     `${process.env.NEXT_PUBLIC_API_PATH}/property-filters?language=${locale}`,

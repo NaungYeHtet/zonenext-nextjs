@@ -29,8 +29,6 @@ type PropertyCardImageProps = {
 
 export const PropertyCardImage = ({
   images,
-  width,
-  height,
   className,
 }: PropertyCardImageProps) => {
   return (
@@ -41,14 +39,18 @@ export const PropertyCardImage = ({
       navigation={{}}
     >
       {images.map((url, index) => (
-        <Image
-          key={index}
-          className={className}
-          src={url}
-          width={width ?? 360}
-          height={height ?? 200}
-          alt="Gallery"
-        />
+        <div key={index} style={{ width: "100%", maxWidth: "640px" }}>
+          <Image
+            className={className}
+            key={index}
+            src={url}
+            alt="Gallery"
+            width={640} // Explicit width
+            height={480} // Explicit height
+            style={{ width: "100%", height: "auto" }} // Maintain aspect ratio
+            priority
+          />
+        </div>
       ))}
     </CarouselSlider>
   );
@@ -87,7 +89,7 @@ export default function PropertyCard({
           images={[coverImage, ...gallery]}
           className="rounded-t-md"
         />
-        <div className="absolute bottom-0 left-0 w-full transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
+        <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
         <div className="absolute bottom-0 left-0 w-full p-4 text-white rounded-b-md">
           {/* Gradient shadow that smoothly spreads to the middle */}
 

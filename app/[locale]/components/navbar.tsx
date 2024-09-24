@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/logo/logo-no-background.png";
 import { CiMenuBurger, CiMinimize1 } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { cn } from "../utils/helpers";
 import { TfiClose } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "./language-switch";
+import Logo from "./logo";
 
 type NavbarItemProps = {
   text: string;
@@ -50,12 +50,7 @@ export default function Navbar() {
           <CiMenuBurger />
         </button>
         <div className="compact-container py-2 inline-flex justify-between w-full">
-          <Image
-            className="w-20 md:w-36"
-            src={logo}
-            alt="Zone Next Logo"
-            priority
-          />
+          <Logo className="w-20 md:w-36" />
           <div className="inline-flex items-center gap-2 md:gap-7 p-1 h-full text-gray-800 text-sm md:text-xl">
             <LanguageSwitch />
             <Link
@@ -77,8 +72,7 @@ export default function Navbar() {
       </section>
       <div
         className={cn(
-          true &&
-            "compact-container py-4 md:pt-3 hidden md:block bg-primary-100 w-full text-lg text-gray-900 hover:text-gray-600 transition-colors md:justify-between",
+          "compact-container py-4 md:pt-3 hidden md:block bg-primary-100 w-full text-lg text-gray-900 hover:text-gray-600 transition-colors md:justify-between",
           {
             "flex inset-0 w-full h-screen top-0 left-0 justify-around z-50 fixed":
               showNavbar,

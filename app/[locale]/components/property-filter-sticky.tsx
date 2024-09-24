@@ -47,7 +47,7 @@ export default function PropertyFilterSticky({
           "transition-all duration-500 ease-in-out sticky top-0 z-50 bg-white shadow-md",
           {
             "opacity-0 translate-y-[-100%] h-0": !isSticky,
-            "opacity-100 translate-y-0": isSticky,
+            "px-3 py-3 opacity-100 translate-y-0": isSticky,
           }
         )}
         style={{ visibility: isSticky ? "visible" : "hidden" }} // Control visibility without removing from flow

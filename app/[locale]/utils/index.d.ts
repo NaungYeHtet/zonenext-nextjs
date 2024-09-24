@@ -1,4 +1,5 @@
 import {
+  API_PATH_PROPERTY,
   API_PATH_PROPERTY_FILTER,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
 } from "./api-paths";
@@ -18,9 +19,26 @@ export type MetaType = {
   total: number;
 };
 
+export type MetaLink = {
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
 export type CollectionData<T> = {
-  [key: string]: T[];
-  meta: MetaType;
+  current_page: number;
+  data: T[];
+  first_page_url: string;
+  from: number | null;
+  last_page: number;
+  last_page_url: string;
+  links: MetaLink[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number | null;
+  total: number;
 };
 
 export type ResponseData<DataType> = {
@@ -56,4 +74,5 @@ export type Property = {
 
 export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER
-  | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP;
+  | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
+  | typeof API_PATH_PROPERTY;

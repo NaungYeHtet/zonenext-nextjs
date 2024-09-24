@@ -4,7 +4,6 @@ import PropertyFilter from "../components/property-filter";
 import PropertyFilterSticky from "../components/property-filter-sticky";
 import PropertyList from "../components/property-list";
 import TranslationsProvider from "../components/translation-provider";
-import { API_PATH_PROPERTY } from "../utils/api-paths";
 import initTranslations from "../utils/i18n";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -17,6 +16,7 @@ type PropertyListPageProps = {
   params: {
     locale: string;
     search: string;
+    page: string;
   };
 };
 
@@ -32,14 +32,6 @@ export default async function ForSale({
     }
   );
   let filters = await filterData.json();
-
-  const propertyData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_PROPERTY}?language=${locale}&list_type=for_sale`,
-    {
-      next: { revalidate: 0 },
-    }
-  );
-  let properties = await propertyData.json();
 
   return (
     <TranslationsProvider
@@ -61,7 +53,6 @@ export default async function ForSale({
           <PropertyFilterSticky filters={filters.data} />
 
           <section
-            title="Property list section"
             aria-label="Property list section"
             className="compact-container"
           >
@@ -74,7 +65,7 @@ export default async function ForSale({
 
             <div className="flex flex-col justify-between w-full gap-10 mt-3 xl:flex-row">
               <div className="flex-grow">
-                <PropertyList propertyList={properties.data} />
+                <PropertyList />
               </div>
               <div className="w-72">Sidebar</div>
             </div>
