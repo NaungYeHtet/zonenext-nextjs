@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Property } from "../utils";
+import { Property } from "../lib";
 import { LuBedSingle } from "react-icons/lu";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
@@ -121,6 +121,37 @@ export default function PropertyCard({
             <TfiRulerAlt2 className="text-2xl" />
           </IconDetail>
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function PropertyCardMin({
+  property: { coverImage, price, address },
+}: PropertyCardProps) {
+  return (
+    <div className="relative group">
+      <Image
+        className="rounded-md"
+        src={coverImage}
+        alt="Gallery"
+        width={640} // Explicit width
+        height={480} // Explicit height
+        style={{ width: "100%", height: "auto" }} // Maintain aspect ratio
+        priority
+      />
+      <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
+      <div className="absolute bottom-0 left-0 w-full p-4 text-white rounded-b-md">
+        {/* Gradient shadow that smoothly spreads to the middle */}
+
+        {/* Price Text */}
+        <span className="relative z-10 inline-flex justify-between w-full">
+          <span className="inline-flex flex-col text-sm gap-1 font-bold text-left">
+            <b>{price.rent}</b>
+            <b>{price.sell}</b>
+            <span className="truncate w-[240px] text-xs">{address}</span>
+          </span>
+        </span>
       </div>
     </div>
   );

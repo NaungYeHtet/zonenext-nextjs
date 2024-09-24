@@ -1,6 +1,6 @@
 import { AsyncPaginate, AsyncPaginateProps } from "react-select-async-paginate";
 import { fetchGet } from "../utils/helpers";
-import { API_PATH_TYPE } from "../utils";
+import { API_PATH_TYPE } from "../lib";
 import { useTranslation } from "react-i18next";
 
 type AsyncSelectProps = {

@@ -1,5 +1,6 @@
 import Breadcrumb from "../components/breadcumb";
 import Navbar from "../components/navbar";
+import { PropertyCardMin } from "../components/property-card";
 import PropertyFilter from "../components/property-filter";
 import PropertyFilterSticky from "../components/property-filter-sticky";
 import PropertyList from "../components/property-list";
@@ -9,6 +10,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { fetchGet } from "../utils/helpers";
+import { API_PATH_GROUP, API_PATH_PROPERTY_FILTER } from "../utils/api-paths";
+import { GroupData, Property } from "../lib";
+import CarouselSlider from "../components/carousel-slider";
+import SidebarSection from "../components/sidebar-section";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -25,13 +31,19 @@ export default async function ForSale({
 }: PropertyListPageProps) {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
 
-  const filterData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}/property-filters?language=${locale}`,
+  const filters = await fetchGet(
+    API_PATH_PROPERTY_FILTER,
+    { language: locale },
+    { next: { revalidate: 0 } }
+  );
+
+  const { group } = await fetchGet(
+    API_PATH_GROUP,
+    { language: locale, type: "FeaturedListings" },
     {
       next: { revalidate: 0 },
     }
   );
-  let filters = await filterData.json();
 
   return (
     <TranslationsProvider
@@ -46,32 +58,56 @@ export default async function ForSale({
         <main>
           <div className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle">
             <div className="w-full m-3">
-              <PropertyFilter filters={filters.data} />
+              <PropertyFilter filters={filters} />
             </div>
           </div>
 
-          <PropertyFilterSticky filters={filters.data} />
+          <PropertyFilterSticky filters={filters} />
 
-          <section
-            aria-label="Property list section"
-            className="compact-container"
-          >
-            <Breadcrumb
-              items={[
-                { label: "Home", path: "/" },
-                { label: "For Sale", path: "/for-sale" },
-              ]}
-            />
-
-            <div className="flex flex-col justify-between w-full gap-10 mt-3 xl:flex-row">
-              <div className="flex-grow">
-                <PropertyList />
-              </div>
-              <div className="w-72">Sidebar</div>
-            </div>
-          </section>
+          <div className="compact-container">
+            <section aria-label="Property list section">
+              <Breadcrumb
+                items={[
+                  { label: "Home", path: "/" },
+                  { label: "For Sale", path: "/for-sale" },
+                ]}
+              />
+            </section>
+            <section
+              aria-label="Sidebar section"
+              className="flex flex-col justify-between w-full gap-10 mt-3 xl:flex-row"
+            >
+              <PropertyList />
+              <ForSaleSidebar items={group.items} />
+            </section>
+          </div>
         </main>
       </div>
     </TranslationsProvider>
+  );
+}
+
+type ForSaleSidebarProps = {
+  items: Property[];
+};
+
+function ForSaleSidebar({ items }: ForSaleSidebarProps) {
+  return (
+    <div className="w-[350px] z-0">
+      <SidebarSection>
+        <SidebarSection.Item>
+          <CarouselSlider
+            spaceBetween={0}
+            pagination={false}
+            slidesPerView={1}
+            navigation={{}}
+          >
+            {items.map((property: Property) => (
+              <PropertyCardMin property={property} pathname="/for-sale" />
+            ))}
+          </CarouselSlider>
+        </SidebarSection.Item>
+      </SidebarSection>
+    </div>
   );
 }

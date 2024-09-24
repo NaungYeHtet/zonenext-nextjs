@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { CollectionData, Property } from "../utils";
+import { CollectionData, Property } from "../lib";
 import PropertyCard from "./property-card";
 import PropertyCardLong from "./property-card-long";
 import Pagination from "./pagination";

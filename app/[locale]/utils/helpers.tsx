@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { API_PATH_TYPE } from ".";
+import { API_PATH_TYPE } from "../lib";
 
 export function cn(...args: ClassValue[]) {
   return twMerge(clsx(args));
@@ -20,7 +20,7 @@ export function transformParamsToQueryString(params: Object): string {
   return new URLSearchParams(sanitizeObject(params)).toString();
 }
 
-export async function fetchGet(path: API_PATH_TYPE, params: {}) {
+export async function fetchGet(path: API_PATH_TYPE, params: {}, options?: {}) {
   params = {
     ...params,
   };
@@ -36,6 +36,7 @@ export async function fetchGet(path: API_PATH_TYPE, params: {}) {
     headers: {
       "Content-Type": "application/json",
     },
+    ...options,
   });
 
   const responseJSON = await response.json();

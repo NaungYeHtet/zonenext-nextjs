@@ -1,16 +1,14 @@
 import {
+  API_PATH_GROUP,
   API_PATH_PROPERTY,
   API_PATH_PROPERTY_FILTER,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
-} from "./api-paths";
+} from "../utils/api-paths";
 
-export type GroupData<GroupType> = {
-  group: {
-    name: string;
-    slug: string;
-    description: string;
-    items: GroupType[];
-  };
+export type ResponseData<DataType> = {
+  data: DataType;
+  message: string;
+  status: number;
 };
 
 export type MetaType = {
@@ -41,10 +39,13 @@ export type CollectionData<T> = {
   total: number;
 };
 
-export type ResponseData<DataType> = {
-  data: DataType;
-  message: string;
-  status: number;
+export type GroupData<T> = {
+  group: {
+    name: string;
+    slug: string;
+    description: string;
+    items: T[];
+  };
 };
 
 export type Option = {
@@ -75,4 +76,5 @@ export type Property = {
 export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER
   | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
-  | typeof API_PATH_PROPERTY;
+  | typeof API_PATH_PROPERTY
+  | typeof API_PATH_GROUP;

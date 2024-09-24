@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
-import { Option } from "../utils";
+import { Option } from "../lib";
 import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../utils/api-paths";
 import AsyncSelect from "./async-select";
 

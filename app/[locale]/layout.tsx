@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${noto_sans} ${poppins} bg-gray-50`}>
+      <body className={`${noto_sans} ${poppins} bg-gray-100`}>
         <main className="font-noto_sans">{children}</main>
       </body>
     </html>

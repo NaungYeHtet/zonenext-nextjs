@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { MetaLink } from "../utils";
+import { MetaLink } from "../lib";
 import { cn } from "../utils/helpers";
 
 type PaginationProps = {
