@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PropertyFilter, { PropertyFilterValues } from "./property-filter";
-import { cn } from "../utils/helpers";
+import { cn } from "../../utils/helpers";
 import { CiSearch } from "react-icons/ci";
 import { TfiClose } from "react-icons/tfi";
 

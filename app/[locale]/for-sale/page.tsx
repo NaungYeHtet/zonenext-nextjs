@@ -1,9 +1,9 @@
 import Breadcrumb from "../components/breadcumb";
 import Navbar from "../components/navbar";
-import { PropertyCardMin } from "../components/property-card";
-import PropertyFilter from "../components/property-filter";
-import PropertyFilterSticky from "../components/property-filter-sticky";
-import PropertyList from "../components/property-list";
+import { PropertyCardMin } from "../components/property/property-card";
+import PropertyFilter from "../components/property/property-filter";
+import PropertyFilterSticky from "../components/property/property-filter-sticky";
+import PropertyList from "../components/property/property-list";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import "swiper/css";

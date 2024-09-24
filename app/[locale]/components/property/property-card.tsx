@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { Property } from "../lib";
+import { Property } from "../../lib";
 import { LuBedSingle } from "react-icons/lu";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import CarouselSlider from "./carousel-slider";
+import CarouselSlider from "../carousel-slider";
 
 export type PropertyCardProps = {
   property: Property;

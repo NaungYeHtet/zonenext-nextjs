@@ -1,15 +1,14 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { CollectionData, Property } from "../lib";
-import PropertyCard from "./property-card";
-import PropertyCardLong from "./property-card-long";
-import Pagination from "./pagination";
+import { CollectionData, Property } from "../../lib";
+import Pagination from "../pagination";
 import { useEffect, useState } from "react";
-import { API_PATH_PROPERTY } from "../utils/api-paths";
+import { API_PATH_PROPERTY } from "../../utils/api-paths";
 import { useTranslation } from "react-i18next";
-import { fetchGet } from "../utils/helpers";
-import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "./skeletons";
+import { fetchGet } from "../../utils/helpers";
+import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "../skeletons";
+import { PropertyListView } from "./property-list-view";
 
 type PropertyHeaderProps = {
   total: number;
@@ -21,36 +20,6 @@ function PropertyHeader({ total }: PropertyHeaderProps) {
       <span className="text-sm text-gray-500">{total} Properties</span>
       <span className="text-sm text-gray-500">Order here</span>
     </div>
-  );
-}
-
-type PropertyListViewProps = {
-  properties: Property[];
-  pathname: string;
-};
-
-function PropertyListView({ properties, pathname }: PropertyListViewProps) {
-  return (
-    <>
-      <div className="flex-col hidden lg:flex gap-7">
-        {properties.map((property) => (
-          <PropertyCardLong
-            key={property.slug}
-            property={property}
-            pathname={pathname}
-          />
-        ))}
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center lg:hidden gap-7">
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.slug}
-            property={property}
-            pathname={pathname}
-          />
-        ))}
-      </div>
-    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import CarouselSlider from "./components/carousel-slider";
-import PropertyCard from "./components/property-card";
+import PropertyCard from "./components/property/property-card";
 import { GroupData, Property, ResponseData } from "./lib";
 import "swiper/css";
 import "swiper/css/navigation";

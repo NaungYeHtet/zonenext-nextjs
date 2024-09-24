@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import Navbar from "../components/navbar";
-import PropertyFilter from "../components/property-filter";
+import PropertyFilter from "../components/property/property-filter";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 
