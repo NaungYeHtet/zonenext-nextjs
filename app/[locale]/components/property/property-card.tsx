@@ -126,7 +126,7 @@ export default function PropertyCard({
   );
 }
 
-export function PropertyCardMin({
+export function PropertyCardCompact({
   property: { cover_image, price, address },
 }: PropertyCardProps) {
   return (

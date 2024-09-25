@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Filter, { PropertyFilterValues } from "./filter";
+import Filter, { PropertyFilterOptions } from "./filter";
 import { cn } from "../../../utils/helpers";
 import { CiSearch } from "react-icons/ci";
 import { TfiClose } from "react-icons/tfi";
+import { PropertyFilterParams } from "@/app/[locale]/lib";
 
 type FilterStickyProps = {
-  filters: PropertyFilterValues;
+  filters: PropertyFilterOptions;
+  filterParams: PropertyFilterParams;
   startingPosition: number | null;
 };
 
 export default function FilterSticky({
   filters,
   startingPosition,
+  filterParams,
 }: FilterStickyProps) {
   const [isSticky, setIsSticky] = useState(false);
   const [scrollReached, isScrollReached] = useState(false);
@@ -56,7 +59,7 @@ export default function FilterSticky({
         )}
         style={{ visibility: isSticky ? "visible" : "hidden" }} // Control visibility without removing from flow
       >
-        <Filter filters={filters} />
+        <Filter filters={filters} filterParams={filterParams} />
       </div>
       <div
         className={cn(

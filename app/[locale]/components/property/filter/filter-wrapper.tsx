@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Filter, { PropertyFilterValues } from "./filter";
+import Filter, { PropertyFilterProps } from "./filter";
 import FilterSticky from "./filter-sticky";
 
-type FilterWrapperProps = {
-  filters: PropertyFilterValues;
-};
-
-export default function FilterWrapper({ filters }: FilterWrapperProps) {
+export default function FilterWrapper({
+  filters,
+  filterParams,
+}: PropertyFilterProps) {
   const divRef = useRef<HTMLDivElement | null>(null);
   const [endingPosition, setEndingPosition] = useState<number | null>(null);
 
@@ -27,10 +26,14 @@ export default function FilterWrapper({ filters }: FilterWrapperProps) {
         className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle"
       >
         <div className="w-full mx-3 my-10">
-          <Filter filters={filters} />
+          <Filter filters={filters} filterParams={filterParams} />
         </div>
       </div>
-      <FilterSticky filters={filters} startingPosition={endingPosition} />
+      {/* <FilterSticky
+        filters={filters}
+        filterParams={filterParams}
+        startingPosition={endingPosition}
+      /> */}
     </>
   );
 }

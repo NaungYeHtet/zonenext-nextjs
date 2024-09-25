@@ -80,10 +80,21 @@ export type Property = {
   posted_at: string;
 };
 
+export type PropertyFilterParams = {
+  locale: string;
+  list_type: PROPERTY_LIST_TYPE;
+  state?: string;
+  township?: string;
+  type?: string;
+  from?: string;
+  to?: string;
+  s?: string;
+};
+
 export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER
   | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
   | typeof API_PATH_PROPERTY
   | typeof API_PATH_GROUP;
 
-export type PROPERTY_LIST_TYPE = "for_sale" | "for_rent" | "newest";
+export type PROPERTY_LIST_TYPE = "for-sale" | "for-rent" | "newest";

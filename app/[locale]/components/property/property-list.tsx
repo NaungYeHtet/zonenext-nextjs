@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { CollectionData, Property } from "../../lib";
+import { CollectionData, Property, PropertyFilterParams } from "../../lib";
 import Pagination from "../pagination";
 import { useEffect, useState } from "react";
 import { API_PATH_PROPERTY } from "../../utils/api-paths";
@@ -56,7 +56,13 @@ const LoadingSkeleton = () => (
   </>
 );
 
-function PropertyList() {
+type PropertyListProps = {
+  filterParams: PropertyFilterParams;
+};
+
+function PropertyList({
+  filterParams: { list_type, state, township, type, from, to, s },
+}: PropertyListProps) {
   const pathname = usePathname();
   const [properties, setProperties] = useState<CollectionData<Property>>();
   const { i18n } = useTranslation();
@@ -64,12 +70,18 @@ function PropertyList() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    console.log(state, township, type, list_type, from, to);
     async function fetchProperties() {
       let responseData = await fetchGet(API_PATH_PROPERTY, {
         language: i18n.language,
-        list_type: "for_sale",
         page: currentPage,
-        ...Object.fromEntries(searchParams.entries()),
+        state,
+        township,
+        type: type && decodeURI(type),
+        list_type,
+        price_from: from,
+        price_to: to,
+        search: s,
       });
 
       setProperties(responseData.properties);
@@ -81,6 +93,16 @@ function PropertyList() {
     return (
       <div className="relative flex-grow z-0">
         <LoadingSkeleton />
+      </div>
+    );
+  }
+
+  if (properties.total == 0) {
+    return (
+      <div className="relative flex-grow z-0">
+        <div className="flex justify-center items-center h-full">
+          <span className="text-sm text-gray-500">No properties found</span>
+        </div>
       </div>
     );
   }

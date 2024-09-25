@@ -4,14 +4,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
-import { Option, PROPERTY_LIST_TYPE } from "../../../lib";
-import {
-  API_PATH_PROPERTY_FILTER,
-  API_PATH_PROPERTY_FILTER_TOWNSHIP,
-} from "../../../utils/api-paths";
+import { Option, PROPERTY_LIST_TYPE, PropertyFilterParams } from "../../../lib";
+import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../../../utils/api-paths";
 import AsyncSelect from "../../async-select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { fetchGet, transformParamsToQueryString } from "../../../utils/helpers";
+import { useRouter, useSearchParams } from "next/navigation";
 import { isEmpty } from "lodash";
 
 interface ListTypeOption extends Option {
@@ -19,20 +15,19 @@ interface ListTypeOption extends Option {
   value: PROPERTY_LIST_TYPE;
 }
 
-export type PropertyFilterValues = {
+export type PropertyFilterOptions = {
   list_types: MultiValue<ListTypeOption>;
   states: MultiValue<Option>;
   townships: MultiValue<Option>;
   types: MultiValue<Option>;
-  price_ranges: {
-    for_sale: MultiValue<Option>;
-    for_rent: MultiValue<Option>;
-    newest: MultiValue<Option>;
-  };
+  for_sale_options: MultiValue<Option>;
+  for_rent_options: MultiValue<Option>;
+  newest_options: MultiValue<Option>;
 };
 
-type PropertyFilterProps = {
-  filters: PropertyFilterValues;
+export type PropertyFilterProps = {
+  filters: PropertyFilterOptions;
+  filterParams: PropertyFilterParams;
 };
 
 type TopwnshipParams = {
@@ -55,21 +50,33 @@ type FILTER_INSTANCE =
   | typeof PRICE_TO
   | typeof TOWNSHIP;
 
-export default function Filter({ filters }: PropertyFilterProps) {
+export default function Filter({
+  filters: {
+    list_types,
+    states,
+    townships,
+    types,
+    for_sale_options,
+    for_rent_options,
+    newest_options,
+  },
+  filterParams,
+}: PropertyFilterProps) {
   const { t, i18n } = useTranslation();
   const [priceOptions, setPriceOptions] = useState<MultiValue<Option>>();
   const [townshipParams, setTownshipParams] = useState<TopwnshipParams>();
-  const [search, setSearch] = useState<string>("");
-  const [listType, setListType] = useState<PROPERTY_LIST_TYPE>("for_sale");
+  const [search, setSearch] = useState<string>();
+  const [listType, setListType] = useState<PROPERTY_LIST_TYPE>("for-sale");
   const [state, setState] = useState<string>();
   const [type, setType] = useState<string>();
-  const [priceFrom, setPriceFrom] = useState<number>();
-  const [priceTo, setPriceTo] = useState<number>();
+  const [priceFrom, setPriceFrom] = useState<string>();
+  const [priceTo, setPriceTo] = useState<string>();
   const [township, setTownship] = useState<string>();
-  const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
+
+  console.log("Rendered", filterParams.from);
 
   const handleSelectOption = (
     option: SingleValue<Option>,
@@ -80,33 +87,41 @@ export default function Filter({ filters }: PropertyFilterProps) {
         setListType(option?.value as PROPERTY_LIST_TYPE);
         break;
       case STATE:
-        setState(option?.value as string);
+        setState(option?.value);
         setTownship(undefined);
         break;
       case TOWNSHIP:
-        setTownship(option?.value as string);
+        setTownship(option?.value);
         break;
       case TYPE:
-        setType(option?.value as string);
+        setType(option?.value);
         break;
       case PRICE_FROM:
-        setPriceFrom(option?.value as unknown as number);
+        setPriceFrom(option?.value);
         break;
       case PRICE_TO:
-        setPriceTo(option?.value as unknown as number);
+        setPriceTo(option?.value);
     }
   };
 
   const handleListTypeChange = (
     listTypeOption: SingleValue<ListTypeOption>
   ) => {
-    setPriceOptions([
-      ...filters.price_ranges[
-        listTypeOption?.value as keyof typeof filters.price_ranges
-      ],
-    ]);
+    if (listTypeOption) {
+      handlePriceOptions(listTypeOption.value);
+    }
 
     handleSelectOption(listTypeOption, LIST_TYPE);
+  };
+
+  const handlePriceOptions = (list_type: PROPERTY_LIST_TYPE) => {
+    if (list_type == "for-rent") {
+      setPriceOptions(for_rent_options);
+    } else if (list_type == "for-sale") {
+      setPriceOptions(for_sale_options);
+    } else {
+      setPriceOptions(newest_options);
+    }
   };
 
   const handleStateChange = (option: SingleValue<Option>) => {
@@ -122,38 +137,61 @@ export default function Filter({ filters }: PropertyFilterProps) {
   };
 
   const handleSearch = () => {
-    const queryString = transformParamsToQueryString({
-      search: search,
-      state: state,
-      type: type,
-      price_from: priceFrom,
-      price_to: priceTo,
-      township: township,
-    });
+    let path = `/${i18n.language}/${listType}`;
 
-    let path = `/${i18n.language}/${listType.replace("_", "-")}`;
+    if (state) {
+      path += `/state/${state}`;
+    }
 
-    if (queryString) {
-      path += `?${queryString}`;
+    if (township) {
+      path += `/township/${township}`;
+    }
+
+    if (type) {
+      path += `/type/${type}`;
+    }
+
+    if (priceFrom) {
+      path += `/from/${priceFrom}`;
+    }
+
+    if (priceTo) {
+      path += `/to/${priceTo}`;
+    }
+
+    if (search) {
+      path += `/s/${search}`;
     }
 
     router.push(path);
   };
 
   useEffect(() => {
-    let currentListTypeValue;
-    if (pathname.endsWith("for-rent")) {
-      currentListTypeValue = "for_rent";
-    } else if (pathname.endsWith("neweset")) {
-      currentListTypeValue = "newest";
+    if (filterParams) {
+      const listTypeOption = list_types.filter(
+        (option) => option.value === filterParams.list_type
+      )[0];
+
+      listTypeOption ? handleListTypeChange(listTypeOption) : "";
+
+      setListType(filterParams.list_type);
+      setType(filterParams.type);
+      setState(filterParams.state);
+
+      if (filterParams.state) {
+        setTownshipParams((prevState) => {
+          return {
+            ...prevState,
+            state: filterParams.state,
+          };
+        });
+      }
+      setTownship(filterParams.township);
+      setPriceFrom(filterParams.from);
+      setPriceTo(filterParams.to);
+      setSearch(filterParams.s);
     }
-
-    const listTypeOption = filters.list_types.filter(
-      (option) => option.value === "for_sale"
-    )[0];
-
-    listTypeOption ? handleListTypeChange(listTypeOption) : "";
-  }, []);
+  }, [filterParams]);
 
   return (
     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 lg:gap-1">
@@ -168,36 +206,23 @@ export default function Filter({ filters }: PropertyFilterProps) {
         onKeyDown={(e) => (e.key === "Enter" ? handleSearch() : "")}
       />
       <Select
-        options={filters.list_types}
+        options={list_types}
         className="w-full text-sm lg:col-span-2"
-        defaultValue={filters.list_types[0]}
+        defaultValue={list_types.find(
+          (filter) => filter.value === filterParams?.list_type
+        )}
         onChange={(option) => handleListTypeChange(option)}
         instanceId="list_types"
       />
       <Select
-        aria-label={t("general:choose_type", { lng: "en" })}
-        options={[
-          { label: t("general:choose_type"), value: "" },
-          ...filters.types,
-        ]}
-        className="w-full text-sm lg:col-span-2"
-        placeholder={t("general:choose_type")}
-        onChange={(option) => handleSelectOption(option, TYPE)}
-        isClearable
-        instanceId={TYPE}
-        defaultValue={filters.types.find(
-          (filter) => filter.value === params.type
-        )}
-      />
-      <Select
-        options={filters.states}
+        options={states}
         className="w-full text-sm lg:col-span-2"
         placeholder={t("general:choose_state")}
         onChange={(option) => handleStateChange(option)}
         isClearable
         instanceId={STATE}
-        defaultValue={filters.states.find(
-          (filter) => filter.value === params.state
+        defaultValue={states.find(
+          (filter) => filter.value === filterParams?.state
         )}
       />
       <AsyncSelect
@@ -208,7 +233,19 @@ export default function Filter({ filters }: PropertyFilterProps) {
         onChange={(option: Option) => handleSelectOption(option, TOWNSHIP)}
         optionsKey="townships"
         isClearable
-        defaultVal={searchParams.get("township")}
+        defaultVal={filterParams?.township}
+      />
+      <Select
+        aria-label={t("general:choose_type", { lng: "en" })}
+        options={[{ label: t("general:choose_type"), value: "" }, ...types]}
+        className="w-full text-sm lg:col-span-2"
+        placeholder={t("general:choose_type")}
+        onChange={(option) => handleSelectOption(option, TYPE)}
+        isClearable
+        instanceId={TYPE}
+        defaultValue={types.find(
+          (filter) => filter.value === decodeURI(filterParams?.type as string)
+        )}
       />
       <Select
         options={priceOptions}
@@ -217,9 +254,10 @@ export default function Filter({ filters }: PropertyFilterProps) {
         onChange={(option) => handleSelectOption(option, PRICE_FROM)}
         instanceId={PRICE_FROM}
         isClearable
-        defaultValue={filters.price_ranges[listType].find(
-          (filter) => filter.value === params.township
-        )}
+        defaultValue={for_sale_options
+          .concat(for_rent_options)
+          .concat(newest_options)
+          .find((option) => option.value == filterParams.from)}
       />
       <Select
         options={priceOptions}

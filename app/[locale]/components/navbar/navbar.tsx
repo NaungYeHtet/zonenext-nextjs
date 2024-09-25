@@ -98,7 +98,7 @@ export default function Navbar() {
               key={path}
               text={t(text)}
               path={path}
-              active={pathname.endsWith(path)}
+              active={pathname.replace("my", "").endsWith(path)}
             />
           ))}
         </ul>
