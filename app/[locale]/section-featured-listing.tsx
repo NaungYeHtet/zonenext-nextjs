@@ -24,12 +24,12 @@ export default async function SectionFeaturedListing({
 
   return (
     <section
-      className="bg-gray-50 px-4 h-full md:px-4 py-24 text-center"
+      className="h-full px-4 py-24 text-center bg-gray-50 md:px-4"
       aria-label="Fetured Listing"
     >
-      <h2 className="text-xl md:text-2xl mb-3">{group.name}</h2>
-      <p className="text-sm md:text-md text-gray-500">{group.description}</p>
-      <div className="compact-container h-full mx-auto mt-8">
+      <h2 className="mb-3 text-xl md:text-2xl">{group.name}</h2>
+      <p className="text-sm text-gray-500 md:text-md">{group.description}</p>
+      <div className="h-full mx-auto mt-8 compact-container">
         <CarouselSlider
           centeredSlides={false}
           centerInsufficientSlides={true}
@@ -54,6 +54,7 @@ export default async function SectionFeaturedListing({
         >
           {group.items.map((property: Property) => (
             <PropertyCard
+              key={property.slug}
               property={property}
               pathname={`property/${property.slug}`}
             />

@@ -1,4 +1,4 @@
-import Navbar from "./components/navbar";
+import Navbar from "./components/navbar/navbar";
 import PropertyFilter from "./components/property/property-filter";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";

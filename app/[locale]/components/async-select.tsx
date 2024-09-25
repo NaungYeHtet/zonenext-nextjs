@@ -1,14 +1,20 @@
 import { AsyncPaginate, AsyncPaginateProps } from "react-select-async-paginate";
 import { fetchGet } from "../utils/helpers";
-import { API_PATH_TYPE } from "../lib";
+import { API_PATH_TYPE, Option } from "../lib";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import { MultiValue, SingleValue } from "react-select";
+import { isEmpty } from "lodash";
 
 type AsyncSelectProps = {
   path: API_PATH_TYPE;
-  params: Object;
+  params?: Object;
   optionsKey: string;
   placeholder: string;
+  isMulti?: boolean;
+  defaultVal?: string | string[] | null;
   [key: string]: any;
+  dependent?: any;
 };
 
 export default function AsyncSelect({
@@ -16,9 +22,34 @@ export default function AsyncSelect({
   params,
   optionsKey,
   placeholder,
+  isMulti = false,
+  defaultVal,
+  onChange = () => {},
   ...otherProps
 }: AsyncSelectProps) {
+  const [value, setValue] = useState<
+    SingleValue<Option> | MultiValue<Option>
+  >();
   const { i18n } = useTranslation();
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!isEmpty(defaultVal)) {
+        const data = await fetchGet(path, {
+          ...params,
+          language: i18n.language,
+          slug: defaultVal,
+        });
+        setValue(data[optionsKey]);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setValue(undefined);
+  }, [params]);
 
   async function loadOptions(search: any, loadedOptions: any, addtional: any) {
     const data = await fetchGet(path, {
@@ -37,15 +68,24 @@ export default function AsyncSelect({
     };
   }
 
+  const handleChange = (option: MultiValue<Option> | SingleValue<Option>) => {
+    setValue(option);
+
+    onChange(option);
+  };
+
   return (
     <AsyncPaginate
+      key={JSON.stringify(params)}
+      value={value}
+      onChange={handleChange}
       loadOptions={loadOptions}
       additional={{
         page: 1,
       }}
-      key={JSON.stringify(params)}
       placeholder={placeholder}
       {...otherProps}
+      isMulti={isMulti}
     />
   );
 }

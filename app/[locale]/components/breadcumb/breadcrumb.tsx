@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BiHomeAlt } from "react-icons/bi";
+import TranslateText from "../translate-text";
 
 interface BreadcrumbItem {
   label: string;
@@ -24,11 +25,13 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
                   ""
                 )}
                 <Link className="text-blue-400" href={item.path}>
-                  {item.label}
+                  <TranslateText>{item.label}</TranslateText>
                 </Link>
               </span>
             ) : (
-              <span className="text-gray-700">{item.label}</span>
+              <span className="text-gray-700">
+                {<TranslateText>{item.label}</TranslateText>}
+              </span>
             )}
             {index < items.length - 1 && (
               <span className="mx-1 text-gray-400">/</span>

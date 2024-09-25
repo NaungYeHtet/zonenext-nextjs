@@ -12,12 +12,12 @@ export default function PropertyCardLong({
   property: {
     title,
     slug,
-    coverImage,
+    cover_image,
     price,
     address,
-    bedroomsCount,
-    bathroomsCount,
-    squareFeet,
+    bedrooms_count,
+    bathrooms_count,
+    square_feet,
     gallery,
   },
   pathname,
@@ -26,7 +26,7 @@ export default function PropertyCardLong({
     <div className="bg-white w-[900px]">
       <div className="flex flex-row">
         <div className="relative w-[300px]">
-          <PropertyCardImage images={[coverImage, ...gallery]} width={300} />
+          <PropertyCardImage images={[cover_image, ...gallery]} width={300} />
         </div>
         <div className="flex flex-col justify-between w-full px-5 pt-4 pb-7">
           <span className="col-span-2">
@@ -42,13 +42,13 @@ export default function PropertyCardLong({
           </span>
 
           <span className="inline-flex flex-row w-full gap-3">
-            <IconDetail text="general:bedroom" value={bedroomsCount}>
+            <IconDetail text="general:bedroom" value={bedrooms_count}>
               <LuBedSingle className="text-2xl" />
             </IconDetail>
-            <IconDetail text="general:bathroom" value={bathroomsCount}>
+            <IconDetail text="general:bathroom" value={bathrooms_count}>
               <PiShower className="text-2xl" />
             </IconDetail>
-            <IconDetail text="general:sqft" value={squareFeet}>
+            <IconDetail text="general:sqft" value={square_feet}>
               <TfiRulerAlt2 className="text-2xl" />
             </IconDetail>
           </span>

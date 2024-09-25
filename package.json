@@ -12,6 +12,7 @@
     "clsx": "^2.1.1",
     "i18next": "^23.15.1",
     "i18next-resources-to-backend": "^1.2.1",
+    "lodash": "^4.17.21",
     "next": "14.2.12",
     "next-i18n-router": "^5.5.1",
     "react": "^18",
@@ -25,6 +26,7 @@
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

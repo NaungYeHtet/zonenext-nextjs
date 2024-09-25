@@ -73,12 +73,12 @@ export default function PropertyCard({
   property: {
     title,
     slug,
-    coverImage,
+    cover_image,
     price,
     address,
-    bedroomsCount,
-    bathroomsCount,
-    squareFeet,
+    bedrooms_count,
+    bathrooms_count,
+    square_feet,
     gallery,
   },
 }: PropertyCardProps) {
@@ -86,7 +86,7 @@ export default function PropertyCard({
     <div className="w-[340px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
       <div className="relative group">
         <PropertyCardImage
-          images={[coverImage, ...gallery]}
+          images={[cover_image, ...gallery]}
           className="rounded-t-md"
         />
         <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
@@ -111,13 +111,13 @@ export default function PropertyCard({
           <p className="text-xs text-gray-600">{address}</p>
         </div>
         <div className="flex flex-row gap-5 p-1 text-gray-600">
-          <IconDetail text="general:bedroom" value={bedroomsCount}>
+          <IconDetail text="general:bedroom" value={bedrooms_count}>
             <LuBedSingle className="text-2xl" />
           </IconDetail>
-          <IconDetail text="general:bathroom" value={bathroomsCount}>
+          <IconDetail text="general:bathroom" value={bathrooms_count}>
             <PiShower className="text-2xl" />
           </IconDetail>
-          <IconDetail text="general:sqft" value={squareFeet}>
+          <IconDetail text="general:sqft" value={square_feet}>
             <TfiRulerAlt2 className="text-2xl" />
           </IconDetail>
         </div>
@@ -127,13 +127,13 @@ export default function PropertyCard({
 }
 
 export function PropertyCardMin({
-  property: { coverImage, price, address },
+  property: { cover_image, price, address },
 }: PropertyCardProps) {
   return (
     <div className="relative group">
       <Image
         className="rounded-md"
-        src={coverImage}
+        src={cover_image}
         alt="Gallery"
         width={640} // Explicit width
         height={480} // Explicit height

@@ -22,7 +22,7 @@ export function PropertyListView({
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center lg:hidden gap-7">
+      <div className="grid items-center grid-cols-1 md:grid-cols-2 lg:hidden gap-7">
         {properties.map((property) => (
           <PropertyCard
             key={property.slug}

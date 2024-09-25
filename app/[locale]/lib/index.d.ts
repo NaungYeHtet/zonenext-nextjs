@@ -12,8 +12,8 @@ export type ResponseData<DataType> = {
 };
 
 export type MetaType = {
-  hasMore: boolean;
-  nextPage: string;
+  has_more: boolean;
+  next_page: string;
   total: number;
 };
 
@@ -39,6 +39,13 @@ export type CollectionData<T> = {
   total: number;
 };
 
+export type Group<T> = {
+  name: string;
+  slug: string;
+  description: string;
+  items: T[];
+};
+
 export type GroupData<T> = {
   group: {
     name: string;
@@ -62,15 +69,15 @@ export type Property = {
   slug: string;
   title: string;
   description: string;
-  coverImage: string;
+  cover_image: string;
   price: Price;
   address: string;
   gallery: array[];
-  squareFeet: string;
-  areaDescription: string;
-  bedroomsCount: number;
-  bathroomsCount: number;
-  postedAt: string;
+  square_feet: string;
+  area_description: string;
+  bedrooms_count: number;
+  bathrooms_count: number;
+  posted_at: string;
 };
 
 export type API_PATH_TYPE =
@@ -78,3 +85,5 @@ export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
   | typeof API_PATH_PROPERTY
   | typeof API_PATH_GROUP;
+
+export type PROPERTY_LIST_TYPE = "for_sale" | "for_rent" | "newest";

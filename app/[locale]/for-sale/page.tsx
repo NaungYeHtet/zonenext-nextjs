@@ -1,5 +1,5 @@
-import Breadcrumb from "../components/breadcumb";
-import Navbar from "../components/navbar";
+import Breadcrumb from "../components/breadcumb/breadcrumb";
+import Navbar from "../components/navbar/navbar";
 import { PropertyCardMin } from "../components/property/property-card";
 import PropertyFilter from "../components/property/property-filter";
 import PropertyFilterSticky from "../components/property/property-filter-sticky";
@@ -12,7 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { fetchGet } from "../utils/helpers";
 import { API_PATH_GROUP, API_PATH_PROPERTY_FILTER } from "../utils/api-paths";
-import { GroupData, Property } from "../lib";
+import { Group, Property } from "../lib";
 import CarouselSlider from "../components/carousel-slider";
 import SidebarSection from "../components/sidebar-section";
 
@@ -64,21 +64,18 @@ export default async function ForSale({
 
           <PropertyFilterSticky filters={filters} />
 
-          <div className="compact-container">
+          <div className="flex flex-col justify-between w-full gap-10 mt-3 compact-container xl:flex-row">
             <section aria-label="Property list section">
               <Breadcrumb
                 items={[
-                  { label: "Home", path: "/" },
-                  { label: "For Sale", path: "/for-sale" },
+                  { label: "home_nav", path: "/" },
+                  { label: "for_sale", path: "/for-sale" },
                 ]}
               />
-            </section>
-            <section
-              aria-label="Sidebar section"
-              className="flex flex-col justify-between w-full gap-10 mt-3 xl:flex-row"
-            >
               <PropertyList />
-              <ForSaleSidebar items={group.items} />
+            </section>
+            <section aria-label="Sidebar section" className="z-0">
+              <ForSaleSidebar group={group} />
             </section>
           </div>
         </main>
@@ -88,14 +85,14 @@ export default async function ForSale({
 }
 
 type ForSaleSidebarProps = {
-  items: Property[];
+  group: Group<Property>;
 };
 
-function ForSaleSidebar({ items }: ForSaleSidebarProps) {
+function ForSaleSidebar({ group: { name, items } }: ForSaleSidebarProps) {
   return (
-    <div className="w-[350px] z-0">
+    <div className="w-[350px]">
       <SidebarSection>
-        <SidebarSection.Item>
+        <SidebarSection.Item title={name}>
           <CarouselSlider
             spaceBetween={0}
             pagination={false}
@@ -103,7 +100,11 @@ function ForSaleSidebar({ items }: ForSaleSidebarProps) {
             navigation={{}}
           >
             {items.map((property: Property) => (
-              <PropertyCardMin property={property} pathname="/for-sale" />
+              <PropertyCardMin
+                property={property}
+                key={property.slug}
+                pathname="/for-sale"
+              />
             ))}
           </CarouselSlider>
         </SidebarSection.Item>
