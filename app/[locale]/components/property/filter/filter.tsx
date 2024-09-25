@@ -9,6 +9,7 @@ import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../../../utils/api-paths";
 import AsyncSelect from "../../async-select";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isEmpty } from "lodash";
+import { transformParamsToQueryString } from "@/app/[locale]/utils/helpers";
 
 interface ListTypeOption extends Option {
   label: string;
@@ -75,8 +76,6 @@ export default function Filter({
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
-
-  console.log("Rendered", filterParams.from);
 
   const handleSelectOption = (
     option: SingleValue<Option>,
@@ -151,16 +150,14 @@ export default function Filter({
       path += `/type/${type}`;
     }
 
-    if (priceFrom) {
-      path += `/from/${priceFrom}`;
-    }
+    const queryString = transformParamsToQueryString({
+      price_from: priceFrom,
+      price_to: priceTo,
+      search: search,
+    });
 
-    if (priceTo) {
-      path += `/to/${priceTo}`;
-    }
-
-    if (search) {
-      path += `/s/${search}`;
+    if (queryString) {
+      path += `?${queryString}`;
     }
 
     router.push(path);
@@ -187,9 +184,9 @@ export default function Filter({
         });
       }
       setTownship(filterParams.township);
-      setPriceFrom(filterParams.from);
-      setPriceTo(filterParams.to);
-      setSearch(filterParams.s);
+      setPriceFrom(params.price_from);
+      setPriceTo(params.price_to);
+      setSearch(params.search);
     }
   }, [filterParams]);
 
@@ -257,7 +254,7 @@ export default function Filter({
         defaultValue={for_sale_options
           .concat(for_rent_options)
           .concat(newest_options)
-          .find((option) => option.value == filterParams.from)}
+          .find((option) => option.value == params.price_from)}
       />
       <Select
         options={priceOptions}

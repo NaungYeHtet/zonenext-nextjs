@@ -61,7 +61,7 @@ type PropertyListProps = {
 };
 
 function PropertyList({
-  filterParams: { list_type, state, township, type, from, to, s },
+  filterParams: { list_type, state, township, type },
 }: PropertyListProps) {
   const pathname = usePathname();
   const [properties, setProperties] = useState<CollectionData<Property>>();
@@ -70,7 +70,7 @@ function PropertyList({
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    console.log(state, township, type, list_type, from, to);
+    console.log(state, township, type, list_type);
     async function fetchProperties() {
       let responseData = await fetchGet(API_PATH_PROPERTY, {
         language: i18n.language,
@@ -79,9 +79,7 @@ function PropertyList({
         township,
         type: type && decodeURI(type),
         list_type,
-        price_from: from,
-        price_to: to,
-        search: s,
+        ...Object.fromEntries(searchParams.entries()),
       });
 
       setProperties(responseData.properties);

@@ -86,9 +86,6 @@ export type PropertyFilterParams = {
   state?: string;
   township?: string;
   type?: string;
-  from?: string;
-  to?: string;
-  s?: string;
 };
 
 export type API_PATH_TYPE =
