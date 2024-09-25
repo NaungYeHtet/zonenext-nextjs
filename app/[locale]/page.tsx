@@ -1,9 +1,9 @@
 import Navbar from "./components/navbar/navbar";
-import PropertyFilter from "./components/property/property-filter";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
 import SectionFeaturedListing from "./section-featured-listing";
 import SectionWelcome from "./section-welcome";
+import PropertyFilter from "./components/property/filter";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -15,14 +15,6 @@ type HomePageProps = {
 
 export default async function Home({ params: { locale } }: HomePageProps) {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
-
-  let data = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}/property-filters?language=${locale}`,
-    {
-      next: { revalidate: 0 },
-    }
-  );
-  let filters = await data.json();
 
   return (
     <TranslationsProvider
@@ -38,13 +30,8 @@ export default async function Home({ params: { locale } }: HomePageProps) {
           <div
             className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
 		bg-[url('../../public/images/home-banner.jpg')]"
-          >
-            <div className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle">
-              <div className="w-full m-12 mb-28">
-                <PropertyFilter filters={filters.data} />
-              </div>
-            </div>
-          </div>
+          ></div>
+          <PropertyFilter locale={locale} />
 
           <SectionWelcome />
 

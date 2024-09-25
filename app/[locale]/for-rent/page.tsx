@@ -1,8 +1,8 @@
 import { useSearchParams } from "next/navigation";
 import Navbar from "../components/navbar/navbar";
-import PropertyFilter from "../components/property/property-filter";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
+import PropertyFilter from "../components/property/filter";
 
 const i18nNamespaces = ["general"];
 
@@ -15,14 +15,6 @@ type HomePageProps = {
 export default async function ForRent({ params: { locale } }: HomePageProps) {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
 
-  let data = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}/property-filters?language=${locale}`,
-    {
-      next: { revalidate: 0 },
-    }
-  );
-  let filters = await data.json();
-
   return (
     <TranslationsProvider
       resources={resources}
@@ -34,9 +26,9 @@ export default async function ForRent({ params: { locale } }: HomePageProps) {
           <Navbar />
         </div>
         <main>
-          <div className="compact-container flex justify-center md:align-middle h-full w-full bg-transparent">
-            <div className="m-12 mb-28 w-full">
-              <PropertyFilter filters={filters.data} />
+          <div className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle">
+            <div className="w-full m-12 mb-28">
+              <PropertyFilter locale={locale} />
             </div>
           </div>
         </main>

@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
-import { Option, PROPERTY_LIST_TYPE } from "../../lib";
+import { Option, PROPERTY_LIST_TYPE } from "../../../lib";
 import {
   API_PATH_PROPERTY_FILTER,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
-} from "../../utils/api-paths";
-import AsyncSelect from "../async-select";
+} from "../../../utils/api-paths";
+import AsyncSelect from "../../async-select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { fetchGet, transformParamsToQueryString } from "../../utils/helpers";
+import { fetchGet, transformParamsToQueryString } from "../../../utils/helpers";
 import { isEmpty } from "lodash";
 
 interface ListTypeOption extends Option {
@@ -55,7 +55,7 @@ type FILTER_INSTANCE =
   | typeof PRICE_TO
   | typeof TOWNSHIP;
 
-export default function PropertyFilter({ filters }: PropertyFilterProps) {
+export default function Filter({ filters }: PropertyFilterProps) {
   const { t, i18n } = useTranslation();
   const [priceOptions, setPriceOptions] = useState<MultiValue<Option>>();
   const [townshipParams, setTownshipParams] = useState<TopwnshipParams>();

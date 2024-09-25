@@ -1,8 +1,7 @@
 import Breadcrumb from "../components/breadcumb/breadcrumb";
 import Navbar from "../components/navbar/navbar";
 import { PropertyCardMin } from "../components/property/property-card";
-import PropertyFilter from "../components/property/property-filter";
-import PropertyFilterSticky from "../components/property/property-filter-sticky";
+import PropertyFilterSticky from "../components/property/filter/filter-sticky";
 import PropertyList from "../components/property/property-list";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
@@ -15,6 +14,7 @@ import { API_PATH_GROUP, API_PATH_PROPERTY_FILTER } from "../utils/api-paths";
 import { Group, Property } from "../lib";
 import CarouselSlider from "../components/carousel-slider";
 import SidebarSection from "../components/sidebar-section";
+import PropertyFilter from "../components/property/filter";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -30,12 +30,6 @@ export default async function ForSale({
   params: { locale },
 }: PropertyListPageProps) {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
-
-  const filters = await fetchGet(
-    API_PATH_PROPERTY_FILTER,
-    { language: locale },
-    { next: { revalidate: 0 } }
-  );
 
   const { group } = await fetchGet(
     API_PATH_GROUP,
@@ -56,13 +50,7 @@ export default async function ForSale({
           <Navbar />
         </div>
         <main>
-          <div className="flex justify-center w-full h-full bg-transparent compact-container md:align-middle">
-            <div className="w-full m-3">
-              <PropertyFilter filters={filters} />
-            </div>
-          </div>
-
-          <PropertyFilterSticky filters={filters} />
+          <PropertyFilter locale={locale} />
 
           <div className="flex flex-col justify-between w-full gap-10 mt-3 compact-container xl:flex-row">
             <section aria-label="Property list section">
