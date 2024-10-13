@@ -19,13 +19,13 @@ export default function FilterSticky({
   filterParams,
 }: FilterStickyProps) {
   const [isSticky, setIsSticky] = useState(false);
-  const [scrollReached, isScrollReached] = useState(false);
+  const [scrollReached, setScrollReached] = useState(false);
   const [activedByButton, setActivedByButton] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const sticky = window.scrollY > (startingPosition || 500);
-      isScrollReached(sticky);
+      setScrollReached(sticky);
 
       if (sticky !== isSticky && window.innerWidth > 500) {
         setIsSticky(sticky);

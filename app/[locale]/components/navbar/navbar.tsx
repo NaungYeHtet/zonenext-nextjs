@@ -1,7 +1,7 @@
 "use client";
 
 import { CiMenuBurger, CiMinimize1 } from "react-icons/ci";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { cn } from "../../utils/helpers";
 import { TfiClose } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
@@ -37,7 +37,7 @@ const navbarItems = [
 ];
 
 type ShowNavbarButtonProps = {
-  setShowNavbar: (val: boolean) => {};
+  setShowNavbar: Dispatch<SetStateAction<boolean>>;
 };
 const ShowNavbarButton = ({ setShowNavbar }: ShowNavbarButtonProps) => {
   return (
@@ -66,7 +66,7 @@ export default function Navbar() {
   return (
     <nav className="">
       <section className="p-1 py-2 flex md:p-3 bg-white w-full md:shadow-none shadow-sm border-b border-b-primary-50">
-        <ShowNavbarButton setShowNavbar={() => setShowNavbar} />
+        <ShowNavbarButton setShowNavbar={setShowNavbar} />
         <NavbarAuth />
       </section>
       <div

@@ -29,11 +29,11 @@ export default function FilterWrapper({
           <Filter filters={filters} filterParams={filterParams} />
         </div>
       </div>
-      {/* <FilterSticky
+      <FilterSticky
         filters={filters}
         filterParams={filterParams}
         startingPosition={endingPosition}
-      /> */}
+      />
     </>
   );
 }

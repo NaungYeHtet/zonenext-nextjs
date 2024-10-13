@@ -1,13 +1,11 @@
-"use client";
-
 import Image from "next/image";
 import { Property } from "../../lib";
 import { LuBedSingle } from "react-icons/lu";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 import CarouselSlider from "../carousel-slider";
+import TranslateText from "../translate-text";
 
 export type PropertyCardProps = {
   property: Property;
@@ -57,14 +55,15 @@ export const PropertyCardImage = ({
 };
 
 export const IconDetail = ({ value, text, children }: IconDetailType) => {
-  const { t } = useTranslation();
   return (
     <span className="flex flex-col items-center justify-center gap-2 pr-3">
       <span className="inline-flex gap-3">
         <span className="text-lg text-gray-900 md:text-xl">{value}</span>
         {children}
       </span>
-      <span className="text-xs">{t(text)}</span>
+      <span className="text-xs">
+        <TranslateText>{text}</TranslateText>
+      </span>
     </span>
   );
 };
@@ -83,7 +82,7 @@ export default function PropertyCard({
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[340px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
+    <div className="w-[330px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
       <div className="relative group">
         <PropertyCardImage
           images={[cover_image, ...gallery]}

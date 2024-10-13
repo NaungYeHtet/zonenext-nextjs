@@ -52,7 +52,9 @@ export async function fetchGet(path: API_PATH_TYPE, params: {}, options?: {}) {
     ...options,
   });
 
-  const responseJSON = await response.json();
+  const error = await response.json();
 
-  return responseJSON.data;
+  if (response.ok) {
+    return error.data;
+  }
 }

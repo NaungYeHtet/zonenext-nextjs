@@ -263,6 +263,10 @@ export default function Filter({
         onChange={(option) => handleSelectOption(option, PRICE_TO)}
         instanceId={PRICE_TO}
         isClearable
+        defaultValue={for_sale_options
+          .concat(for_rent_options)
+          .concat(newest_options)
+          .find((option) => option.value == params.price_to)}
       />
       <button
         type="button"

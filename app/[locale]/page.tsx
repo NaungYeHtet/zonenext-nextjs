@@ -31,7 +31,9 @@ export default async function Home({ params: { locale } }: HomePageProps) {
             className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
 		bg-[url('../../public/images/home-banner.jpg')]"
           ></div>
-          <PropertyFilter locale={locale} />
+          <PropertyFilter
+            filterParams={{ locale: locale, list_type: "for-sale" }}
+          />
 
           <SectionWelcome />
 
