@@ -5,13 +5,9 @@ import { cn } from "../utils/helpers";
 
 type PaginationProps = {
   links: MetaLink[];
-  currentPageNumber: number;
 };
 
-export default function Pagination({
-  links,
-  currentPageNumber,
-}: PaginationProps) {
+export default function Pagination({ links }: PaginationProps) {
   const router = useRouter();
 
   const handlePaginate = (path: string | null) => {
@@ -19,7 +15,7 @@ export default function Pagination({
       // Get the page number from the URL
       const pageMatch = path.match(/page=(\d+)/);
       if (pageMatch) {
-        const newPage = parseInt(pageMatch[1], 10);
+        // const newPage = parseInt(pageMatch[1], 10);
         // Update the URL with the new page
         router.push(path);
       }
@@ -30,22 +26,13 @@ export default function Pagination({
     <nav aria-label="Page navigation example">
       <ul className="inline-flex -space-x-px text-base h-10">
         {links.map(({ label, url, active }, index) => {
-          let pageNumber;
           const isPreviousPageUrl = label.startsWith("Previous");
           const isNextPageUrl = label.startsWith("Next");
-
-          if (isPreviousPageUrl) {
-            pageNumber = currentPageNumber - 1;
-          } else if (isNextPageUrl) {
-            pageNumber = currentPageNumber + 1;
-          } else {
-            pageNumber = label;
-          }
 
           return (
             <li key={index}>
               <button
-                onClick={(e) => handlePaginate(url)}
+                onClick={() => handlePaginate(url)}
                 className={cn(
                   "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
                   {

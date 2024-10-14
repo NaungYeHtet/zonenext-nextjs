@@ -21,10 +21,7 @@ type LayoutProps = {
 };
 
 export default async function Wrapper({ children, params }: LayoutProps) {
-  const { t, resources } = await initTranslations(
-    params.locale,
-    i18nNamespaces
-  );
+  const { resources } = await initTranslations(params.locale, i18nNamespaces);
 
   const { group } = await fetchGet(
     API_PATH_GROUP,

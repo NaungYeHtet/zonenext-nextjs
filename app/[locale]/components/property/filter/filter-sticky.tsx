@@ -37,7 +37,7 @@ export default function FilterSticky({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isSticky]);
+  }, [isSticky, startingPosition]);
 
   useEffect(() => {
     if (activedByButton) {

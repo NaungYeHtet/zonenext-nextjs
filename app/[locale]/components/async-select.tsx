@@ -1,20 +1,19 @@
-import { AsyncPaginate, AsyncPaginateProps } from "react-select-async-paginate";
+import { AsyncPaginate } from "react-select-async-paginate";
 import { fetchGet } from "../utils/helpers";
 import { API_PATH_TYPE, Option } from "../lib";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MultiValue, SingleValue } from "react-select";
 import { isEmpty } from "lodash";
 
 type AsyncSelectProps = {
   path: API_PATH_TYPE;
-  params?: Object;
+  params?: object;
   optionsKey: string;
   placeholder: string;
   isMulti?: boolean;
   defaultVal?: string | string[] | null;
   [key: string]: any;
-  dependent?: any;
 };
 
 export default function AsyncSelect({
@@ -30,40 +29,42 @@ export default function AsyncSelect({
   const [value, setValue] = useState<
     SingleValue<Option> | MultiValue<Option>
   >();
-  const { i18n } = useTranslation();
+  const {
+    i18n: { language },
+  } = useTranslation();
+
+  const fetchData = useCallback(async () => {
+    if (!isEmpty(defaultVal)) {
+      const data = await fetchGet(path, {
+        ...params,
+        language: language,
+        slug: defaultVal,
+      });
+      setValue(data[optionsKey]);
+    }
+  }, [defaultVal, path, params, language, optionsKey]);
 
   useEffect(() => {
-    async function fetchData() {
-      if (!isEmpty(defaultVal)) {
-        const data = await fetchGet(path, {
-          ...params,
-          language: i18n.language,
-          slug: defaultVal,
-        });
-        setValue(data[optionsKey]);
-      }
-    }
-
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
     setValue(undefined);
   }, [params]);
 
-  async function loadOptions(search: any, loadedOptions: any, addtional: any) {
+  async function loadOptions(search: any, loadedOptions: any, { page }: any) {
     const data = await fetchGet(path, {
       ...params,
-      language: i18n.language,
+      language: language,
       search: search,
-      page: addtional.page,
+      page: page,
     });
 
     return {
       options: data[optionsKey],
-      hasMore: data.meta.hasMore,
+      hasMore: data.meta.has_more,
       additional: {
-        page: addtional.page + 1,
+        page: page + 1,
       },
     };
   }
@@ -76,6 +77,7 @@ export default function AsyncSelect({
 
   return (
     <AsyncPaginate
+      debounceTimeout={1000}
       key={JSON.stringify(params)}
       value={value}
       onChange={handleChange}

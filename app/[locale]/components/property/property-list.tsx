@@ -26,23 +26,17 @@ function PropertyHeader({ total }: PropertyHeaderProps) {
 
 type PaginationSectionProps = {
   links: any[];
-  currentPage: number;
-  setCurrentPage: (page: number) => void;
 };
 
-function PaginationSection({
-  links,
-  currentPage,
-  setCurrentPage,
-}: PaginationSectionProps) {
+function PaginationSection({ links }: PaginationSectionProps) {
   return (
     <div className="py-5 flex justify-center">
-      <Pagination links={links} currentPageNumber={currentPage} />
+      <Pagination links={links} />
     </div>
   );
 }
 
-const LoadingSkeleton = () => (
+export const LoadingSkeleton = () => (
   <>
     <div className="flex-col hidden lg:flex gap-7">
       {[...Array(6)].map((_, index) => (
@@ -68,12 +62,11 @@ function PropertyList({
   const [properties, setProperties] = useState<CollectionData<Property>>();
   const { i18n } = useTranslation();
   const searchParams = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
 
   useEffect(() => {
-    console.log(state, township, type, list_type);
     async function fetchProperties() {
-      let responseData = await fetchGet(API_PATH_PROPERTY, {
+      const responseData = await fetchGet(API_PATH_PROPERTY, {
         language: i18n.language,
         page: currentPage,
         state,
@@ -86,7 +79,15 @@ function PropertyList({
       setProperties(responseData.properties);
     }
     fetchProperties();
-  }, [currentPage, i18n.language, searchParams]);
+  }, [
+    list_type,
+    state,
+    township,
+    type,
+    currentPage,
+    i18n.language,
+    searchParams,
+  ]);
 
   if (!properties) {
     return (
@@ -104,11 +105,7 @@ function PropertyList({
     <div className="relative flex-grow z-0">
       <PropertyHeader total={properties.total} />
       <PropertyListView properties={properties.data} pathname={pathname} />
-      <PaginationSection
-        links={properties.links}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <PaginationSection links={properties.links} />
     </div>
   );
 }

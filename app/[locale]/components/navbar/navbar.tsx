@@ -1,6 +1,6 @@
 "use client";
 
-import { CiMenuBurger, CiMinimize1 } from "react-icons/ci";
+import { CiMenuBurger } from "react-icons/ci";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { cn } from "../../utils/helpers";
 import { TfiClose } from "react-icons/tfi";

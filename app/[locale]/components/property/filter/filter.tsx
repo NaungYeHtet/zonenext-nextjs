@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
@@ -19,7 +19,6 @@ interface ListTypeOption extends Option {
 export type PropertyFilterOptions = {
   list_types: MultiValue<ListTypeOption>;
   states: MultiValue<Option>;
-  townships: MultiValue<Option>;
   types: MultiValue<Option>;
   for_sale_options: MultiValue<Option>;
   for_rent_options: MultiValue<Option>;
@@ -55,7 +54,6 @@ export default function Filter({
   filters: {
     list_types,
     states,
-    townships,
     types,
     for_sale_options,
     for_rent_options,
@@ -77,51 +75,54 @@ export default function Filter({
   const searchParams = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
 
-  const handleSelectOption = (
-    option: SingleValue<Option>,
-    key: FILTER_INSTANCE
-  ) => {
-    switch (key) {
-      case LIST_TYPE:
-        setListType(option?.value as PROPERTY_LIST_TYPE);
-        break;
-      case STATE:
-        setState(option?.value);
-        setTownship(undefined);
-        break;
-      case TOWNSHIP:
-        setTownship(option?.value);
-        break;
-      case TYPE:
-        setType(option?.value);
-        break;
-      case PRICE_FROM:
-        setPriceFrom(option?.value);
-        break;
-      case PRICE_TO:
-        setPriceTo(option?.value);
-    }
-  };
+  const handleSelectOption = useCallback(
+    (option: SingleValue<Option>, key: FILTER_INSTANCE) => {
+      switch (key) {
+        case LIST_TYPE:
+          setListType(option?.value as PROPERTY_LIST_TYPE);
+          break;
+        case STATE:
+          setState(option?.value);
+          setTownship(undefined);
+          break;
+        case TOWNSHIP:
+          setTownship(option?.value);
+          break;
+        case TYPE:
+          setType(option?.value);
+          break;
+        case PRICE_FROM:
+          setPriceFrom(option?.value);
+          break;
+        case PRICE_TO:
+          setPriceTo(option?.value);
+      }
+    },
+    [] // Add necessary dependencies if any state/variables outside the function are used.
+  );
 
-  const handleListTypeChange = (
-    listTypeOption: SingleValue<ListTypeOption>
-  ) => {
-    if (listTypeOption) {
-      handlePriceOptions(listTypeOption.value);
-    }
+  const handlePriceOptions = useCallback(
+    (list_type: PROPERTY_LIST_TYPE) => {
+      if (list_type === "for-rent") {
+        setPriceOptions(for_rent_options);
+      } else if (list_type === "for-sale") {
+        setPriceOptions(for_sale_options);
+      } else {
+        setPriceOptions(newest_options);
+      }
+    },
+    [for_rent_options, for_sale_options, newest_options] // Ensure these options are stable or memoized if needed.
+  );
 
-    handleSelectOption(listTypeOption, LIST_TYPE);
-  };
-
-  const handlePriceOptions = (list_type: PROPERTY_LIST_TYPE) => {
-    if (list_type == "for-rent") {
-      setPriceOptions(for_rent_options);
-    } else if (list_type == "for-sale") {
-      setPriceOptions(for_sale_options);
-    } else {
-      setPriceOptions(newest_options);
-    }
-  };
+  const handleListTypeChange = useCallback(
+    (listTypeOption: SingleValue<ListTypeOption>) => {
+      if (listTypeOption) {
+        handlePriceOptions(listTypeOption.value);
+      }
+      handleSelectOption(listTypeOption, LIST_TYPE);
+    },
+    [handlePriceOptions, handleSelectOption]
+  );
 
   const handleStateChange = (option: SingleValue<Option>) => {
     if (!isEmpty(option)) {
@@ -169,7 +170,9 @@ export default function Filter({
         (option) => option.value === filterParams.list_type
       )[0];
 
-      listTypeOption ? handleListTypeChange(listTypeOption) : "";
+      if (listTypeOption) {
+        handleListTypeChange(listTypeOption);
+      }
 
       setListType(filterParams.list_type);
       setType(filterParams.type);
@@ -188,7 +191,14 @@ export default function Filter({
       setPriceTo(params.price_to);
       setSearch(params.search);
     }
-  }, [filterParams]);
+  }, [
+    handleListTypeChange,
+    list_types,
+    filterParams,
+    params.price_from,
+    params.price_to,
+    params.search,
+  ]);
 
   return (
     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 lg:gap-1">

@@ -1,6 +1,13 @@
+import dynamic from "next/dynamic";
 import { Property } from "../../lib";
-import PropertyCard from "./property-card";
-import PropertyCardLong from "./property-card-long";
+import { LoadingSkeleton } from "./property-list";
+
+const PropertyCardLong = dynamic(() => import("./property-card-long"), {
+  loading: () => <LoadingSkeleton />,
+});
+const PropertyCard = dynamic(() => import("./property-card"), {
+  loading: () => <LoadingSkeleton />,
+});
 
 type PropertyListViewProps = {
   properties: Property[];

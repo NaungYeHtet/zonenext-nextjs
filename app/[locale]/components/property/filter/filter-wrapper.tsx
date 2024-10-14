@@ -15,7 +15,7 @@ export default function FilterWrapper({
     // This will ensure that the code only runs on the client side
     if (typeof window !== "undefined" && divRef.current) {
       const rect = divRef.current.getBoundingClientRect();
-      setEndingPosition(rect.bottom); // Get the ending position (bottom) of the div
+      setEndingPosition(rect.bottom + 100); // Get the ending position (bottom) of the div
     }
   }, []);
 

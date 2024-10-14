@@ -71,7 +71,6 @@ export const IconDetail = ({ value, text, children }: IconDetailType) => {
 export default function PropertyCard({
   property: {
     title,
-    slug,
     cover_image,
     price,
     address,

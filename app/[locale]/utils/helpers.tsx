@@ -6,38 +6,27 @@ export function cn(...args: ClassValue[]) {
   return twMerge(clsx(args));
 }
 
-function sanitizeObject(obj: Object) {
+function sanitizeObject(obj: object) {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(
-        ([_, value]) => value !== null && value !== undefined && value !== ""
+        ([value]) => value !== null && value !== undefined && value !== ""
       )
       .map(([key, value]) => [key, String(value)]) // Convert values to strings
   );
 }
 
-function clean(obj: any) {
-  for (var propName in obj) {
-    if (
-      obj[propName] === null ||
-      obj[propName] === undefined ||
-      obj[propName] === ""
-    ) {
-      delete obj[propName];
-    }
-  }
-  return obj;
+export function transformParamsToQueryString(params: object): string {
+  const queryString = new URLSearchParams(sanitizeObject(params)).toString();
+
+  return queryString;
 }
 
-export function transformParamsToQueryString(params: Object): string {
-  return new URLSearchParams(sanitizeObject(params)).toString();
-}
-
-export async function fetchGet(path: API_PATH_TYPE, params: {}, options?: {}) {
-  params = {
-    ...params,
-  };
-
+export async function fetchGet(
+  path: API_PATH_TYPE,
+  params: object,
+  options?: object
+) {
   const searchQuery = transformParamsToQueryString(params);
   let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
 
