@@ -1,25 +1,23 @@
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { API_PATH_TYPE } from "../lib";
-
-export function cn(...args: ClassValue[]) {
-  return twMerge(clsx(args));
-}
+import _ from "lodash";
 
 function sanitizeObject(obj: object) {
-  return Object.fromEntries(
-    Object.entries(obj)
-      .filter(
-        ([value]) => value !== null && value !== undefined && value !== ""
-      )
-      .map(([key, value]) => [key, String(value)]) // Convert values to strings
-  );
+  return _.omitBy(
+    obj,
+    (v) => v === null || v === undefined || v === ""
+  ) as Record<string, string>;
 }
 
 export function transformParamsToQueryString(params: object): string {
   const queryString = new URLSearchParams(sanitizeObject(params)).toString();
 
   return queryString;
+}
+
+export function cn(...args: ClassValue[]) {
+  return twMerge(clsx(args));
 }
 
 export async function fetchGet(
@@ -29,6 +27,8 @@ export async function fetchGet(
 ) {
   const searchQuery = transformParamsToQueryString(params);
   let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
+
+  console.log(searchQuery);
 
   if (searchQuery) {
     url = `${url}?${searchQuery}`;
