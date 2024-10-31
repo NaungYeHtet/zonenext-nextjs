@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "clsx": "^2.1.1",
     "i18next": "^23.15.1",
     "i18next-resources-to-backend": "^1.2.1",
@@ -23,8 +24,11 @@
     "react-select": "^5.8.0",
     "react-select-async-paginate": "^0.7.6",
     "react-select-fetch": "^0.5.5",
+    "react-toastify": "^10.0.6",
     "swiper": "^11.1.14",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "tailwind-toastify": "^1.0.8",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.9",

@@ -4,26 +4,30 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Select, { MultiValue } from "react-select";
 import { Option } from "../../lib";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { cn, sanitizeObject } from "../../utils/helpers";
 import { API_PATH_INQUIRY } from "../../utils/api-paths";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { toast } from "react-toastify";
+import i18next from "i18next";
 
 type Inputs = {
   first_name: string;
   last_name: string;
   interest: string;
   property_type: string;
-  is_owner: boolean;
-  address: string;
-  phone: string;
-  email: string;
-  preferred_contact_method: string;
-  preferred_contact_time: string;
-  send_updates: boolean;
-  max_price: number | null | undefined;
-  square_feet: number | null | undefined;
-  bedrooms: number | null | undefined;
-  bathrooms: number | null | undefined;
+  is_owner?: boolean;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  preferred_contact_method?: string | null;
+  preferred_contact_time?: string | null;
+  max_price?: string | null;
+  square_feet?: string | null;
+  bedrooms?: string | null;
+  bathrooms?: string | null;
+  send_updates?: boolean | null;
 };
 
 type InquiryFormProps = {
@@ -43,6 +47,7 @@ type FieldWrapperProps = {
 };
 
 const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-1 w-full text-left">
       {label ? (
@@ -53,9 +58,45 @@ const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
         ""
       )}
       {children}
-      {errorMsg ? <p className="text-red-500 text-sm">{errorMsg}</p> : ""}
+      {errorMsg ? <p className="text-red-500 text-sm">{t(errorMsg)}</p> : ""}
     </div>
   );
+};
+
+const schema = yup
+  .object({
+    first_name: yup.string().required(),
+    last_name: yup.string().required(),
+    interest: yup.string().required(),
+    property_type: yup.string().required(),
+    is_owner: yup.boolean(),
+    address: yup.string().nullable(),
+    phone: yup.string().nullable(),
+    email: yup.string().email().nullable(),
+    preferred_contact_method: yup.string().nullable(),
+    preferred_contact_time: yup.string().nullable(),
+    max_price: yup.string().nullable(),
+    square_feet: yup.string().nullable(),
+    bedrooms: yup.string().nullable(),
+    bathrooms: yup.string().nullable(),
+    send_updates: yup.boolean().nullable(),
+  })
+  .required();
+
+const defaultValues = {
+  interest: "Buying",
+  property_type: "Condo",
+  is_owner: false,
+  send_updates: false,
+  preferred_contact_method: null,
+  preferred_contact_time: null,
+  max_price: null,
+  square_feet: null,
+  bedrooms: null,
+  bathrooms: null,
+  address: null,
+  phone: null,
+  email: null,
 };
 
 export default function InquiryForm({
@@ -67,30 +108,46 @@ export default function InquiryForm({
     control,
     reset,
     getValues,
+    watch,
+    setError,
     formState: { errors },
-  } = useForm<Inputs>({ shouldUseNativeValidation: false });
+  } = useForm<Inputs>({
+    shouldUseNativeValidation: false,
+    resolver: yupResolver(schema),
+  });
   const { t, i18n } = useTranslation();
+  const interest = watch("interest");
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_INQUIRY}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...sanitizeObject(data),
-          language: i18n.language,
-        }),
-      }
-    );
+    reset(defaultValues);
+    //   const response = await fetch(
+    //   `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_INQUIRY}`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       ...sanitizeObject(data),
+    //       language: i18n.language,
+    //     }),
+    //   }
+    // );
 
-    const responseData = await response.json();
+    // const responseData = await response.json();
 
-    if (response.ok) {
-      reset();
-    }
+    // if (response.ok) {
+    //   reset();
+    //   toast.success(responseData.data.message);
+    //   // showAlert("success", "Success", responseData.data.message);
+    // } else {
+    //   if (response.status == 422) {
+    //     for (const [key, value] of Object.entries(responseData.errors)) {
+    //       setError(key as any, { type: "custom", message: value as string });
+    //     }
+    //   }
+    // }
   };
 
   return (
@@ -101,11 +158,7 @@ export default function InquiryForm({
             <FieldWrapper
               label={t("default:inquiry_interest_label")}
               id="interest"
-              errorMsg={
-                errors.interest?.type === "required"
-                  ? t("general:field_required_select")
-                  : ""
-              }
+              errorMsg={errors.interest?.message}
             >
               <Controller
                 name="interest"
@@ -131,11 +184,7 @@ export default function InquiryForm({
             <FieldWrapper
               id="propertyType"
               label={t("default:inquiry_property_type_label")}
-              errorMsg={
-                errors.property_type?.type === "required"
-                  ? t("general:field_required_select")
-                  : ""
-              }
+              errorMsg={errors.property_type?.message}
             >
               <Controller
                 name="property_type"
@@ -160,25 +209,25 @@ export default function InquiryForm({
             </FieldWrapper>
           </div>
 
-          <FieldWrapper id="isOwner" label={t("default:inquiry_owner_label")}>
-            <input
-              type="checkbox"
-              id="isOwner"
-              className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 focus:ring-2 dark:border-gray-600"
-              {...register("is_owner")}
-              aria-invalid={errors.is_owner ? "true" : "false"}
-            />
-          </FieldWrapper>
+          {interest == "Renting" ? (
+            <FieldWrapper id="isOwner" label={t("default:inquiry_owner_label")}>
+              <input
+                type="checkbox"
+                id="isOwner"
+                className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 focus:ring-2 dark:border-gray-600"
+                {...register("is_owner")}
+                aria-invalid={errors.is_owner ? "true" : "false"}
+              />
+            </FieldWrapper>
+          ) : (
+            ""
+          )}
 
           <div className="flex flex-col md:flex-row gap-2 w-full">
             <FieldWrapper
               id="firstName"
               label={t("general:first_name")}
-              errorMsg={
-                errors.first_name?.type === "required"
-                  ? t("general:field_required_text")
-                  : ""
-              }
+              errorMsg={errors.first_name?.message}
             >
               <input
                 type="text"
@@ -193,11 +242,7 @@ export default function InquiryForm({
             <FieldWrapper
               id="lastName"
               label={t("general:last_name")}
-              errorMsg={
-                errors.last_name?.type === "required"
-                  ? t("general:field_required_text")
-                  : ""
-              }
+              errorMsg={errors.last_name?.message}
             >
               <input
                 type="text"
@@ -214,9 +259,7 @@ export default function InquiryForm({
             <FieldWrapper
               id="phone"
               label={t("general:phone")}
-              errorMsg={
-                errors.phone?.type === "required" ? errors.phone.message : ""
-              }
+              errorMsg={errors.phone?.message}
             >
               <input
                 type="text"
@@ -224,25 +267,16 @@ export default function InquiryForm({
                 className={cn("form-control-primary", {
                   "border-2 border-red-500": errors.phone,
                 })}
-                {...register("phone", {
-                  validate: {
-                    required: (value) => {
-                      if (!value && !getValues("email")) {
-                        return t("general:field_required_without", {
-                          attribute: t("general:phone"),
-                          otherAttribute: t("general:email"),
-                        });
-                      }
-
-                      return true;
-                    },
-                  },
-                })}
+                {...register("phone", { required: true })}
                 aria-invalid={errors.phone ? "true" : "false"}
               />
             </FieldWrapper>
             <span className="text-gray-500 self-center rotate-90">OR</span>
-            <FieldWrapper id="email" label={t("general:email")}>
+            <FieldWrapper
+              id="email"
+              label={t("general:email")}
+              errorMsg={errors.email?.message}
+            >
               <input
                 type="email"
                 id="email"
@@ -255,7 +289,11 @@ export default function InquiryForm({
             </FieldWrapper>
           </div>
 
-          <FieldWrapper id="address" label={t("general:address")}>
+          <FieldWrapper
+            id="address"
+            label={t("general:address")}
+            errorMsg={errors.address?.message}
+          >
             <textarea
               id="address"
               rows={2}
@@ -273,11 +311,7 @@ export default function InquiryForm({
             <FieldWrapper
               label={t("default:inquiry_preferred_contact_method_label")}
               id="preferredContactMethod"
-              errorMsg={
-                errors.preferred_contact_method?.type === "required"
-                  ? t("general:field_required_select")
-                  : ""
-              }
+              errorMsg={errors.preferred_contact_method?.message}
             >
               <Controller
                 name="preferred_contact_method"
@@ -305,11 +339,7 @@ export default function InquiryForm({
             <FieldWrapper
               label={t("default:inquiry_preferred_contact_time_label")}
               id="preferredContactTime"
-              errorMsg={
-                errors.preferred_contact_time?.type === "required"
-                  ? t("general:field_required_select")
-                  : ""
-              }
+              errorMsg={errors.preferred_contact_time?.message}
             >
               <Controller
                 name="preferred_contact_time"
@@ -339,11 +369,7 @@ export default function InquiryForm({
             <FieldWrapper
               id="maxPrice"
               label={t("general:max_price")}
-              errorMsg={
-                errors.max_price?.type === "required"
-                  ? t("general:field_required_text")
-                  : ""
-              }
+              errorMsg={errors.max_price?.message}
             >
               <input
                 type="number"
@@ -356,7 +382,11 @@ export default function InquiryForm({
                 aria-label={t("general:max_price")}
               />
             </FieldWrapper>
-            <FieldWrapper id="squareFeet" label={t("general:sqft")}>
+            <FieldWrapper
+              id="squareFeet"
+              label={t("general:sqft")}
+              errorMsg={errors.square_feet?.message}
+            >
               <input
                 type="number"
                 id="squareFeet"
@@ -370,7 +400,11 @@ export default function InquiryForm({
             </FieldWrapper>
           </div>
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper id="bedrooms" label={t("general:bedrooms")}>
+            <FieldWrapper
+              id="bedrooms"
+              label={t("general:bedrooms")}
+              errorMsg={errors.bedrooms?.message}
+            >
               <input
                 type="number"
                 id="bedrooms"
@@ -382,7 +416,11 @@ export default function InquiryForm({
                 aria-label={t("general:bedrooms")}
               />
             </FieldWrapper>
-            <FieldWrapper id="bathrooms" label={t("general:bathrooms")}>
+            <FieldWrapper
+              id="bathrooms"
+              label={t("general:bathrooms")}
+              errorMsg={errors.bathrooms?.message}
+            >
               <input
                 type="number"
                 id="bathrooms"
@@ -399,6 +437,7 @@ export default function InquiryForm({
           <FieldWrapper
             id="sendUpdates"
             label={t("default:inquiry_send_updates_label")}
+            errorMsg={errors.send_updates?.message}
           >
             <input
               type="checkbox"

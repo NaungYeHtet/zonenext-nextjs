@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { noto_sans, poppins } from "./utils/fonts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${noto_sans} ${poppins} bg-gray-100`}>
+        <ToastContainer />
         <main className="font-noto_sans">{children}</main>
       </body>
     </html>
