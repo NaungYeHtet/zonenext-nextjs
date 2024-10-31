@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${noto_sans} ${poppins} bg-gray-100`}>
         <ToastContainer />
-        <main className="font-noto_sans">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

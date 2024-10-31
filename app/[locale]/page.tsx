@@ -6,6 +6,7 @@ import SectionWelcome from "./section-welcome";
 import PropertyFilter from "./components/property/filter";
 import SectionInquiry from "./section-inquiry";
 import BaseFooter from "./components/footer";
+import { useTranslation } from "react-i18next";
 
 const i18nNamespaces = ["general", "default", "validation"];
 
@@ -17,6 +18,7 @@ type HomePageProps = {
 
 export default async function Home({ params: { locale } }: HomePageProps) {
   const { resources } = await initTranslations(locale, i18nNamespaces);
+  const { t } = useTranslation();
 
   return (
     <TranslationsProvider
@@ -28,21 +30,19 @@ export default async function Home({ params: { locale } }: HomePageProps) {
         <div className="">
           <Navbar />
         </div>
-        <main>
-          <div
-            className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
+        <div
+          className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
 		bg-[url('../../public/images/home-banner.jpg')]"
-          ></div>
-          <PropertyFilter
-            filterParams={{ locale: locale, list_type: "for-sale" }}
-          />
+        ></div>
+        <PropertyFilter
+          filterParams={{ locale: locale, list_type: "for-sale" }}
+        />
 
-          <SectionWelcome />
+        <SectionWelcome />
 
-          <SectionFeaturedListing locale={locale} />
+        <SectionFeaturedListing locale={locale} />
 
-          <SectionInquiry locale={locale} />
-        </main>
+        <SectionInquiry locale={locale} />
         <div>
           <BaseFooter />
         </div>
