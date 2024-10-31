@@ -65,10 +65,10 @@ const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
 
 const schema = yup
   .object({
-    first_name: yup.string().required(),
-    last_name: yup.string().required(),
-    interest: yup.string().required(),
-    property_type: yup.string().required(),
+    first_name: yup.string().required("validation:required_text"),
+    last_name: yup.string().required("validation:required_text"),
+    interest: yup.string().required("validation:required_select"),
+    property_type: yup.string().required("validation:required_select"),
     is_owner: yup.boolean(),
     address: yup.string().nullable(),
     phone: yup.string().nullable(),
@@ -86,6 +86,8 @@ const schema = yup
 const defaultValues = {
   interest: "Buying",
   property_type: "Condo",
+  first_name: "",
+  last_name: "",
   is_owner: false,
   send_updates: false,
   preferred_contact_method: null,
@@ -119,35 +121,34 @@ export default function InquiryForm({
   const interest = watch("interest");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    reset(defaultValues);
-    //   const response = await fetch(
-    //   `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_INQUIRY}`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       ...sanitizeObject(data),
-    //       language: i18n.language,
-    //     }),
-    //   }
-    // );
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_INQUIRY}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...sanitizeObject(data),
+          language: i18n.language,
+        }),
+      }
+    );
 
-    // const responseData = await response.json();
+    const responseData = await response.json();
 
-    // if (response.ok) {
-    //   reset();
-    //   toast.success(responseData.data.message);
-    //   // showAlert("success", "Success", responseData.data.message);
-    // } else {
-    //   if (response.status == 422) {
-    //     for (const [key, value] of Object.entries(responseData.errors)) {
-    //       setError(key as any, { type: "custom", message: value as string });
-    //     }
-    //   }
-    // }
+    if (response.ok) {
+      reset(defaultValues);
+      toast.success(responseData.data.message);
+      // showAlert("success", "Success", responseData.data.message);
+    } else {
+      if (response.status == 422) {
+        for (const [key, value] of Object.entries(responseData.errors)) {
+          setError(key as any, { type: "custom", message: value as string });
+        }
+      }
+    }
   };
 
   return (

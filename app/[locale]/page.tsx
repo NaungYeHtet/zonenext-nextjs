@@ -7,7 +7,7 @@ import PropertyFilter from "./components/property/filter";
 import SectionInquiry from "./section-inquiry";
 import BaseFooter from "./components/footer";
 
-const i18nNamespaces = ["general", "default"];
+const i18nNamespaces = ["general", "default", "validation"];
 
 type HomePageProps = {
   params: {

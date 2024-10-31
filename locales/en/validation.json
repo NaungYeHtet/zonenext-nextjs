@@ -1,0 +1,6 @@
+{
+  "required_text": "This field is required",
+  "required_select": "Choose a value",
+  "required_without": "The {{attribute}} field is required when {{otherAttribute}} is not provided.",
+  "string": "This field must be a string"
+}

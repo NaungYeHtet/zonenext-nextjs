@@ -1,0 +1,6 @@
+{
+  "required_text": "ဖြည့်သွင်းရန် လိုအပ်ပါသည်",
+  "required_select": "တစ်ခုခုရွေးချယ်ပါ",
+  "required_without": "{{otherAttribute}}အား မဖြည့်လျှင် {{attribute}}အား ဖြည့်သွင်းရန်လိုအပ်ပါသည်",
+  "string": "စာသားဖြစ်ရပါမည်"
+}
