@@ -49,7 +49,11 @@ type FieldWrapperProps = {
 const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-1 w-full text-left">
+    <div
+      className={cn("w-full", {
+        "broder-2 border-red-400": errorMsg,
+      })}
+    >
       {label ? (
         <label className="text-sm" htmlFor={id}>
           {label}
@@ -57,8 +61,20 @@ const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
       ) : (
         ""
       )}
-      {children}
-      {errorMsg ? <p className="text-red-500 text-sm">{t(errorMsg)}</p> : ""}
+      <div
+        className={cn("border-2 border-transparent", {
+          "border-2 border-red-400 ": errorMsg,
+        })}
+      >
+        {children}
+      </div>
+      {errorMsg ? (
+        <p className="text-red-500 text-sm mt-1" role="alert">
+          {t(errorMsg)}
+        </p>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -169,9 +185,7 @@ export default function InquiryForm({
                   <Select
                     id="interest"
                     options={interests}
-                    className={cn("form-control-primary p-0", {
-                      "border-2 border-red-500": errors.interest,
-                    })}
+                    className="form-control-primary p-0"
                     placeholder={t("general:select_placeholder")}
                     instanceId="interest"
                     isSearchable={false}
@@ -195,9 +209,7 @@ export default function InquiryForm({
                   <Select
                     id="propertyType"
                     options={property_types}
-                    className={cn("form-control-primary p-0", {
-                      "border-2 border-red-500": errors.property_type,
-                    })}
+                    className="form-control-primary p-0"
                     placeholder={t("general:select_placeholder")}
                     instanceId="interest"
                     isSearchable={false}
@@ -233,9 +245,7 @@ export default function InquiryForm({
               <input
                 type="text"
                 id="firstName"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.first_name,
-                })}
+                className="form-control-primary"
                 {...register("first_name", { required: true })}
                 aria-invalid={errors.first_name ? "true" : "false"}
               />
@@ -248,9 +258,7 @@ export default function InquiryForm({
               <input
                 type="text"
                 id="lastName"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.last_name,
-                })}
+                className="form-control-primary"
                 {...register("last_name", { required: true })}
                 aria-invalid={errors.last_name ? "true" : "false"}
               />
@@ -265,9 +273,7 @@ export default function InquiryForm({
               <input
                 type="text"
                 id="phone"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.phone,
-                })}
+                className="form-control-primary"
                 {...register("phone", { required: true })}
                 aria-invalid={errors.phone ? "true" : "false"}
               />
@@ -281,9 +287,7 @@ export default function InquiryForm({
               <input
                 type="email"
                 id="email"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.email,
-                })}
+                className="form-control-primary"
                 {...register("email")}
                 aria-invalid={errors.phone ? "true" : "false"}
               />
@@ -298,12 +302,7 @@ export default function InquiryForm({
             <textarea
               id="address"
               rows={2}
-              className={cn(
-                "form-control-primary bg-gray-100 border-gray-300",
-                {
-                  "border-2 border-red-500": errors.address,
-                }
-              )}
+              className="form-control-primary bg-gray-100 border-gray-300"
               {...register("address")}
               aria-invalid={errors.address ? "true" : "false"}
             />
@@ -321,10 +320,7 @@ export default function InquiryForm({
                   <Select
                     id="preferredContactMethod"
                     options={contact_methods}
-                    className={cn("form-control-primary p-0", {
-                      "border-2 border-red-500":
-                        errors.preferred_contact_method,
-                    })}
+                    className="form-control-primary p-0"
                     placeholder={t("general:select_placeholder")}
                     instanceId="preferred_contact_method"
                     isSearchable={false}
@@ -349,9 +345,7 @@ export default function InquiryForm({
                   <Select
                     id="preferredContactTime"
                     options={contact_times}
-                    className={cn("form-control-primary p-0", {
-                      "border-2 border-red-500": errors.preferred_contact_time,
-                    })}
+                    className="form-control-primary p-0"
                     placeholder={t("general:select_placeholder")}
                     instanceId="preferred_contact_time"
                     isSearchable={false}
@@ -375,9 +369,7 @@ export default function InquiryForm({
               <input
                 type="number"
                 id="maxPrice"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.max_price,
-                })}
+                className="form-control-primary"
                 {...register("max_price")}
                 aria-invalid={errors.max_price ? "true" : "false"}
                 aria-label={t("general:max_price")}
@@ -391,9 +383,7 @@ export default function InquiryForm({
               <input
                 type="number"
                 id="squareFeet"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.square_feet,
-                })}
+                className="form-control-primary"
                 {...register("square_feet")}
                 aria-invalid={errors.square_feet ? "true" : "false"}
                 aria-label={t("general:sqft")}
@@ -409,9 +399,7 @@ export default function InquiryForm({
               <input
                 type="number"
                 id="bedrooms"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.bedrooms,
-                })}
+                className="form-control-primary"
                 {...register("bedrooms")}
                 aria-invalid={errors.bedrooms ? "true" : "false"}
                 aria-label={t("general:bedrooms")}
@@ -425,9 +413,7 @@ export default function InquiryForm({
               <input
                 type="number"
                 id="bathrooms"
-                className={cn("form-control-primary", {
-                  "border-2 border-red-500": errors.bathrooms,
-                })}
+                className="form-control-primary"
                 {...register("bathrooms")}
                 aria-invalid={errors.bathrooms ? "true" : "false"}
                 aria-label={t("general:bathrooms")}
@@ -443,9 +429,7 @@ export default function InquiryForm({
             <input
               type="checkbox"
               id="sendUpdates"
-              className={cn("form-control-primary w-auto self-start", {
-                "border-2 border-red-500": errors.send_updates,
-              })}
+              className="form-control-primary"
               {...register("send_updates")}
               aria-invalid={errors.send_updates ? "true" : "false"}
               aria-label={t("default:inquiry_send_updates_label")}

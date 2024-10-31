@@ -31,7 +31,7 @@ body {
   }
 
   .form-control-primary {
-    @apply w-full p-2 bg-white border border-gray-500 text-base text-gray-600 ring-offset-1 focus:ring-1 focus:ring-secondary-400 focus:border-secondary-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary-400 dark:focus:border-secondary-400 focus:outline-none;
+    @apply w-full p-2 line-clamp-2 m-0 bg-white border border-gray-500 text-base text-gray-600 ring-offset-1 focus:ring-1 focus:ring-secondary-400 focus:border-secondary-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary-400 dark:focus:border-secondary-400 focus:outline-none;
   }
 }
 
