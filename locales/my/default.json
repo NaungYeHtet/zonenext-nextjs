@@ -1,3 +1,11 @@
 {
-  "welcome": "Zone Next မှကြိုဆိုပါသည်"
+  "welcome": "Zone Next မှကြိုဆိုပါသည်",
+  "welcome_paragraph": "ကလစ်တစ်ချက်နှိပ်ရုံနှင့် အိမ်ခြံမြေများရှာနိုင်ပါသည်",
+  "inquiry": "စာရင်းပေးမည်",
+  "inquiry_interest_label": "သင်ဘာကိုစိတ်ဝင်စားပါသလဲ?",
+  "inquiry_property_type_label": "အိမ်ခြံမြေအမျိုးအစား?",
+  "inquiry_owner_label": "သင်က အိမ်ခြံမြေပိုင်ရှင်ဟုတ်ပါသလား?",
+  "inquiry_preferred_contact_method_label": "မည်သို့ဆက်သွယ်စေချင်ပါသလဲ?",
+  "inquiry_preferred_contact_time_label": "ဆက်သွယ်နိုင်မည့်အချိန်?",
+  "inquiry_send_updates_label": "အက်ပ်ဒိတ်များရယူမည်?"
 }

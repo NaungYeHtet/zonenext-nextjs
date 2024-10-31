@@ -6,6 +6,7 @@ import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
 import CarouselSlider from "../carousel-slider";
 import TranslateText from "../translate-text";
+import clsx from "clsx";
 
 export type PropertyCardProps = {
   property: Property;
@@ -37,15 +38,19 @@ export const PropertyCardImage = ({
       navigation={{}}
     >
       {images.map((url, index) => (
-        <div key={index} style={{ width: "100%", maxWidth: "640px" }}>
+        <div
+          className="relative"
+          key={index}
+          style={{ width: "auto", maxWidth: "640px", height: "240px" }}
+        >
           <Image
-            className={className}
+            className={clsx(className, "aspec")}
             key={index}
             src={url}
             alt="Gallery"
-            width={640} // Explicit width
-            height={480} // Explicit height
-            style={{ width: "100%", height: "auto" }} // Maintain aspect ratio
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            // style={{ width: "auto", height: "280px" }} // Maintain aspect ratio
             priority
           />
         </div>
@@ -134,8 +139,8 @@ export function PropertyCardCompact({
         src={cover_image}
         alt="Gallery"
         width={640} // Explicit width
-        height={480} // Explicit height
-        style={{ width: "100%", height: "auto" }} // Maintain aspect ratio
+        height={280} // Explicit height
+        style={{ width: "100%", height: "280px" }} // Maintain aspect ratio
         priority
       />
       <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>

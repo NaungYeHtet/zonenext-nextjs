@@ -1,5 +1,6 @@
 import {
   API_PATH_GROUP,
+  API_PATH_INQUIRY,
   API_PATH_PROPERTY,
   API_PATH_PROPERTY_FILTER,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
@@ -92,6 +93,7 @@ export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER
   | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
   | typeof API_PATH_PROPERTY
-  | typeof API_PATH_GROUP;
+  | typeof API_PATH_GROUP
+  | typeof API_PATH_INQUIRY;
 
 export type PROPERTY_LIST_TYPE = "for-sale" | "for-rent" | "newest";

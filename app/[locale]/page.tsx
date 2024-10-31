@@ -4,6 +4,8 @@ import initTranslations from "./utils/i18n";
 import SectionFeaturedListing from "./section-featured-listing";
 import SectionWelcome from "./section-welcome";
 import PropertyFilter from "./components/property/filter";
+import SectionInquiry from "./section-inquiry";
+import BaseFooter from "./components/footer";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -38,7 +40,12 @@ export default async function Home({ params: { locale } }: HomePageProps) {
           <SectionWelcome />
 
           <SectionFeaturedListing locale={locale} />
+
+          <SectionInquiry locale={locale} />
         </main>
+        <div>
+          <BaseFooter />
+        </div>
       </div>
     </TranslationsProvider>
   );

@@ -29,6 +29,10 @@ body {
   .compact-container {
     @apply px-6 md:px-12 lg:px-40;
   }
+
+  .form-control-primary {
+    @apply w-full p-2 bg-white border border-gray-500 ring-offset-1 focus:ring-1 focus:ring-secondary-400 focus:border-secondary-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary-400 dark:focus:border-secondary-400 focus:outline-none;
+  }
 }
 
 /* Customize navigation arrow colors */

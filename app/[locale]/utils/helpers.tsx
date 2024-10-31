@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { API_PATH_TYPE } from "../lib";
 import _ from "lodash";
 
-function sanitizeObject(obj: object) {
+export function sanitizeObject(obj: object) {
   return _.omitBy(
     obj,
     (v) => v === null || v === undefined || v === ""
@@ -28,8 +28,6 @@ export async function fetchGet(
   const searchQuery = transformParamsToQueryString(params);
   let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
 
-  console.log(searchQuery);
-
   if (searchQuery) {
     url = `${url}?${searchQuery}`;
   }
@@ -41,9 +39,9 @@ export async function fetchGet(
     ...options,
   });
 
-  const error = await response.json();
+  const responseData = await response.json();
 
   if (response.ok) {
-    return error.data;
+    return responseData.data;
   }
 }

@@ -5,6 +5,7 @@ import homeSellImg from "@/public/images/home-sell.jpg";
 import homeBuyImg from "@/public/images/home-buy.jpg";
 import homeRentImg from "@/public/images/home-rent.jpg";
 import { useTranslation } from "react-i18next";
+import TranslateText from "./components/translate-text";
 
 type CardImageType = {
   url: StaticImageData;
@@ -38,9 +39,11 @@ export default function SectionWelcome() {
       className="compact-container bg-gray-50 px-4 md:px-4 py-20 text-center"
       aria-label="Types"
     >
-      <h2 className="text-xl md:text-2xl mb-3">{t("default:welcome")}</h2>
+      <h2 className="text-xl md:text-2xl mb-3">
+        <TranslateText>default:welcome</TranslateText>
+      </h2>
       <p className="text-sm md:text-md text-gray-500">
-        Search and browse your properties by one click
+        <TranslateText>default:welcome_paragraph</TranslateText>
       </p>
       <div className="flex flex-col md:flex-row gap-3 md:gap-7 lg:gap-10 mt-5 justify-center items-center">
         <Card

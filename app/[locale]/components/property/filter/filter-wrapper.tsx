@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Filter, { PropertyFilterProps } from "./filter";
-import FilterSticky from "./filter-sticky";
 import { cn } from "@/app/[locale]/utils/helpers";
 
 export default function FilterWrapper({
@@ -16,9 +15,9 @@ export default function FilterWrapper({
 
   useEffect(() => {
     const handleScroll = () =>
-      setIsSticky(window.scrollY > (endingPosition || 500));
+      // setIsSticky(window.scrollY > (endingPosition || 500));
 
-    window.addEventListener("scroll", handleScroll);
+      window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);

@@ -1,3 +1,11 @@
 {
-  "welcome": "Welcome to Zone Next"
+  "welcome": "Welcome to Zone Next",
+  "welcome_paragraph": "Search and browse your properties by one click",
+  "inquiry": "Inquiry",
+  "inquiry_interest_label": "What is your interest?",
+  "inquiry_property_type_label": "What kind of property?",
+  "inquiry_owner_label": "Are you the property owner?",
+  "inquiry_preferred_contact_method_label": "Preferred contact method?",
+  "inquiry_preferred_contact_time_label": "Preferred contact time?",
+  "inquiry_send_updates_label": "Get updates?"
 }
