@@ -77,7 +77,7 @@ export default function AsyncSelect({
 
   return (
     <AsyncPaginate
-      debounceTimeout={1000}
+      debounceTimeout={500}
       key={JSON.stringify(params)}
       value={value}
       onChange={handleChange}

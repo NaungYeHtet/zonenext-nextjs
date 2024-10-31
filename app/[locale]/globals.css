@@ -1,11 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body {
+/* body {
   font-family: Arial, Helvetica, sans-serif;
-}
+} */
 
-@layer base {
+/* @layer base {
   @font-face {
     font-family: "Roboto";
     font-style: normal;
@@ -13,7 +13,7 @@ body {
     font-display: swap;
     src: url(/fonts/Roboto.woff2) format("woff2");
   }
-}
+} */
 
 @layer utilities {
   .text-balance {
@@ -31,7 +31,7 @@ body {
   }
 
   .form-control-primary {
-    @apply w-full p-2 line-clamp-2 m-0 bg-white border border-gray-500 text-base text-gray-600 ring-offset-1 focus:ring-1 focus:ring-secondary-400 focus:border-secondary-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary-400 dark:focus:border-secondary-400 focus:outline-none;
+    @apply w-full text-sm p-2 m-0 bg-white border border-gray-500 rounded-sm text-gray-600 ring-offset-1 focus:ring-1 focus:ring-secondary-400 focus:border-secondary-400 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-secondary-400 dark:focus:border-secondary-400 focus:outline-none;
   }
 }
 

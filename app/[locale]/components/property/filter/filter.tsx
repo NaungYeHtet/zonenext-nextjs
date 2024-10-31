@@ -214,7 +214,7 @@ export default function Filter({
       />
       <Select
         options={list_types}
-        className="w-full text-sm lg:col-span-2"
+        className="form-control-primary text-sm lg:col-span-2 p-0"
         defaultValue={list_types.find(
           (filter) => filter.value === filterParams?.list_type
         )}

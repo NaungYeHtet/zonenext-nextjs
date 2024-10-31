@@ -16,23 +16,23 @@ const navbarItems = [
   },
   {
     text: "general:for_rent",
-    path: "/for-rent",
+    path: "/search/for-rent",
   },
   {
     text: "general:for_sale",
-    path: "/for-sale",
+    path: "/search/for-sale",
   },
   {
     text: "general:house_searching",
-    path: "/house-searching",
+    path: "/search/house-searching",
   },
   {
     text: "general:agents",
-    path: "/agents",
+    path: "/search/agents",
   },
   {
     text: "general:faq",
-    path: "/faqs",
+    path: "/search/faqs",
   },
 ];
 

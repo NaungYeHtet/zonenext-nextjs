@@ -1,5 +1,5 @@
-import { PropertyFilterParams } from "../lib";
-import Wrapper from "@/app/[locale]/[list_type]/wrapper";
+import { PropertyFilterParams } from "../../lib";
+import Wrapper from "@/app/[locale]/wrapper";
 import PropertyList from "@/app/[locale]/components/property/property-list";
 
 export type PropertyListPageProps = {

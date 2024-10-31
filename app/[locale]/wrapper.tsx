@@ -1,17 +1,17 @@
 import { ReactNode } from "react";
-import Navbar from "../components/navbar/navbar";
-import TranslationsProvider from "../components/translation-provider";
-import initTranslations from "../utils/i18n";
+import Navbar from "./components/navbar/navbar";
+import TranslationsProvider from "./components/translation-provider";
+import initTranslations from "./utils/i18n";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import PropertyFilter from "../components/property/filter";
-import { PropertySidebar } from "../components/property/property-sidebar";
-import { fetchGet } from "../utils/helpers";
-import { API_PATH_GROUP } from "../utils/api-paths";
-import Breadcrumb from "../components/breadcumb/breadcrumb";
-import { PropertyFilterParams } from "../lib";
+import PropertyFilter from "./components/property/filter";
+import { PropertySidebar } from "./components/property/property-sidebar";
+import { fetchGet } from "./utils/helpers";
+import { API_PATH_GROUP } from "./utils/api-paths";
+import Breadcrumb from "./components/breadcumb/breadcrumb";
+import { PropertyFilterParams } from "./lib";
 
 const i18nNamespaces = ["general", "default"];
 

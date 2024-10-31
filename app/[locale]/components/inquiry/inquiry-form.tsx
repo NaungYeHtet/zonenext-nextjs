@@ -6,11 +6,16 @@ import Select, { MultiValue } from "react-select";
 import { Option } from "../../lib";
 import { ReactNode, useState } from "react";
 import { cn, sanitizeObject } from "../../utils/helpers";
-import { API_PATH_INQUIRY } from "../../utils/api-paths";
+import {
+  API_PATH_INQUIRY,
+  API_PATH_PROPERTY_FILTER_TOWNSHIP,
+} from "../../utils/api-paths";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import i18next from "i18next";
+import AsyncSelect from "../async-select";
+import FieldGroup from "../field-wrapper";
+import { Field } from "@headlessui/react";
 
 type Inputs = {
   first_name: string;
@@ -18,6 +23,7 @@ type Inputs = {
   interest: string;
   property_type: string;
   is_owner?: boolean;
+  township?: string | null;
   address?: string | null;
   phone?: string | null;
   email?: string | null;
@@ -86,6 +92,7 @@ const schema = yup
     interest: yup.string().required("validation:required_select"),
     property_type: yup.string().required("validation:required_select"),
     is_owner: yup.boolean(),
+    township: yup.string().nullable(),
     address: yup.string().nullable(),
     phone: yup.string().nullable(),
     email: yup.string().email().nullable(),
@@ -112,6 +119,7 @@ const defaultValues = {
   square_feet: null,
   bedrooms: null,
   bathrooms: null,
+  township: "botahtaung",
   address: null,
   phone: null,
   email: null,
@@ -125,7 +133,6 @@ export default function InquiryForm({
     handleSubmit,
     control,
     reset,
-    getValues,
     watch,
     setError,
     formState: { errors },
@@ -172,11 +179,10 @@ export default function InquiryForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5 mt-5">
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper
-              label={t("default:inquiry_interest_label")}
-              id="interest"
-              errorMsg={errors.interest?.message}
-            >
+            <FieldGroup>
+              <FieldGroup.Label id="interest">
+                {t("default:inquiry_interest_label")}
+              </FieldGroup.Label>
               <Controller
                 name="interest"
                 control={control}
@@ -195,12 +201,14 @@ export default function InquiryForm({
                   />
                 )}
               />
-            </FieldWrapper>
-            <FieldWrapper
-              id="propertyType"
-              label={t("default:inquiry_property_type_label")}
-              errorMsg={errors.property_type?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.interest?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <FieldGroup>
+              <FieldGroup.Label id="propertyType">
+                {t("default:inquiry_property_type_label")}
+              </FieldGroup.Label>
               <Controller
                 name="property_type"
                 control={control}
@@ -219,11 +227,17 @@ export default function InquiryForm({
                   />
                 )}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.property_type?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
 
           {interest == "Renting" ? (
-            <FieldWrapper id="isOwner" label={t("default:inquiry_owner_label")}>
+            <FieldGroup>
+              <FieldGroup.Label id="isOwner">
+                {t("default:inquiry_owner_label")}
+              </FieldGroup.Label>
               <input
                 type="checkbox"
                 id="isOwner"
@@ -231,17 +245,19 @@ export default function InquiryForm({
                 {...register("is_owner")}
                 aria-invalid={errors.is_owner ? "true" : "false"}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.is_owner?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           ) : (
             ""
           )}
 
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper
-              id="firstName"
-              label={t("general:first_name")}
-              errorMsg={errors.first_name?.message}
-            >
+            <FieldGroup>
+              <FieldGroup.Label id="firstName">
+                {t("general:first_name")}
+              </FieldGroup.Label>
               <input
                 type="text"
                 id="firstName"
@@ -249,12 +265,14 @@ export default function InquiryForm({
                 {...register("first_name", { required: true })}
                 aria-invalid={errors.first_name ? "true" : "false"}
               />
-            </FieldWrapper>
-            <FieldWrapper
-              id="lastName"
-              label={t("general:last_name")}
-              errorMsg={errors.last_name?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.first_name?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <FieldGroup>
+              <FieldGroup.Label id="lastName">
+                {t("general:last_name")}
+              </FieldGroup.Label>
               <input
                 type="text"
                 id="lastName"
@@ -262,14 +280,16 @@ export default function InquiryForm({
                 {...register("last_name", { required: true })}
                 aria-invalid={errors.last_name ? "true" : "false"}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.last_name?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
-          <div className="flex justify-center items-start h-full space-x-2">
-            <FieldWrapper
-              id="phone"
-              label={t("general:phone")}
-              errorMsg={errors.phone?.message}
-            >
+          <div className="flex flex-col md:flex-row justify-center items-start h-full gap-2">
+            <FieldGroup>
+              <FieldGroup.Label id="phone">
+                {t("general:phone")}
+              </FieldGroup.Label>
               <input
                 type="text"
                 id="phone"
@@ -277,42 +297,79 @@ export default function InquiryForm({
                 {...register("phone", { required: true })}
                 aria-invalid={errors.phone ? "true" : "false"}
               />
-            </FieldWrapper>
-            <span className="text-gray-500 self-center rotate-90">OR</span>
-            <FieldWrapper
-              id="email"
-              label={t("general:email")}
-              errorMsg={errors.email?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.phone?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <span className="text-gray-500 self-center mt-3 md:rotate-90">
+              OR
+            </span>
+            <FieldGroup>
+              <FieldGroup.Label id="email">
+                {t("general:email")}
+              </FieldGroup.Label>
               <input
                 type="email"
                 id="email"
                 className="form-control-primary"
                 {...register("email")}
-                aria-invalid={errors.phone ? "true" : "false"}
+                aria-invalid={errors.email ? "true" : "false"}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.email?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
 
-          <FieldWrapper
-            id="address"
-            label={t("general:address")}
-            errorMsg={errors.address?.message}
-          >
-            <textarea
-              id="address"
-              rows={2}
-              className="form-control-primary bg-gray-100 border-gray-300"
-              {...register("address")}
-              aria-invalid={errors.address ? "true" : "false"}
-            />
-          </FieldWrapper>
+          <div className="flex flex-col md:flex-row justify-center items-start h-full space-y-3 gap-2">
+            <FieldGroup>
+              <FieldGroup.Label id="townshipForm">
+                {t("general:choose_township")}
+              </FieldGroup.Label>
+              <Controller
+                name="township"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, name, ref } }) => (
+                  <AsyncSelect
+                    id="townshipForm"
+                    className="form-control-primary p-0"
+                    path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
+                    placeholder={t("general:choose_township")}
+                    onChange={(val: Option) => onChange(val?.value)}
+                    optionsKey="townships"
+                    isClearable
+                    aria-invalid={errors.township ? "true" : "false"}
+                  />
+                )}
+              />
+              <FieldGroup.ErrorMessage>
+                {errors.township?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+
+            <FieldGroup>
+              <FieldGroup.Label id="address">
+                {t("general:address")}
+              </FieldGroup.Label>
+              <textarea
+                id="address"
+                rows={2}
+                className="form-control-primary bg-gray-100 border-gray-300"
+                {...register("address")}
+                aria-invalid={errors.address ? "true" : "false"}
+              />
+              <FieldGroup.ErrorMessage>
+                {errors.address?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+          </div>
+
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper
-              label={t("default:inquiry_preferred_contact_method_label")}
-              id="preferredContactMethod"
-              errorMsg={errors.preferred_contact_method?.message}
-            >
+            <FieldGroup>
+              <FieldGroup.Label id="bedrooms">
+                {t("default:bedrooms")}
+              </FieldGroup.Label>
               <Controller
                 name="preferred_contact_method"
                 control={control}
@@ -332,12 +389,14 @@ export default function InquiryForm({
                   />
                 )}
               />
-            </FieldWrapper>
-            <FieldWrapper
-              label={t("default:inquiry_preferred_contact_time_label")}
-              id="preferredContactTime"
-              errorMsg={errors.preferred_contact_time?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.preferred_contact_method?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <FieldGroup>
+              <FieldGroup.Label id="preferredContactTime">
+                {t("default:inquiry_preferred_contact_time_label")}
+              </FieldGroup.Label>
               <Controller
                 name="preferred_contact_time"
                 control={control}
@@ -357,15 +416,17 @@ export default function InquiryForm({
                   />
                 )}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.preferred_contact_time?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
 
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper
-              id="maxPrice"
-              label={t("general:max_price")}
-              errorMsg={errors.max_price?.message}
-            >
+            <FieldGroup>
+              <FieldGroup.Label id="maxPrice">
+                {t("general:max_price")}
+              </FieldGroup.Label>
               <input
                 type="number"
                 id="maxPrice"
@@ -374,12 +435,15 @@ export default function InquiryForm({
                 aria-invalid={errors.max_price ? "true" : "false"}
                 aria-label={t("general:max_price")}
               />
-            </FieldWrapper>
-            <FieldWrapper
-              id="squareFeet"
-              label={t("general:sqft")}
-              errorMsg={errors.square_feet?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.max_price?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <FieldGroup>
+              <FieldGroup.Label id="squareFeet">
+                {t("general:sqft")}
+              </FieldGroup.Label>
+
               <input
                 type="number"
                 id="squareFeet"
@@ -388,14 +452,16 @@ export default function InquiryForm({
                 aria-invalid={errors.square_feet ? "true" : "false"}
                 aria-label={t("general:sqft")}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.square_feet?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
           <div className="flex flex-col md:flex-row gap-2 w-full">
-            <FieldWrapper
-              id="bedrooms"
-              label={t("general:bedrooms")}
-              errorMsg={errors.bedrooms?.message}
-            >
+            <FieldGroup>
+              <FieldGroup.Label id="bedrooms">
+                {t("general:bedrooms")}
+              </FieldGroup.Label>
               <input
                 type="number"
                 id="bedrooms"
@@ -404,12 +470,14 @@ export default function InquiryForm({
                 aria-invalid={errors.bedrooms ? "true" : "false"}
                 aria-label={t("general:bedrooms")}
               />
-            </FieldWrapper>
-            <FieldWrapper
-              id="bathrooms"
-              label={t("general:bathrooms")}
-              errorMsg={errors.bathrooms?.message}
-            >
+              <FieldGroup.ErrorMessage>
+                {errors.bedrooms?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
+            <FieldGroup>
+              <FieldGroup.Label id="bathrooms">
+                {t("general:bathrooms")}
+              </FieldGroup.Label>
               <input
                 type="number"
                 id="bathrooms"
@@ -418,7 +486,10 @@ export default function InquiryForm({
                 aria-invalid={errors.bathrooms ? "true" : "false"}
                 aria-label={t("general:bathrooms")}
               />
-            </FieldWrapper>
+              <FieldGroup.ErrorMessage>
+                {errors.bathrooms?.message}
+              </FieldGroup.ErrorMessage>
+            </FieldGroup>
           </div>
 
           <FieldWrapper
