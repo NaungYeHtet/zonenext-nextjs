@@ -2,6 +2,7 @@ import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
+import ProviderClient from "../components/providers/provider-client";
 import LoginForm from "./login-form";
 
 const i18nNamespaces = ["general", "login"];
@@ -26,7 +27,9 @@ export default async function Login({ params: { locale } }: PageProps) {
           <Navbar />
         </div>
         <main className="flex flex-col justify-center items-center py-10">
-          <LoginForm />
+          <ProviderClient>
+            <LoginForm />
+          </ProviderClient>
         </main>
         <div>
           <BaseFooter />

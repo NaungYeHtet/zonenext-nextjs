@@ -113,15 +113,15 @@ export async function fetchPost(
 
   const responseData = await response.json();
 
-  if (response.status == 401) {
-    removeToken();
-    redirectToRoute("/login");
-  }
-  if (response.status == 409) {
-    redirectToRoute("/verification");
-  }
-
   if (!response.ok) {
+    if (response.status == 401) {
+      removeToken();
+      redirectToRoute("/login");
+    }
+    if (response.status == 409) {
+      redirectToRoute("/verification");
+    }
+
     console.log("ERROR >>> ", responseData, response.status);
   }
 

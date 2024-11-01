@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FieldGroup from "../components/field-wrapper";
 import { API_PATH_LOGIN } from "../utils/api-paths";
-import { sanitizeObject } from "../utils/helpers";
+import { fetchPost, sanitizeObject } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { storeToken } from "../lib/actions";
 import { useRouter } from "next/navigation";
@@ -38,37 +38,26 @@ export default function LoginForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     // return;
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_LOGIN}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...sanitizeObject(data),
-          language: i18n.language,
-        }),
-      }
+    const response = await fetchPost(
+      API_PATH_LOGIN,
+      JSON.stringify({
+        ...sanitizeObject(data),
+        language: i18n.language,
+      })
     );
 
-    const responseData = await response.json();
+    if (response.status == 422) {
+      setError("email", { type: "custom", message: response.data.message });
+    }
 
-    if (response.ok) {
-      storeToken({ access_token: responseData.data.access_token });
+    if (response.status == 200) {
+      storeToken({ access_token: response.data.access_token });
 
       reset();
+      console.log(response.data);
       router.push("/profile");
-      toast.success(responseData.data.message);
-    } else {
-      if (response.status == 422) {
-        for (const [key, value] of Object.entries(responseData.errors)) {
-          setError(key as any, { type: "custom", message: value as string });
-        }
-      }
+      toast.success(response.data.message);
     }
   };
 

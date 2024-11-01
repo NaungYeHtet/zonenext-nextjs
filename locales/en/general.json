@@ -41,5 +41,6 @@
   "square_feet": "Square feet",
   "bedrooms": "Bedrooms",
   "bathrooms": "Bathrooms",
-  "otp": "One time passcode"
+  "otp": "One time passcode",
+  "logout": "Logout"
 }

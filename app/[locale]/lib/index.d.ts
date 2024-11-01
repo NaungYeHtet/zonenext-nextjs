@@ -4,6 +4,7 @@ import {
   API_PATH_GROUP,
   API_PATH_INQUIRY,
   API_PATH_LOGIN,
+  API_PATH_LOGOUT,
   API_PATH_PROFILE,
   API_PATH_PROPERTY,
   API_PATH_PROPERTY_FILTER,
@@ -93,6 +94,13 @@ export type PropertyFilterParams = {
   type?: string;
 };
 
+export type User = {
+  name: string;
+  email: string;
+  language: LanguageType;
+  phone: string;
+};
+
 export type ValidationErrors = {
   [key: string]: string;
 }[];
@@ -105,6 +113,8 @@ export type API_PATH_TYPE =
   | typeof API_PATH_INQUIRY
   | typeof API_PATH_PROFILE
   | typeof API_PATH_EMAIL_VERIFY
+  | typeof API_PATH_LOGIN
+  | typeof API_PATH_LOGOUT
   | typeof API_PATH_EMAIL_VERIFICATION_NOTI;
 
 export type PROPERTY_LIST_TYPE = "for-sale" | "for-rent" | "newest";

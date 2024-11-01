@@ -4,20 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchGet } from "../utils/helpers";
 import { API_PATH_PROFILE } from "../utils/api-paths";
 import { useTranslation } from "react-i18next";
+import { User } from "../lib";
 import Cookie from "js-cookie";
 import { TOKEN_NAME } from "../utils/constants";
 
 type LanguageType = "en" | "my";
 
-type UserType = {
-  name: string;
-  email: string;
-  language: LanguageType;
-  phone: string;
-};
-
 export default function ProfileCard() {
-  const [user, setUser] = useState<UserType>();
+  const [user, setUser] = useState<User>();
   const { i18n } = useTranslation();
 
   const fetchData = useCallback(async () => {
@@ -28,6 +22,7 @@ export default function ProfileCard() {
   }, []);
 
   useEffect(() => {
+    // Cookie.remove(TOKEN_NAME);
     fetchData();
   }, [fetchData]);
 
