@@ -63,13 +63,10 @@ export default function VerficationForm() {
   const [notiTimer, setNotiTimer] = useState(false);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await fetchPost(
-      API_PATH_EMAIL_VERIFY,
-      JSON.stringify({
-        ...sanitizeObject(data),
-        language: i18n.language,
-      })
-    );
+    const response = await fetchPost(API_PATH_EMAIL_VERIFY, {
+      ...data,
+      language: i18n.language,
+    });
 
     if (response.status === 400) {
       setError("otp", { type: "custom", message: response.message });

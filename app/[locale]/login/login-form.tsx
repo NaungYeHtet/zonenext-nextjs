@@ -38,14 +38,10 @@ export default function LoginForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // return;
-    const response = await fetchPost(
-      API_PATH_LOGIN,
-      JSON.stringify({
-        ...sanitizeObject(data),
-        language: i18n.language,
-      })
-    );
+    const response = await fetchPost(API_PATH_LOGIN, {
+      ...data,
+      language: i18n.language,
+    });
 
     if (response.status == 422) {
       setError("email", { type: "custom", message: response.data.message });

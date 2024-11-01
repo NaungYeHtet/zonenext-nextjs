@@ -2,11 +2,9 @@ import { i18nRouter } from "next-i18n-router";
 import i18nConfig from "./i18nConfig";
 import { NextRequest, NextResponse } from "next/server";
 import {
-  guestRoutes,
   isAuthenticated,
   isRouteGuest,
   isRouteProtected,
-  protectedRoutes,
 } from "./app/[locale]/lib/auth";
 
 export function middleware(request: NextRequest) {

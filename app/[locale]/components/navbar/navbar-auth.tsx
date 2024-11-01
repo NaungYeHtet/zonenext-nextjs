@@ -43,7 +43,7 @@ export default function NavbarAuth() {
               type="button"
               className="focus:ring-2 font-medium rounded-lg focus:outline-none dark:focus:ring-blue-800 focus:ring-purple-300 focus:ring-offset-2"
               aria-label="Logout"
-              onClick={() => authContext.logout()}
+              onClick={() => logout()}
             >
               <TranslateText>general:logout</TranslateText>
             </button>
