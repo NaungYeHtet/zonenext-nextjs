@@ -6,7 +6,6 @@ import SectionWelcome from "./section-welcome";
 import PropertyFilter from "./components/property/filter";
 import SectionInquiry from "./section-inquiry";
 import BaseFooter from "./components/footer";
-import { useTranslation } from "react-i18next";
 
 const i18nNamespaces = ["general", "default", "validation"];
 
@@ -18,7 +17,6 @@ type HomePageProps = {
 
 export default async function Home({ params: { locale } }: HomePageProps) {
   const { resources } = await initTranslations(locale, i18nNamespaces);
-  const { t } = useTranslation();
 
   return (
     <TranslationsProvider

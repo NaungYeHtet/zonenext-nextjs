@@ -1,0 +1,7 @@
+{
+  "email_verification": "Email Verification",
+  "description": "Please confirm your email address to continue.",
+  "send_verification_email": "Send a 6-digit one-time passcode. Click ",
+  "here": "here",
+  "email_notification_sent": "We have sent a 6-digit code to your email. Please check your inbox and spam folder if you don't see it right away."
+}

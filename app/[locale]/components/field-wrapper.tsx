@@ -10,7 +10,7 @@ type FieldLabelProps = {
 
 const FieldLabel = ({ children, id, className }: FieldLabelProps) => (
   <label
-    className={cn("inline-block text-xs font-extrabold mb-1", className)}
+    className={cn("inline-block text-sm font-bold mb-1", className)}
     htmlFor={id}
   >
     {children}

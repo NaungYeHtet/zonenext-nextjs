@@ -40,5 +40,6 @@
   "max_price": "Max price",
   "square_feet": "Square feet",
   "bedrooms": "Bedrooms",
-  "bathrooms": "Bathrooms"
+  "bathrooms": "Bathrooms",
+  "otp": "One time passcode"
 }

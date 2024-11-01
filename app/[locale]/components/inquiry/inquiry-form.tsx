@@ -321,7 +321,7 @@ export default function InquiryForm({
             </FieldGroup>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center items-start h-full space-y-3 gap-2">
+          <div className="flex flex-col md:flex-row justify-center items-start h-full gap-2">
             <FieldGroup>
               <FieldGroup.Label id="townshipForm">
                 {t("general:choose_township")}
