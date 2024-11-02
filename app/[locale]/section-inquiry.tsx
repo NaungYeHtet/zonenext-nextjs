@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import TranslateText from "./components/translate-text";
 import InquiryForm from "./components/inquiry/inquiry-form";
-import { fetchGet } from "./utils/helpers";
+import { fetchApi } from "./utils/helpers";
 import { API_PATH_INQUIRY } from "./utils/api-paths";
 
 type CardImageType = {
@@ -14,11 +14,18 @@ type SectionInquiryProps = {
 };
 
 export default async function SectionInquiry({ locale }: SectionInquiryProps) {
-  const options = await fetchGet(
-    API_PATH_INQUIRY,
-    { language: locale },
-    { next: { revalidate: 0 } }
-  );
+  const { data } = await fetchApi({
+    method: "GET",
+    path: API_PATH_INQUIRY,
+    body: {
+      language: locale,
+    },
+    options: {
+      next: {
+        revalidate: 0,
+      },
+    },
+  });
 
   return (
     <section
@@ -34,7 +41,7 @@ export default async function SectionInquiry({ locale }: SectionInquiryProps) {
           What are you looking for? Let us assist you in more efficient way.
         </p>
         <div className="flex flex-col w-full md:px-32 py-3 text-left">
-          <InquiryForm options={options} />
+          <InquiryForm options={data} />
         </div>
       </div>
     </section>

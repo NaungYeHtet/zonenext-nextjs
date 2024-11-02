@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import PropertyFilter from "./components/property/filter";
 import { PropertySidebar } from "./components/property/property-sidebar";
-import { fetchGet } from "./utils/helpers";
+import { fetchApi } from "./utils/helpers";
 import { API_PATH_GROUP } from "./utils/api-paths";
 import Breadcrumb from "./components/breadcumb/breadcrumb";
 import { PropertyFilterParams } from "./lib";
@@ -23,13 +23,14 @@ type LayoutProps = {
 export default async function Wrapper({ children, params }: LayoutProps) {
   const { resources } = await initTranslations(params.locale, i18nNamespaces);
 
-  const { group } = await fetchGet(
-    API_PATH_GROUP,
-    { language: params.locale, type: "FeaturedListings" },
-    {
-      next: { revalidate: 0 },
-    }
-  );
+  const {
+    data: { group },
+  } = await fetchApi({
+    method: "GET",
+    path: API_PATH_GROUP,
+    body: { language: params.locale, type: "FeaturedListings" },
+    options: { next: { revalidate: 0 } },
+  });
 
   return (
     <TranslationsProvider

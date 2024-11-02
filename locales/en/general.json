@@ -21,8 +21,10 @@
   "select_placeholder": "Select...",
   "first_name": "First name",
   "last_name": "Last name",
+  "name": "Name",
   "email": "Email",
   "password": "Password",
+  "password_confirmation": "Password confirmation",
   "phone": "Phone",
   "selling": "Selling",
   "renting": "Renting",
@@ -42,5 +44,6 @@
   "bedrooms": "Bedrooms",
   "bathrooms": "Bathrooms",
   "otp": "One time passcode",
-  "logout": "Logout"
+  "logout": "Logout",
+  "save": "Save"
 }

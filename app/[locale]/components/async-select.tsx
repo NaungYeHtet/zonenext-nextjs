@@ -1,5 +1,5 @@
 import { AsyncPaginate } from "react-select-async-paginate";
-import { fetchGet } from "../utils/helpers";
+import { fetchApi } from "../utils/helpers";
 import { API_PATH_TYPE, Option } from "../lib";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
@@ -35,11 +35,16 @@ export default function AsyncSelect({
 
   const fetchData = useCallback(async () => {
     if (!isEmpty(defaultVal)) {
-      const data = await fetchGet(path, {
-        ...params,
-        language: language,
-        slug: defaultVal,
+      const { data } = await fetchApi({
+        method: "GET",
+        path,
+        body: {
+          ...params,
+          language: language,
+          slug: defaultVal,
+        },
       });
+
       setValue(data[optionsKey]);
     }
   }, [defaultVal, path, params, language, optionsKey]);
@@ -53,11 +58,15 @@ export default function AsyncSelect({
   }, [params]);
 
   async function loadOptions(search: any, loadedOptions: any, { page }: any) {
-    const data = await fetchGet(path, {
-      ...params,
-      language: language,
-      search: search,
-      page: page,
+    const { data } = await fetchApi({
+      method: "GET",
+      path,
+      body: {
+        ...params,
+        language: language,
+        search: search,
+        page: page,
+      },
     });
 
     return {

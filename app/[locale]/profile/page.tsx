@@ -21,11 +21,11 @@ export default async function Profile({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col h-screen">
         <div className="">
           <Navbar />
         </div>
-        <main className="flex flex-col justify-center items-center py-10">
+        <main className="flex flex-col h-full justify-center items-center py-10">
           <h1 className="text-xl font-serif">Profile</h1>
           <ProfileCard />
         </main>

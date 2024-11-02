@@ -2,11 +2,11 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { TOKEN_NAME } from "../../utils/constants";
 import { isEmpty } from "lodash";
-import { fetchPost } from "../../utils/helpers";
 import { API_PATH_LOGOUT } from "../../utils/api-paths";
 import { isRouteProtected } from "../../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { fetchApi } from "../../utils/helpers";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -23,15 +23,19 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const logout = async () => {
-    const response = await fetchPost(API_PATH_LOGOUT);
+    const { status, message } = await fetchApi({
+      method: "POST",
+      path: API_PATH_LOGOUT,
+      requireAuth: true,
+    });
 
-    if (response.status == 200) {
+    if (status == 200) {
       Cookies.remove(TOKEN_NAME);
       setIsLoggedIn(false);
       console.log(pathname, isRouteProtected(pathname));
       isRouteProtected(pathname) && router.push("/login");
     } else {
-      console.log(response);
+      console.log(message);
     }
   };
 

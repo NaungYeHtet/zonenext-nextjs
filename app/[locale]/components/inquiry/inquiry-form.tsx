@@ -3,9 +3,9 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Select, { MultiValue } from "react-select";
-import { Option } from "../../lib";
+import { Option, ValidationErrors } from "../../lib";
 import { ReactNode, useState } from "react";
-import { cn, sanitizeObject } from "../../utils/helpers";
+import { cn, fetchApi, sanitizeObject } from "../../utils/helpers";
 import {
   API_PATH_INQUIRY,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
@@ -144,33 +144,27 @@ export default function InquiryForm({
   const interest = watch("interest");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_PATH}${API_PATH_INQUIRY}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...sanitizeObject(data),
-          language: i18n.language,
-        }),
+    const response = await fetchApi({
+      method: "POST",
+      path: API_PATH_INQUIRY,
+      body: {
+        ...data,
+        language: i18n.language,
+      },
+    });
+
+    console.log(response);
+
+    if (response.status == 422) {
+      const validationErrors: ValidationErrors = response.errors;
+      for (const [key, value] of Object.entries(validationErrors)) {
+        setError(key as any, { type: "custom", message: value[0] as string });
       }
-    );
+    }
 
-    const responseData = await response.json();
-
-    if (response.ok) {
+    if (response.status == 200) {
       reset(defaultValues);
-      toast.success(responseData.data.message);
-      // showAlert("success", "Success", responseData.data.message);
-    } else {
-      if (response.status == 422) {
-        for (const [key, value] of Object.entries(responseData.errors)) {
-          setError(key as any, { type: "custom", message: value as string });
-        }
-      }
+      toast.success(response.message);
     }
   };
 
@@ -183,24 +177,26 @@ export default function InquiryForm({
               <FieldGroup.Label id="interest">
                 {t("default:inquiry_interest_label")}
               </FieldGroup.Label>
-              <Controller
-                name="interest"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <Select
-                    id="interest"
-                    options={interests}
-                    className="form-control-primary p-0"
-                    placeholder={t("general:select_placeholder")}
-                    instanceId="interest"
-                    isSearchable={false}
-                    value={interests.find((c) => c.value === value)}
-                    onChange={(val) => onChange(val?.value)}
-                    aria-invalid={errors.interest ? "true" : "false"}
-                  />
-                )}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.interest?.message}>
+                <Controller
+                  name="interest"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      id="interest"
+                      options={interests}
+                      className="form-control-primary p-0"
+                      placeholder={t("general:select_placeholder")}
+                      instanceId="interest"
+                      isSearchable={false}
+                      value={interests.find((c) => c.value === value)}
+                      onChange={(val) => onChange(val?.value)}
+                      aria-invalid={errors.interest ? "true" : "false"}
+                    />
+                  )}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.interest?.message}
               </FieldGroup.ErrorMessage>
@@ -209,24 +205,26 @@ export default function InquiryForm({
               <FieldGroup.Label id="propertyType">
                 {t("default:inquiry_property_type_label")}
               </FieldGroup.Label>
-              <Controller
-                name="property_type"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <Select
-                    id="propertyType"
-                    options={property_types}
-                    className="form-control-primary p-0"
-                    placeholder={t("general:select_placeholder")}
-                    instanceId="interest"
-                    isSearchable={false}
-                    value={property_types.find((c) => c.value === value)}
-                    onChange={(val) => onChange(val?.value)}
-                    aria-invalid={errors.property_type ? "true" : "false"}
-                  />
-                )}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.property_type?.message}>
+                <Controller
+                  name="property_type"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      id="propertyType"
+                      options={property_types}
+                      className="form-control-primary p-0"
+                      placeholder={t("general:select_placeholder")}
+                      instanceId="interest"
+                      isSearchable={false}
+                      value={property_types.find((c) => c.value === value)}
+                      onChange={(val) => onChange(val?.value)}
+                      aria-invalid={errors.property_type ? "true" : "false"}
+                    />
+                  )}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.property_type?.message}
               </FieldGroup.ErrorMessage>
@@ -238,13 +236,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="isOwner">
                 {t("default:inquiry_owner_label")}
               </FieldGroup.Label>
-              <input
-                type="checkbox"
-                id="isOwner"
-                className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 focus:ring-2 dark:border-gray-600"
-                {...register("is_owner")}
-                aria-invalid={errors.is_owner ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.is_owner?.message}>
+                <input
+                  type="checkbox"
+                  id="isOwner"
+                  className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 focus:ring-2 dark:border-gray-600"
+                  {...register("is_owner")}
+                  aria-invalid={errors.is_owner ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.is_owner?.message}
               </FieldGroup.ErrorMessage>
@@ -258,13 +258,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="firstName">
                 {t("general:first_name")}
               </FieldGroup.Label>
-              <input
-                type="text"
-                id="firstName"
-                className="form-control-primary"
-                {...register("first_name", { required: true })}
-                aria-invalid={errors.first_name ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.first_name?.message}>
+                <input
+                  type="text"
+                  id="firstName"
+                  className="form-control-primary"
+                  {...register("first_name", { required: true })}
+                  aria-invalid={errors.first_name ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.first_name?.message}
               </FieldGroup.ErrorMessage>
@@ -273,13 +275,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="lastName">
                 {t("general:last_name")}
               </FieldGroup.Label>
-              <input
-                type="text"
-                id="lastName"
-                className="form-control-primary"
-                {...register("last_name", { required: true })}
-                aria-invalid={errors.last_name ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.last_name?.message}>
+                <input
+                  type="text"
+                  id="lastName"
+                  className="form-control-primary"
+                  {...register("last_name", { required: true })}
+                  aria-invalid={errors.last_name ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.last_name?.message}
               </FieldGroup.ErrorMessage>
@@ -290,13 +294,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="phone">
                 {t("general:phone")}
               </FieldGroup.Label>
-              <input
-                type="text"
-                id="phone"
-                className="form-control-primary"
-                {...register("phone", { required: true })}
-                aria-invalid={errors.phone ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.phone?.message}>
+                <input
+                  type="text"
+                  id="phone"
+                  className="form-control-primary"
+                  {...register("phone", { required: true })}
+                  aria-invalid={errors.phone ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.phone?.message}
               </FieldGroup.ErrorMessage>
@@ -308,13 +314,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="email">
                 {t("general:email")}
               </FieldGroup.Label>
-              <input
-                type="email"
-                id="email"
-                className="form-control-primary"
-                {...register("email")}
-                aria-invalid={errors.email ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.email?.message}>
+                <input
+                  type="email"
+                  id="email"
+                  className="form-control-primary"
+                  {...register("email")}
+                  aria-invalid={errors.email ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.email?.message}
               </FieldGroup.ErrorMessage>
@@ -326,23 +334,25 @@ export default function InquiryForm({
               <FieldGroup.Label id="townshipForm">
                 {t("general:choose_township")}
               </FieldGroup.Label>
-              <Controller
-                name="township"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <AsyncSelect
-                    id="townshipForm"
-                    className="form-control-primary p-0"
-                    path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
-                    placeholder={t("general:choose_township")}
-                    onChange={(val: Option) => onChange(val?.value)}
-                    optionsKey="townships"
-                    isClearable
-                    aria-invalid={errors.township ? "true" : "false"}
-                  />
-                )}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.township?.message}>
+                <Controller
+                  name="township"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <AsyncSelect
+                      id="townshipForm"
+                      className="form-control-primary p-0"
+                      path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
+                      placeholder={t("general:choose_township")}
+                      onChange={(val: Option) => onChange(val?.value)}
+                      optionsKey="townships"
+                      isClearable
+                      aria-invalid={errors.township ? "true" : "false"}
+                    />
+                  )}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.township?.message}
               </FieldGroup.ErrorMessage>
@@ -352,13 +362,15 @@ export default function InquiryForm({
               <FieldGroup.Label id="address">
                 {t("general:address")}
               </FieldGroup.Label>
-              <textarea
-                id="address"
-                rows={2}
-                className="form-control-primary bg-gray-100 border-gray-300"
-                {...register("address")}
-                aria-invalid={errors.address ? "true" : "false"}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.address?.message}>
+                <textarea
+                  id="address"
+                  rows={2}
+                  className="form-control-primary bg-gray-100 border-gray-300"
+                  {...register("address")}
+                  aria-invalid={errors.address ? "true" : "false"}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.address?.message}
               </FieldGroup.ErrorMessage>
@@ -370,25 +382,29 @@ export default function InquiryForm({
               <FieldGroup.Label id="bedrooms">
                 {t("default:bedrooms")}
               </FieldGroup.Label>
-              <Controller
-                name="preferred_contact_method"
-                control={control}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <Select
-                    id="preferredContactMethod"
-                    options={contact_methods}
-                    className="form-control-primary p-0"
-                    placeholder={t("general:select_placeholder")}
-                    instanceId="preferred_contact_method"
-                    isSearchable={false}
-                    value={contact_methods.find((c) => c.value === value)}
-                    onChange={(val) => onChange(val?.value)}
-                    aria-invalid={
-                      errors.preferred_contact_method ? "true" : "false"
-                    }
-                  />
-                )}
-              />
+              <FieldGroup.Wrapper
+                errorMsg={errors.preferred_contact_method?.message}
+              >
+                <Controller
+                  name="preferred_contact_method"
+                  control={control}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      id="preferredContactMethod"
+                      options={contact_methods}
+                      className="form-control-primary p-0"
+                      placeholder={t("general:select_placeholder")}
+                      instanceId="preferred_contact_method"
+                      isSearchable={false}
+                      value={contact_methods.find((c) => c.value === value)}
+                      onChange={(val) => onChange(val?.value)}
+                      aria-invalid={
+                        errors.preferred_contact_method ? "true" : "false"
+                      }
+                    />
+                  )}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.preferred_contact_method?.message}
               </FieldGroup.ErrorMessage>
@@ -397,25 +413,29 @@ export default function InquiryForm({
               <FieldGroup.Label id="preferredContactTime">
                 {t("default:inquiry_preferred_contact_time_label")}
               </FieldGroup.Label>
-              <Controller
-                name="preferred_contact_time"
-                control={control}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <Select
-                    id="preferredContactTime"
-                    options={contact_times}
-                    className="form-control-primary p-0"
-                    placeholder={t("general:select_placeholder")}
-                    instanceId="preferred_contact_time"
-                    isSearchable={false}
-                    value={contact_times.find((c) => c.value === value)}
-                    onChange={(val) => onChange(val?.value)}
-                    aria-invalid={
-                      errors.preferred_contact_time ? "true" : "false"
-                    }
-                  />
-                )}
-              />
+              <FieldGroup.Wrapper
+                errorMsg={errors.preferred_contact_time?.message}
+              >
+                <Controller
+                  name="preferred_contact_time"
+                  control={control}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      id="preferredContactTime"
+                      options={contact_times}
+                      className="form-control-primary p-0"
+                      placeholder={t("general:select_placeholder")}
+                      instanceId="preferred_contact_time"
+                      isSearchable={false}
+                      value={contact_times.find((c) => c.value === value)}
+                      onChange={(val) => onChange(val?.value)}
+                      aria-invalid={
+                        errors.preferred_contact_time ? "true" : "false"
+                      }
+                    />
+                  )}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.preferred_contact_time?.message}
               </FieldGroup.ErrorMessage>
@@ -427,14 +447,16 @@ export default function InquiryForm({
               <FieldGroup.Label id="maxPrice">
                 {t("general:max_price")}
               </FieldGroup.Label>
-              <input
-                type="number"
-                id="maxPrice"
-                className="form-control-primary"
-                {...register("max_price")}
-                aria-invalid={errors.max_price ? "true" : "false"}
-                aria-label={t("general:max_price")}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.max_price?.message}>
+                <input
+                  type="number"
+                  id="maxPrice"
+                  className="form-control-primary"
+                  {...register("max_price")}
+                  aria-invalid={errors.max_price ? "true" : "false"}
+                  aria-label={t("general:max_price")}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.max_price?.message}
               </FieldGroup.ErrorMessage>
@@ -443,15 +465,16 @@ export default function InquiryForm({
               <FieldGroup.Label id="squareFeet">
                 {t("general:sqft")}
               </FieldGroup.Label>
-
-              <input
-                type="number"
-                id="squareFeet"
-                className="form-control-primary"
-                {...register("square_feet")}
-                aria-invalid={errors.square_feet ? "true" : "false"}
-                aria-label={t("general:sqft")}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.square_feet?.message}>
+                <input
+                  type="number"
+                  id="squareFeet"
+                  className="form-control-primary"
+                  {...register("square_feet")}
+                  aria-invalid={errors.square_feet ? "true" : "false"}
+                  aria-label={t("general:sqft")}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.square_feet?.message}
               </FieldGroup.ErrorMessage>
@@ -462,14 +485,16 @@ export default function InquiryForm({
               <FieldGroup.Label id="bedrooms">
                 {t("general:bedrooms")}
               </FieldGroup.Label>
-              <input
-                type="number"
-                id="bedrooms"
-                className="form-control-primary"
-                {...register("bedrooms")}
-                aria-invalid={errors.bedrooms ? "true" : "false"}
-                aria-label={t("general:bedrooms")}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.bathrooms?.message}>
+                <input
+                  type="number"
+                  id="bedrooms"
+                  className="form-control-primary"
+                  {...register("bedrooms")}
+                  aria-invalid={errors.bedrooms ? "true" : "false"}
+                  aria-label={t("general:bedrooms")}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.bedrooms?.message}
               </FieldGroup.ErrorMessage>
@@ -478,14 +503,16 @@ export default function InquiryForm({
               <FieldGroup.Label id="bathrooms">
                 {t("general:bathrooms")}
               </FieldGroup.Label>
-              <input
-                type="number"
-                id="bathrooms"
-                className="form-control-primary"
-                {...register("bathrooms")}
-                aria-invalid={errors.bathrooms ? "true" : "false"}
-                aria-label={t("general:bathrooms")}
-              />
+              <FieldGroup.Wrapper errorMsg={errors.bathrooms?.message}>
+                <input
+                  type="number"
+                  id="bathrooms"
+                  className="form-control-primary"
+                  {...register("bathrooms")}
+                  aria-invalid={errors.bathrooms ? "true" : "false"}
+                  aria-label={t("general:bathrooms")}
+                />
+              </FieldGroup.Wrapper>
               <FieldGroup.ErrorMessage>
                 {errors.bathrooms?.message}
               </FieldGroup.ErrorMessage>
@@ -497,15 +524,17 @@ export default function InquiryForm({
             label={t("default:inquiry_send_updates_label")}
             errorMsg={errors.send_updates?.message}
           >
-            <input
-              type="checkbox"
-              id="sendUpdates"
-              className="form-control-primary"
-              {...register("send_updates")}
-              aria-invalid={errors.send_updates ? "true" : "false"}
-              aria-label={t("default:inquiry_send_updates_label")}
-              defaultChecked
-            />
+            <FieldGroup.Wrapper errorMsg={errors.send_updates?.message}>
+              <input
+                type="checkbox"
+                id="sendUpdates"
+                className="form-control-primary"
+                {...register("send_updates")}
+                aria-invalid={errors.send_updates ? "true" : "false"}
+                aria-label={t("default:inquiry_send_updates_label")}
+                defaultChecked
+              />
+            </FieldGroup.Wrapper>
           </FieldWrapper>
 
           <button

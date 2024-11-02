@@ -1,5 +1,5 @@
 import { API_PATH_PROPERTY_FILTER } from "@/app/[locale]/utils/api-paths";
-import { fetchGet } from "@/app/[locale]/utils/helpers";
+import { fetchApi } from "@/app/[locale]/utils/helpers";
 import FilterWrapper from "./filter-wrapper";
 import { PropertyFilterParams } from "@/app/[locale]/lib";
 
@@ -10,11 +10,12 @@ type PropertyFilterProps = {
 export default async function PropertyFilter({
   filterParams,
 }: PropertyFilterProps) {
-  const filters = await fetchGet(
-    API_PATH_PROPERTY_FILTER,
-    { language: filterParams.locale },
-    { next: { revalidate: 0 } }
-  );
+  const { data } = await fetchApi({
+    method: "GET",
+    path: API_PATH_PROPERTY_FILTER,
+    body: { language: filterParams.locale },
+    options: { cache: "no-store" },
+  });
 
-  return <FilterWrapper filters={filters} filterParams={filterParams} />;
+  return <FilterWrapper filters={data} filterParams={filterParams} />;
 }

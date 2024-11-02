@@ -8,8 +8,15 @@ import {
 } from "./app/[locale]/lib/auth";
 
 export function middleware(request: NextRequest) {
-  const authenticated = isAuthenticated(request);
   const { pathname } = request.nextUrl;
+
+  const excludedPaths = ["/auth/google/callback"];
+
+  if (excludedPaths.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  const authenticated = isAuthenticated(request);
 
   if (isRouteGuest(pathname) && authenticated) {
     return NextResponse.redirect(new URL("/profile", request.url));

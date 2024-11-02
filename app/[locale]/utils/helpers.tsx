@@ -4,7 +4,7 @@ import { API_PATH_TYPE } from "../lib";
 import _, { remove } from "lodash";
 import { NextResponse } from "next/server";
 import { removeToken } from "../lib/actions";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 import { TOKEN_NAME } from "./constants";
 
 export function sanitizeObject(obj?: object) {
@@ -71,7 +71,7 @@ export async function fetchApi({
   };
 
   if (requireAuth) {
-    const token = Cookie.get(TOKEN_NAME);
+    const token = Cookies.get(TOKEN_NAME);
 
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -84,24 +84,26 @@ export async function fetchApi({
     headers,
   };
 
+  let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
+
   if (method == "GET") {
     const searchQuery = transformParamsToQueryString(body);
-
-    let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
 
     if (searchQuery) {
       url = `${url}?${searchQuery}`;
     }
   } else {
-    requestInit.body = sanitizeObject(body) as unknown as BodyInit;
+    requestInit.body = JSON.stringify(
+      sanitizeObject(body) as unknown as BodyInit
+    );
   }
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}${path}`,
-    requestInit
-  );
+  console.log(requestInit, url);
+
+  const response = await fetch(url, requestInit);
 
   const responseData = await response.json();
+  responseData.status = response.status;
 
   if (response.ok) {
     return responseData;
@@ -116,92 +118,5 @@ export async function fetchApi({
   }
 
   console.log("ERROR >>> ", responseData, response.status);
-  return responseData;
-}
-
-export async function fetchGet(
-  path: API_PATH_TYPE,
-  params: object,
-  options?: object
-) {
-  const searchQuery = transformParamsToQueryString(params);
-  let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
-
-  if (searchQuery) {
-    url = `${url}?${searchQuery}`;
-  }
-
-  const headers: HeaderType = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  };
-
-  const token = Cookie.get(TOKEN_NAME);
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(url, {
-    headers,
-    ...options,
-  });
-
-  const responseData = await response.json();
-
-  if (response.ok) {
-    return responseData.data;
-  } else {
-    if (response.status == 401) {
-      removeToken();
-      redirectToRoute("/login");
-    }
-    if (response.status == 409) {
-      redirectToRoute("/verification");
-    }
-  }
-
-  console.log("ERROR >>> ", responseData, response.status);
-}
-
-export async function fetchPost(
-  path: API_PATH_TYPE,
-  body: object = {},
-  options?: object
-) {
-  let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
-
-  const headers: HeaderType = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  };
-
-  const token = Cookie.get(TOKEN_NAME);
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers,
-    ...options,
-    body: sanitizeObject(body) as unknown as BodyInit,
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    if (response.status == 401) {
-      removeToken();
-      redirectToRoute("/login");
-    }
-    if (response.status == 409) {
-      redirectToRoute("/verification");
-    }
-
-    console.log("ERROR >>> ", responseData, response.status);
-  }
-
   return responseData;
 }

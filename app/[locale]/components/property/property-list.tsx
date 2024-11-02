@@ -6,7 +6,7 @@ import Pagination from "../pagination";
 import { useEffect, useState } from "react";
 import { API_PATH_PROPERTY } from "../../utils/api-paths";
 import { useTranslation } from "react-i18next";
-import { fetchGet } from "../../utils/helpers";
+import { fetchApi } from "../../utils/helpers";
 import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "../skeletons";
 import { PropertyListView } from "./property-list-view";
 import PropertyNotFound from "./property-not-found";
@@ -66,17 +66,23 @@ function PropertyList({
 
   useEffect(() => {
     async function fetchProperties() {
-      const responseData = await fetchGet(API_PATH_PROPERTY, {
-        language: i18n.language,
-        page: currentPage,
-        state,
-        township,
-        type: type && decodeURI(type),
-        list_type,
-        ...Object.fromEntries(searchParams.entries()),
+      const {
+        data: { properties },
+      } = await fetchApi({
+        method: "GET",
+        path: API_PATH_PROPERTY,
+        body: {
+          language: i18n.language,
+          page: currentPage,
+          state,
+          township,
+          type: type && decodeURI(type),
+          list_type,
+          ...Object.fromEntries(searchParams.entries()),
+        },
       });
 
-      setProperties(responseData.properties);
+      setProperties(properties);
     }
     fetchProperties();
   }, [

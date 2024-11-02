@@ -1,28 +1,31 @@
 import CarouselSlider from "./components/carousel-slider";
 import PropertyCard from "./components/property/property-card";
-import { GroupData, Property } from "./lib";
+import { GroupData, Property, ResponseData } from "./lib";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { fetchGet } from "./utils/helpers";
 import { API_PATH_GROUP } from "./utils/api-paths";
+import { fetchApi } from "./utils/helpers";
 
 export default async function SectionFeaturedListing({
   locale,
 }: {
   locale: string;
 }) {
-  const { group }: GroupData<Property> = await fetchGet(
-    API_PATH_GROUP,
-    {
+  const {
+    data: { group },
+  }: ResponseData<GroupData<Property>> = await fetchApi({
+    method: "GET",
+    path: API_PATH_GROUP,
+    body: {
       language: locale,
       type: "FeaturedListings",
     },
-    {
+    options: {
       next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 43200 },
-    }
-  );
+    },
+  });
 
   return (
     <section

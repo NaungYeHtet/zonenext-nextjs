@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, fetchPost, sanitizeObject } from "../utils/helpers";
+import { fetchApi } from "../utils/helpers";
 import {
   API_PATH_EMAIL_VERIFICATION_NOTI,
   API_PATH_EMAIL_VERIFY,
@@ -63,9 +63,13 @@ export default function VerficationForm() {
   const [notiTimer, setNotiTimer] = useState(false);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await fetchPost(API_PATH_EMAIL_VERIFY, {
-      ...data,
-      language: i18n.language,
+    const response = await fetchApi({
+      method: "POST",
+      path: API_PATH_EMAIL_VERIFY,
+      body: {
+        ...data,
+        language: i18n.language,
+      },
     });
 
     if (response.status === 400) {
@@ -81,7 +85,10 @@ export default function VerficationForm() {
   const sendVerificationEmail = async () => {
     setNotiLoading(true);
 
-    await fetchPost(API_PATH_EMAIL_VERIFICATION_NOTI);
+    await fetchApi({
+      method: "POST",
+      path: API_PATH_EMAIL_VERIFICATION_NOTI,
+    });
 
     toast.info(t("verification:email_notification_sent"));
     setNotiLoading(false);

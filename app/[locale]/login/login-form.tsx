@@ -6,10 +6,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FieldGroup from "../components/field-wrapper";
 import { API_PATH_LOGIN } from "../utils/api-paths";
-import { fetchPost, sanitizeObject } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { storeToken } from "../lib/actions";
 import { useRouter } from "next/navigation";
+import { fetchApi } from "../utils/helpers";
+import Image from "next/image";
 
 type Inputs = {
   email: string;
@@ -38,32 +39,45 @@ export default function LoginForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await fetchPost(API_PATH_LOGIN, {
-      ...data,
-      language: i18n.language,
+    const {
+      data: { access_token },
+      message,
+      status,
+    } = await fetchApi({
+      method: "POST",
+      path: API_PATH_LOGIN,
+      body: {
+        ...data,
+        language: i18n.language,
+      },
     });
 
-    if (response.status == 422) {
-      setError("email", { type: "custom", message: response.data.message });
+    console.log(access_token, message, status);
+
+    if (status == 422) {
+      setError("email", { type: "custom", message });
     }
 
-    if (response.status == 200) {
-      storeToken({ access_token: response.data.access_token });
+    if (status == 200) {
+      storeToken({ access_token: access_token });
 
       reset();
-      console.log(response.data);
       router.push("/profile");
-      toast.success(response.data.message);
+      toast.success(message);
     }
+  };
+
+  const googleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_PATH}/auth/google/redirect`;
   };
 
   return (
     <>
-      <h1 className="text-2xl font-serif text-primary-500">
+      <h1 className="text-xl md:text-2xl font-serif bold">
         {t("login:title", { appName: "Zone Next" })}
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="flex flex-col gap-5 w-[350px]">
+        <div className="flex flex-col gap-5 w-full md:w-[350px]">
           <FieldGroup>
             <FieldGroup.Label id="email" className="text-base font-normal">
               {t("general:email")}
@@ -100,6 +114,27 @@ export default function LoginForm() {
           >
             {t("general:login")}
           </button>
+          <button
+            type="button"
+            className="group h-12 px-6 border-2 border-gray-300 rounded-md transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
+            onClick={() => googleLogin()}
+          >
+            <div className="relative flex items-center space-x-4 justify-center">
+              <Image
+                width={20}
+                height={20}
+                src={"https://www.svgrepo.com/show/475656/google-color.svg"}
+                className="absolute left-0 w-5"
+                alt="google logo"
+              />
+              <span className="block w-max font-semibold tracking-wide text-gray-700 dark:text-white text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">
+                Continue with Google
+              </span>
+            </div>
+          </button>
+          {/* <button type="button" className="">
+            {t("general:google_login")}
+          </button> */}
         </div>
       </form>
     </>

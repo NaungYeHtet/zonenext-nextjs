@@ -102,8 +102,8 @@ export type User = {
 };
 
 export type ValidationErrors = {
-  [key: string]: string;
-}[];
+  [key: string]: string[];
+};
 
 export type API_PATH_TYPE =
   | typeof API_PATH_PROPERTY_FILTER
