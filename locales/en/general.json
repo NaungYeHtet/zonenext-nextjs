@@ -45,5 +45,6 @@
   "bathrooms": "Bathrooms",
   "otp": "One time passcode",
   "logout": "Logout",
-  "save": "Save"
+  "save": "Save",
+  "profile": "Profile"
 }
