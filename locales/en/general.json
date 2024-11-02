@@ -46,5 +46,7 @@
   "otp": "One time passcode",
   "logout": "Logout",
   "save": "Save",
-  "profile": "Profile"
+  "profile": "Profile",
+  "login_title": "Login to {{appName}}",
+  "signup_title": "Sign up to {{appName}}"
 }

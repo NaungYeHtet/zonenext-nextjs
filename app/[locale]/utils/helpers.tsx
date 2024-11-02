@@ -98,8 +98,6 @@ export async function fetchApi({
     );
   }
 
-  console.log(requestInit, url);
-
   const response = await fetch(url, requestInit);
 
   const responseData = await response.json();
@@ -117,6 +115,6 @@ export async function fetchApi({
     }
   }
 
-  console.log("ERROR >>> ", responseData, response.status);
+  console.error("ERROR >>> ", responseData, response.status);
   return responseData;
 }

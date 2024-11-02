@@ -45,21 +45,22 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = Cookies.get(TOKEN_NAME);
     setIsLoggedIn(!isEmpty(token));
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     async function fetchUser() {
-      const { data } = await fetchApi({
-        method: "GET",
-        path: API_PATH_PROFILE,
-        body: {
-          language: "en",
-        },
-        requireAuth: true,
-      });
-      setUser(data.user);
+      if (!user) {
+        const { data } = await fetchApi({
+          method: "GET",
+          path: API_PATH_PROFILE,
+          body: {
+            language: "en",
+          },
+          requireAuth: true,
+        });
+        setUser(data.user);
+      }
     }
-
     const token = Cookies.get(TOKEN_NAME);
     if (token) {
       fetchUser();

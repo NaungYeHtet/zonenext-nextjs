@@ -49,10 +49,10 @@ export default async function SectionFeaturedListing({
             0: {
               slidesPerView: 1,
             },
-            865: {
+            1200: {
               slidesPerView: 2,
             },
-            1000: {
+            1400: {
               slidesPerView: 3,
             },
           }}

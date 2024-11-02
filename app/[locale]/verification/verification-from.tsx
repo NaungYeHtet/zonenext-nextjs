@@ -70,6 +70,7 @@ export default function VerficationForm() {
         ...data,
         language: i18n.language,
       },
+      requireAuth: true,
     });
 
     if (response.status === 400) {
@@ -88,6 +89,7 @@ export default function VerficationForm() {
     await fetchApi({
       method: "POST",
       path: API_PATH_EMAIL_VERIFICATION_NOTI,
+      requireAuth: true,
     });
 
     toast.info(t("verification:email_notification_sent"));

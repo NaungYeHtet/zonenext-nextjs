@@ -1,6 +1,9 @@
 import { isEmpty } from "lodash";
 import { NextRequest } from "next/server";
 import { TOKEN_NAME } from "../utils/constants";
+import { fetchApi } from "../utils/helpers";
+import { API_PATH_LOGOUT } from "../utils/api-paths";
+import Cookies from "js-cookie";
 
 export const guestRoutes = ["login", "sign-up"];
 export const protectedRoutes = ["profile", "verification"];
@@ -16,12 +19,25 @@ const getRelativePath = (pathname: string): string => {
 };
 
 export const isRouteProtected = (pathname: string): boolean => {
-  const relativePath = getRelativePath(pathname);
-  console.log("relativePath", relativePath);
+  const relativePath = getRelativePath(pathname).replace(/^\/+/, "");
   return protectedRoutes.some((route) => relativePath.startsWith(route));
 };
 
 export const isRouteGuest = (pathname: string): boolean => {
   const relativePath = getRelativePath(pathname);
   return guestRoutes.some((route) => relativePath.startsWith(route));
+};
+
+export const logout = async () => {
+  const { status, message } = await fetchApi({
+    method: "POST",
+    path: API_PATH_LOGOUT,
+    requireAuth: true,
+  });
+
+  if (status == 200) {
+    Cookies.remove(TOKEN_NAME);
+  } else {
+    console.log(message);
+  }
 };

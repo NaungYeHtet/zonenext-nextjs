@@ -1,15 +1,4 @@
-import {
-  API_PATH_EMAIL_VERIFICATION_NOTI,
-  API_PATH_EMAIL_VERIFY,
-  API_PATH_GROUP,
-  API_PATH_INQUIRY,
-  API_PATH_LOGIN,
-  API_PATH_LOGOUT,
-  API_PATH_PROFILE,
-  API_PATH_PROPERTY,
-  API_PATH_PROPERTY_FILTER,
-  API_PATH_PROPERTY_FILTER_TOWNSHIP,
-} from "../utils/api-paths";
+import * as apiPaths from "../utils/api-paths";
 
 export type ResponseData<DataType> = {
   data: DataType;
@@ -66,17 +55,12 @@ export type Option = {
   value: string;
 };
 
-export type Price = {
-  rent?: string;
-  sell?: string;
-};
-
 export type Property = {
   slug: string;
   title: string;
   description: string;
   cover_image: string;
-  price: Price;
+  price: string;
   address: string;
   gallery: array[];
   square_feet: string;
@@ -106,15 +90,16 @@ export type ValidationErrors = {
 };
 
 export type API_PATH_TYPE =
-  | typeof API_PATH_PROPERTY_FILTER
-  | typeof API_PATH_PROPERTY_FILTER_TOWNSHIP
-  | typeof API_PATH_PROPERTY
-  | typeof API_PATH_GROUP
-  | typeof API_PATH_INQUIRY
-  | typeof API_PATH_PROFILE
-  | typeof API_PATH_EMAIL_VERIFY
-  | typeof API_PATH_LOGIN
-  | typeof API_PATH_LOGOUT
-  | typeof API_PATH_EMAIL_VERIFICATION_NOTI;
+  | typeof apiPaths.API_PATH_PROPERTY_FILTER
+  | typeof apiPaths.API_PATH_PROPERTY_FILTER_TOWNSHIP
+  | typeof apiPaths.API_PATH_PROPERTY
+  | typeof apiPaths.API_PATH_GROUP
+  | typeof apiPaths.API_PATH_INQUIRY
+  | typeof apiPaths.API_PATH_PROFILE
+  | typeof apiPaths.API_PATH_EMAIL_VERIFY
+  | typeof apiPaths.API_PATH_SIGNUP
+  | typeof apiPaths.API_PATH_LOGIN
+  | typeof apiPaths.API_PATH_LOGOUT
+  | typeof apiPaths.API_PATH_EMAIL_VERIFICATION_NOTI;
 
 export type PROPERTY_LIST_TYPE = "for-sale" | "for-rent" | "newest";

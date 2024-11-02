@@ -74,7 +74,7 @@ export default function Navbar() {
       </section>
       <div
         className={cn(
-          "compact-container py-4 md:pt-3 hidden md:block bg-primary-100 w-full text-lg text-gray-900 hover:text-gray-600 transition-colors md:justify-between",
+          "compact-container py-4 md:pt-3 hidden md:block bg-primary-900 w-full text-lg text-gray-100 transition-colors md:justify-between",
           {
             "flex inset-0 w-full h-screen top-0 left-0 justify-around z-50 fixed":
               showNavbar,

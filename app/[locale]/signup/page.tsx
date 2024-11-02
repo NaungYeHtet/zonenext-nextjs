@@ -3,9 +3,10 @@ import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
 import ProviderClient from "../components/providers/provider-client";
-import LoginForm from "./login-form";
+import LoginForm from "./signup-form";
+import SignupForm from "./signup-form";
 
-const i18nNamespaces = ["general"];
+const i18nNamespaces = ["general", "login"];
 
 type PageProps = {
   params: {
@@ -13,7 +14,7 @@ type PageProps = {
   };
 };
 
-export default async function Login({ params: { locale } }: PageProps) {
+export default async function Signup({ params: { locale } }: PageProps) {
   const { resources } = await initTranslations(locale, i18nNamespaces);
 
   return (
@@ -28,7 +29,7 @@ export default async function Login({ params: { locale } }: PageProps) {
         </div>
         <main className="compact-container flex flex-col h-full justify-center items-center py-7">
           <ProviderClient>
-            <LoginForm />
+            <SignupForm />
           </ProviderClient>
         </main>
         <div>

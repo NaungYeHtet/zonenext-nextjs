@@ -6,6 +6,7 @@ import homeBuyImg from "@/public/images/home-buy.jpg";
 import homeRentImg from "@/public/images/home-rent.jpg";
 import { useTranslation } from "react-i18next";
 import TranslateText from "./components/translate-text";
+import dynamic from "next/dynamic";
 
 type CardImageType = {
   url: StaticImageData;
@@ -18,19 +19,9 @@ type CardType = {
   text: string;
 };
 
-const Card = ({ image, title, text }: CardType) => {
-  return (
-    <div className="w-72 md:w-[350px] bg-white p-6 shadow-xl shadow-primary-200 border">
-      <Image
-        className="bg-cover bg-no-repeat"
-        src={image.url}
-        alt={image.alt}
-      />
-      <p className="text-2xl my-5">{title}</p>
-      <p className="text-sm font-extralight text-gray-500">{text}</p>
-    </div>
-  );
-};
+const LazyCard = dynamic(() => import("./components/cards/welcome-card"), {
+  ssr: true,
+});
 
 export default function SectionWelcome() {
   const { t } = useTranslation();
@@ -46,17 +37,17 @@ export default function SectionWelcome() {
         <TranslateText>default:welcome_paragraph</TranslateText>
       </p>
       <div className="flex flex-col md:flex-row gap-3 md:gap-7 lg:gap-10 mt-5 justify-center items-center">
-        <Card
+        <LazyCard
           image={{ url: homeSellImg, alt: "Selling" }}
           title="Selling"
           text=" Sell properties by contacting company agents and posting in a day"
         />
-        <Card
+        <LazyCard
           image={{ url: homeBuyImg, alt: "Buying" }}
           title="Buying"
           text=" Sell properties by contacting company agents and posting in a day"
         />
-        <Card
+        <LazyCard
           image={{ url: homeRentImg, alt: "Renting" }}
           title="Renting"
           text=" Rent properties by contacting company agents and posting in a day"

@@ -13,7 +13,7 @@ const NavbarItem = ({ text, path, active }: NavbarItemProps) => (
       className={cn(
         "focus:ring-purple-300 focus:outline-none focus:ring-2 focus:ring-offset-2",
         {
-          "bg-secondary-200 border-b border-secondary-600": active,
+          "bg-primary-500 border-b border-secondary-600": active,
         }
       )}
       href={path}

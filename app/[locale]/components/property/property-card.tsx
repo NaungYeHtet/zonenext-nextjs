@@ -86,7 +86,7 @@ export default function PropertyCard({
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[330px] lg:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
+    <div className="w-[330px] md:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
       <div className="relative group">
         <PropertyCardImage
           images={[cover_image, ...gallery]}
@@ -98,9 +98,8 @@ export default function PropertyCard({
 
           {/* Price Text */}
           <span className="relative z-10 inline-flex justify-between w-full">
-            <span className="inline-flex flex-col text-sm font-bold text-left">
-              <b>{price.rent}</b>
-              <b>{price.sell}</b>
+            <span className="inline-flex flex-col text-sm text-left">
+              <b>{price}</b>
             </span>
 
             {/* <span>After</span> */}
@@ -150,8 +149,7 @@ export function PropertyCardCompact({
         {/* Price Text */}
         <span className="relative z-10 inline-flex justify-between w-full">
           <span className="inline-flex flex-col text-sm gap-1 font-bold text-left">
-            <b>{price.rent}</b>
-            <b>{price.sell}</b>
+            <b>{price}</b>
             <span className="truncate w-[240px] text-xs">{address}</span>
           </span>
         </span>
