@@ -21,11 +21,7 @@ export function PropertySidebar({
             navigation={{}}
           >
             {items.map((property: Property) => (
-              <PropertyCardCompact
-                property={property}
-                key={property.slug}
-                pathname="/for-sale"
-              />
+              <PropertyCardCompact property={property} key={property.slug} />
             ))}
           </CarouselSlider>
         </SidebarSection.Item>

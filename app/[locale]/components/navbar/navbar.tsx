@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import NavbarItem from "./navbar-item";
 import NavbarAuth from "./navbar-auth";
-import ProviderClient from "../providers/provider-client";
+import AuthProviderClient from "../providers/provider-client";
 
 const navbarItems = [
   {
@@ -43,7 +43,7 @@ type ShowNavbarButtonProps = {
 const ShowNavbarButton = ({ setShowNavbar }: ShowNavbarButtonProps) => {
   return (
     <button
-      className="block md:hidden ml-1 mr-3"
+      className="ml-1 mr-3 block md:hidden"
       onClick={() => setShowNavbar(true)}
     >
       <CiMenuBurger />
@@ -66,23 +66,23 @@ export default function Navbar() {
 
   return (
     <nav className="">
-      <section className="p-1 py-2 flex md:p-3 bg-white w-full md:shadow-none shadow-sm border-b border-b-primary-50">
+      <section className="flex w-full border-b border-b-primary-50 bg-white p-1 py-2 shadow-sm md:p-3 md:shadow-none">
         <ShowNavbarButton setShowNavbar={setShowNavbar} />
-        <ProviderClient>
+        <AuthProviderClient>
           <NavbarAuth />
-        </ProviderClient>
+        </AuthProviderClient>
       </section>
       <div
         className={cn(
-          "compact-container py-4 md:pt-3 hidden md:block bg-primary-900 w-full text-lg text-gray-100 transition-colors md:justify-between",
+          "compact-container hidden w-full bg-primary-900 py-4 text-lg text-gray-100 transition-colors md:block md:justify-between md:pt-3",
           {
-            "flex inset-0 w-full h-screen top-0 left-0 justify-around z-50 fixed":
+            "fixed inset-0 left-0 top-0 z-50 flex h-screen w-full justify-around":
               showNavbar,
-          }
+          },
         )}
       >
         <button
-          className="absolute md:hidden right-5"
+          className="absolute right-5 md:hidden"
           onClick={() => setShowNavbar(false)}
         >
           <TfiClose />
@@ -90,10 +90,10 @@ export default function Navbar() {
         <ul
           className={cn(
             true &&
-              "flex flex-col font-serif md:flex-row w-full md:justify-between",
+              "flex w-full flex-col font-serif md:flex-row md:justify-between",
             {
-              "justify-around h-full": showNavbar,
-            }
+              "h-full justify-around": showNavbar,
+            },
           )}
         >
           {navbarItems.map(({ path, text }) => (

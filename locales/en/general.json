@@ -48,5 +48,12 @@
   "save": "Save",
   "profile": "Profile",
   "login_title": "Login to {{appName}}",
-  "signup_title": "Sign up to {{appName}}"
+  "signup_title": "Sign up to {{appName}}",
+  "call": "Call",
+  "id": "ID",
+  "message": "Message",
+  "inquiry_message_default": "Hello, I am interested in {{title}}",
+  "rate": "Rate",
+  "rating": "Rating",
+  "review": "Review"
 }

@@ -57,6 +57,8 @@ export type Option = {
 
 export type Property = {
   slug: string;
+  code: string;
+  type: string;
   title: string;
   description: string;
   cover_image: string;
@@ -68,6 +70,7 @@ export type Property = {
   bedrooms_count: number;
   bathrooms_count: number;
   posted_at: string;
+  amenities: string[];
 };
 
 export type PropertyFilterParams = {

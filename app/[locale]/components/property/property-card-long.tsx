@@ -20,7 +20,6 @@ export default function PropertyCardLong({
     square_feet,
     gallery,
   },
-  pathname,
 }: PropertyCardProps) {
   return (
     <div className="bg-white w-[900px]">
@@ -31,14 +30,13 @@ export default function PropertyCardLong({
         <div className="flex flex-col justify-between w-full px-5 pt-4 pb-7">
           <span className="col-span-2">
             <h4 className="pr-5 mb-3 text-wrap">
-              <Link href={`${pathname}/${slug}`}>{title}</Link>
+              <Link href={`/listing/${slug}`}>{title}</Link>
             </h4>
             <p className="text-sm text-gray-500">{address}</p>
           </span>
 
           <span className="inline-flex flex-row w-full gap-3">
-            <b>{price.rent}</b>
-            <b>{price.sell}</b>
+            <b>{price}</b>
           </span>
 
           <span className="inline-flex flex-row w-full gap-3">

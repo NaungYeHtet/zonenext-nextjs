@@ -2,7 +2,7 @@ import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
-import ProviderClient from "../components/providers/provider-client";
+import AuthProviderClient from "../components/providers/provider-client";
 import LoginForm from "./login-form";
 
 const i18nNamespaces = ["general"];
@@ -22,14 +22,14 @@ export default async function Login({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex flex-col h-screen">
+      <div className="flex h-screen flex-col">
         <div className="">
           <Navbar />
         </div>
-        <main className="compact-container flex flex-col h-full justify-center items-center py-7">
-          <ProviderClient>
+        <main className="compact-container flex h-full flex-col items-center justify-center py-7">
+          <AuthProviderClient>
             <LoginForm />
-          </ProviderClient>
+          </AuthProviderClient>
         </main>
         <div>
           <BaseFooter />

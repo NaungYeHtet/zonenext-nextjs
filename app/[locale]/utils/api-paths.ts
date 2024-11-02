@@ -1,7 +1,9 @@
 export const API_PATH_PROPERTY_FILTER_TOWNSHIP = "/property-filters/townships";
 export const API_PATH_PROPERTY_FILTER = "/property-filters";
 export const API_PATH_INQUIRY = "/inquiry";
+export const API_PATH_INQUIRY_PROPERTY = "/inquiry/property";
 export const API_PATH_PROPERTY = "/properties";
+export const API_PATH_REVIEW_PROPERTY = "/review/property";
 export const API_PATH_GROUP = "/groups";
 export const API_PATH_SIGNUP = "/signup";
 export const API_PATH_LOGIN = "/login";

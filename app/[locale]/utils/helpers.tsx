@@ -14,7 +14,7 @@ export function sanitizeObject(obj?: object) {
 
   return _.omitBy(
     obj,
-    (v) => v === null || v === undefined || v === ""
+    (v) => v === null || v === undefined || v === "",
   ) as Record<string, string>;
 }
 
@@ -44,7 +44,7 @@ function redirectToRoute(route: string) {
   }
 
   return NextResponse.redirect(
-    new URL(route, process.env.NEXT_PUBLIC_SITE_URL)
+    new URL(route, process.env.NEXT_PUBLIC_SITE_URL),
   );
 }
 
@@ -52,7 +52,7 @@ type FetchMethod = "GET" | "POST";
 
 type FetchAPIParams = {
   method: FetchMethod;
-  path: API_PATH_TYPE;
+  path: string;
   body?: object;
   options?: object;
   requireAuth?: boolean;
@@ -80,8 +80,8 @@ export async function fetchApi({
 
   const requestInit: RequestInit = {
     method,
-    ...options,
     headers,
+    ...options,
   };
 
   let url = `${process.env.NEXT_PUBLIC_API_PATH}${path}`;
@@ -94,7 +94,7 @@ export async function fetchApi({
     }
   } else {
     requestInit.body = JSON.stringify(
-      sanitizeObject(body) as unknown as BodyInit
+      sanitizeObject(body) as unknown as BodyInit,
     );
   }
 
@@ -106,6 +106,10 @@ export async function fetchApi({
   if (response.ok) {
     return responseData;
   } else {
+    if (response.status == 404) {
+      redirectToRoute("/404");
+    }
+
     if (response.status == 401) {
       removeToken();
       redirectToRoute("/login");

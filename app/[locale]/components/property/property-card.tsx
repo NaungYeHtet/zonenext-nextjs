@@ -10,7 +10,6 @@ import clsx from "clsx";
 
 export type PropertyCardProps = {
   property: Property;
-  pathname: string;
 };
 
 type IconDetailType = {

@@ -4,8 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Select, { MultiValue } from "react-select";
 import { Option, ValidationErrors } from "../../lib";
-import { ReactNode, useState } from "react";
-import { cn, fetchApi, sanitizeObject } from "../../utils/helpers";
+import { fetchApi } from "../../utils/helpers";
 import {
   API_PATH_INQUIRY,
   API_PATH_PROPERTY_FILTER_TOWNSHIP,
@@ -15,7 +14,6 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import AsyncSelect from "../async-select";
 import FieldGroup from "../field-wrapper";
-import { Field } from "@headlessui/react";
 
 type Inputs = {
   first_name: string;
@@ -43,46 +41,6 @@ type InquiryFormProps = {
     contact_methods: MultiValue<Option>;
     contact_times: MultiValue<Option>;
   };
-};
-
-type FieldWrapperProps = {
-  children: ReactNode;
-  id: string;
-  label?: string;
-  errorMsg?: string;
-};
-
-const FieldWrapper = ({ children, label, id, errorMsg }: FieldWrapperProps) => {
-  const { t } = useTranslation();
-  return (
-    <div
-      className={cn("w-full", {
-        "broder-2 border-red-400": errorMsg,
-      })}
-    >
-      {label ? (
-        <label className="text-sm" htmlFor={id}>
-          {label}
-        </label>
-      ) : (
-        ""
-      )}
-      <div
-        className={cn("border-2 border-transparent", {
-          "border-2 border-red-400 ": errorMsg,
-        })}
-      >
-        {children}
-      </div>
-      {errorMsg ? (
-        <p className="text-red-500 text-sm mt-1" role="alert">
-          {t(errorMsg)}
-        </p>
-      ) : (
-        ""
-      )}
-    </div>
-  );
 };
 
 const schema = yup
@@ -153,8 +111,6 @@ export default function InquiryForm({
       },
     });
 
-    console.log(response);
-
     if (response.status == 422) {
       const validationErrors: ValidationErrors = response.errors;
       for (const [key, value] of Object.entries(validationErrors)) {
@@ -169,10 +125,10 @@ export default function InquiryForm({
   };
 
   return (
-    <div className="bg-white p-7 md:w-[550px] md:self-end text-gray-600">
+    <div className="bg-white p-7 text-gray-600 md:w-[550px] md:self-end">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+        <div className="mt-5 flex flex-col gap-5">
+          <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="interest">
                 {t("default:inquiry_interest_label")}
@@ -240,7 +196,7 @@ export default function InquiryForm({
                 <input
                   type="checkbox"
                   id="isOwner"
-                  className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 focus:ring-2 dark:border-gray-600"
+                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:focus:ring-primary-600"
                   {...register("is_owner")}
                   aria-invalid={errors.is_owner ? "true" : "false"}
                 />
@@ -253,7 +209,7 @@ export default function InquiryForm({
             ""
           )}
 
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+          <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="firstName">
                 {t("general:first_name")}
@@ -289,7 +245,7 @@ export default function InquiryForm({
               </FieldGroup.ErrorMessage>
             </FieldGroup>
           </div>
-          <div className="flex flex-col md:flex-row justify-center items-start h-full gap-2">
+          <div className="flex h-full flex-col items-start justify-center gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="phone">
                 {t("general:phone")}
@@ -307,7 +263,7 @@ export default function InquiryForm({
                 {errors.phone?.message}
               </FieldGroup.ErrorMessage>
             </FieldGroup>
-            <span className="text-gray-500 self-center mt-3 md:rotate-90">
+            <span className="mt-3 self-center text-gray-500 md:rotate-90">
               OR
             </span>
             <FieldGroup>
@@ -329,7 +285,7 @@ export default function InquiryForm({
             </FieldGroup>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center items-start h-full gap-2">
+          <div className="flex h-full flex-col items-start justify-center gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="townshipForm">
                 {t("general:choose_township")}
@@ -366,7 +322,7 @@ export default function InquiryForm({
                 <textarea
                   id="address"
                   rows={2}
-                  className="form-control-primary bg-gray-100 border-gray-300"
+                  className="form-control-primary border-gray-300 bg-gray-100"
                   {...register("address")}
                   aria-invalid={errors.address ? "true" : "false"}
                 />
@@ -377,7 +333,7 @@ export default function InquiryForm({
             </FieldGroup>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+          <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="bedrooms">
                 {t("default:bedrooms")}
@@ -442,7 +398,7 @@ export default function InquiryForm({
             </FieldGroup>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+          <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="maxPrice">
                 {t("general:max_price")}
@@ -480,7 +436,7 @@ export default function InquiryForm({
               </FieldGroup.ErrorMessage>
             </FieldGroup>
           </div>
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+          <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
               <FieldGroup.Label id="bedrooms">
                 {t("general:bedrooms")}
@@ -519,11 +475,10 @@ export default function InquiryForm({
             </FieldGroup>
           </div>
 
-          <FieldWrapper
-            id="sendUpdates"
-            label={t("default:inquiry_send_updates_label")}
-            errorMsg={errors.send_updates?.message}
-          >
+          <FieldGroup>
+            <FieldGroup.Label id="sendUpdates">
+              {t("default:inquiry_send_updates_label")}
+            </FieldGroup.Label>
             <FieldGroup.Wrapper errorMsg={errors.send_updates?.message}>
               <input
                 type="checkbox"
@@ -535,11 +490,14 @@ export default function InquiryForm({
                 defaultChecked
               />
             </FieldGroup.Wrapper>
-          </FieldWrapper>
+            <FieldGroup.ErrorMessage>
+              {errors.send_updates?.message}
+            </FieldGroup.ErrorMessage>
+          </FieldGroup>
 
           <button
             type="submit"
-            className="py-1.5 justify-center col-span-1 rounded-md sm:col-span-4 md:col-span-4 w-full mb-2 text-lg font-medium text-white focus:outline-none bg-purple-500 border border-gray-200 hover:bg-purple-800 transition-colors focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white inline-flex items-center gap-1 dark:hover:bg-gray-700"
+            className="col-span-1 mb-2 inline-flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-purple-500 py-1.5 text-lg font-medium text-white transition-colors hover:bg-purple-800 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:col-span-4 md:col-span-4"
           >
             {t("general:submit")}
           </button>
