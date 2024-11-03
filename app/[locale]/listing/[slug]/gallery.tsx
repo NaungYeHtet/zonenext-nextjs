@@ -7,6 +7,9 @@ import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Custom icons
 
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 import { LuEye } from "react-icons/lu";
 import { fetchApi } from "../../utils/helpers";
 import { API_PATH_VIEW_PROPERTY } from "../../utils/api-paths";

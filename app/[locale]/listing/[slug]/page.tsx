@@ -3,23 +3,57 @@ import BaseFooter from "../../components/footer";
 import Navbar from "../../components/navbar/navbar";
 import { IconDetail } from "../../components/property/property-card";
 import TranslationsProvider from "../../components/translation-provider";
-import { Property as PropertyType } from "../../lib";
+import { Option, Property as PropertyType } from "../../lib";
 import { API_PATH_INQUIRY, API_PATH_PROPERTY } from "../../utils/api-paths";
 import { cn, fetchApi } from "../../utils/helpers";
 import initTranslations from "../../utils/i18n";
-import Gallery from "./gallery";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
-import InquiryForm from "./inquiry-form";
 import TranslateText from "../../components/translate-text";
 import AuthProviderClient from "../../components/providers/provider-client";
 import RatingForm from "./rating-form";
+import Breadcrumb from "../../components/breadcumb/breadcrumb";
+import dynamic from "next/dynamic";
+import GallerySkeleton from "./gallery-skeleton";
+import InquiryFormSkeleton from "./inquiry-form-skeleton";
 
 const i18nNamespaces = ["general", "validation", "default", "rating"];
+
+const Gallery = dynamic(() => import("./gallery"), {
+  ssr: false,
+  loading: () => <GallerySkeleton />,
+});
+
+const InquiryForm = dynamic(() => import("./inquiry-form"), {
+  ssr: false,
+  loading: () => <InquiryFormSkeleton />,
+});
+
+const BreadcrumbSection = ({
+  type,
+  acquisition_type,
+  title,
+}: {
+  type: Option;
+  acquisition_type: string;
+  title: string;
+}) => {
+  return (
+    <Breadcrumb
+      items={[
+        { label: "home_nav", path: "/" },
+        {
+          label: type.label,
+          path: `/search/${acquisition_type}/type/${type.value}`,
+        },
+        {
+          label: title,
+          path: "#",
+        },
+      ]}
+    />
+  );
+};
 
 const TitleSection = ({
   property: { title, address, price },
@@ -35,7 +69,7 @@ const TitleSection = ({
         className,
       )}
     >
-      <div>
+      <div className="mt-9 md:mt-0">
         <h3 className="text-wrap font-serif text-xl font-semibold text-gray-700 lg:text-2xl">
           {title}
         </h3>
@@ -83,6 +117,7 @@ export default async function Property({
   const {
     gallery,
     type,
+    acquisition_type,
     title,
     bedrooms_count,
     bathrooms_count,
@@ -91,6 +126,10 @@ export default async function Property({
     description,
     amenities,
     views_count,
+    agent_image,
+    agent_name,
+    agent_phone,
+    agent_email,
   }: PropertyType = data.property;
 
   return (
@@ -104,7 +143,14 @@ export default async function Property({
           <Navbar />
         </div>
         <main className="min-h-screen bg-gray-100">
-          <div className="md:compact-container flex h-full flex-col gap-10 pt-0 md:flex-row md:py-7">
+          <div className="md:compact-container mt-5 hidden md:flex">
+            <BreadcrumbSection
+              type={type}
+              acquisition_type={acquisition_type}
+              title={title}
+            />
+          </div>
+          <div className="md:compact-container flex h-full flex-col gap-10 pt-0 md:flex-row md:pb-7">
             <div className="flex h-full w-full flex-col md:w-4/6">
               {/* Content section */}
               <div className="rounded-md bg-white pb-4 md:pt-8">
@@ -125,6 +171,14 @@ export default async function Property({
                 />
               </div>
 
+              <div className="md:compact-container mt-5 flex md:hidden">
+                <BreadcrumbSection
+                  type={type}
+                  acquisition_type={acquisition_type}
+                  title={title}
+                />
+              </div>
+
               <section className="mt-7 w-full bg-white p-7">
                 <div className="inline-flex w-full justify-between">
                   <h3 className="text-2xl font-semibold">Overview</h3>
@@ -137,7 +191,7 @@ export default async function Property({
                 </div>
                 <div className="mt-3 grid w-full grid-cols-2 flex-row justify-between gap-5 p-1 text-gray-600 md:grid-cols-4">
                   <p className="inline-flex w-full items-center justify-center text-center text-lg">
-                    {type}
+                    {type.label}
                   </p>
                   <IconDetail text="general:bedroom" value={bedrooms_count}>
                     <LuBedSingle className="text-2xl" />
@@ -188,12 +242,16 @@ export default async function Property({
             </div>
 
             {/* Inquiry Form section */}
-            <section className="sticky top-10 h-full w-full rounded-md bg-white p-3 shadow-lg md:w-2/6">
+            <section className="sticky top-10 h-full w-full rounded-md bg-white shadow-lg md:w-2/6">
               <AuthProviderClient>
                 <InquiryForm
                   options={inquiryData.data}
                   propertyCode={code}
                   propertyTitle={title}
+                  agentImage={agent_image}
+                  agentPhone={agent_phone}
+                  agentName={agent_name}
+                  agentEmail={agent_email}
                 />
               </AuthProviderClient>
             </section>

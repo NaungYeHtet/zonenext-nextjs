@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { CollectionData, Property, PropertyFilterParams } from "../../lib";
 import Pagination from "../pagination";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { API_PATH_PROPERTY } from "../../utils/api-paths";
 import { useTranslation } from "react-i18next";
 import { fetchApi } from "../../utils/helpers";
@@ -17,7 +17,7 @@ type PropertyHeaderProps = {
 
 function PropertyHeader({ total }: PropertyHeaderProps) {
   return (
-    <div className="flex justify-between mb-3">
+    <div className="m-3 flex justify-between">
       <span className="text-sm text-gray-500">{total} Properties</span>
       <span className="text-sm text-gray-500">Order here</span>
     </div>
@@ -30,7 +30,7 @@ type PaginationSectionProps = {
 
 function PaginationSection({ links }: PaginationSectionProps) {
   return (
-    <div className="py-5 flex justify-center">
+    <div className="flex justify-center py-5">
       <Pagination links={links} />
     </div>
   );
@@ -38,12 +38,12 @@ function PaginationSection({ links }: PaginationSectionProps) {
 
 export const LoadingSkeleton = () => (
   <>
-    <div className="flex-col hidden lg:flex gap-7">
+    <div className="hidden flex-col gap-7 lg:flex">
       {[...Array(6)].map((_, index) => (
         <PropertyCardLongSkeleton key={index} />
       ))}
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 items-center lg:hidden gap-7">
+    <div className="grid grid-cols-1 items-center gap-7 md:grid-cols-2 lg:hidden">
       {[...Array(6)].map((_, index) => (
         <PropertyCardSkeleton key={index} />
       ))}
@@ -97,7 +97,7 @@ function PropertyList({
 
   if (!properties) {
     return (
-      <div className="relative flex-grow z-0">
+      <div className="relative z-0 flex-grow">
         <LoadingSkeleton />
       </div>
     );
@@ -108,11 +108,11 @@ function PropertyList({
   }
 
   return (
-    <div className="relative flex-grow z-0">
+    <section className="relative z-0 flex-grow">
       <PropertyHeader total={properties.total} />
       <PropertyListView properties={properties.data} pathname={pathname} />
       <PaginationSection links={properties.links} />
-    </div>
+    </section>
   );
 }
 

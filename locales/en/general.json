@@ -55,5 +55,6 @@
   "inquiry_message_default": "Hello, I am interested in {{title}}",
   "rate": "Rate",
   "rating": "Rating",
-  "review": "Review"
+  "review": "Review",
+  "submit_inquiry": "Submit Inquiry"
 }

@@ -1,8 +1,15 @@
 import Image, { StaticImageData } from "next/image";
 import TranslateText from "./components/translate-text";
-import InquiryForm from "./components/inquiry/inquiry-form";
 import { fetchApi } from "./utils/helpers";
 import { API_PATH_INQUIRY } from "./utils/api-paths";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+import InquiryFormSkeletion from "./components/inquiry/inquiry-form-skeleton";
+
+const InquiryForm = dynamic(() => import("./components/inquiry/inquiry-form"), {
+  ssr: false, // Only load on the client side
+  loading: () => <InquiryFormSkeletion />,
+});
 
 type CardImageType = {
   url: StaticImageData;
@@ -29,19 +36,20 @@ export default async function SectionInquiry({ locale }: SectionInquiryProps) {
 
   return (
     <section
-      className="bg-fixed backdrop-grayscale bg-no-repeat bg-cover bg-center
-		bg-[url('../../public/images/inquiry-bg.jpg')]"
+      className="bg-[url('../../public/images/inquiry-bg.jpg')] bg-cover bg-fixed bg-center bg-no-repeat backdrop-grayscale"
       aria-label="Types"
     >
-      <div className="bg-secondary-900/80 backdrop-grayscale-1 backdrop-blur-sm w-full h-full px-4 md:px-4 py-20 text-white  text-center">
-        <h2 className="text-xl md:text-2xl mb-3">
+      <div className="backdrop-grayscale-1 h-full w-full bg-secondary-900/80 px-4 py-20 text-center text-white backdrop-blur-sm md:px-4">
+        <h2 className="mb-3 text-xl md:text-2xl">
           <TranslateText>default:inquiry</TranslateText>
         </h2>
-        <p className="text-sm md:text-md">
+        <p className="md:text-md text-sm">
           What are you looking for? Let us assist you in more efficient way.
         </p>
-        <div className="flex flex-col w-full md:px-32 py-3 text-left">
-          <InquiryForm options={data} />
+        <div className="flex w-full flex-col py-3 text-left md:px-32">
+          <Suspense fallback={<InquiryFormSkeletion />}>
+            <InquiryForm options={data} />
+          </Suspense>
         </div>
       </div>
     </section>

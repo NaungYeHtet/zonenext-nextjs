@@ -58,7 +58,8 @@ export type Option = {
 export type Property = {
   slug: string;
   code: string;
-  type: string;
+  type: Option;
+  acquisition_type: string;
   title: string;
   description: string;
   cover_image: string;
@@ -72,6 +73,10 @@ export type Property = {
   posted_at: string;
   amenities: string[];
   views_count: number;
+  agent_name: string;
+  agent_phone: string;
+  agent_image: string;
+  agent_email: string;
 };
 
 export type PropertyFilterParams = {

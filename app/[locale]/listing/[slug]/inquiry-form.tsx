@@ -13,6 +13,8 @@ import { PiPhoneCall } from "react-icons/pi";
 import Select, { MultiValue } from "react-select";
 import { useContext } from "react";
 import { AuthContext } from "../../components/providers/auth-context";
+import TranslateText from "../../components/translate-text";
+import Image from "next/image";
 
 type Inputs = {
   name: string;
@@ -26,6 +28,10 @@ type Inputs = {
 type InquiryFormProps = {
   propertyCode: string;
   propertyTitle: string;
+  agentImage: string;
+  agentPhone: string;
+  agentName: string;
+  agentEmail: string;
   options: {
     interests: MultiValue<Option>;
   };
@@ -45,6 +51,10 @@ const schema = yup
 export default function InquiryForm({
   propertyCode,
   propertyTitle,
+  agentImage,
+  agentPhone,
+  agentName,
+  agentEmail,
   options: { interests },
 }: InquiryFormProps) {
   const authContext = useContext(AuthContext);
@@ -104,6 +114,23 @@ export default function InquiryForm({
 
   return (
     <div className="w-full bg-white p-7 text-gray-600 md:self-end">
+      <h3 className="text-2xl font-semibold">
+        <TranslateText>submit_inquiry</TranslateText>
+      </h3>
+      <div className="my-5 flex flex-row items-center justify-center gap-2">
+        <div className="rounded-full border border-gray-400">
+          <Image
+            src={agentImage}
+            alt={`Agent image`}
+            width={40}
+            height={40}
+            className="h-auto w-auto rounded-full object-cover"
+          />
+        </div>
+        <div>
+          <p className="text-xl">{agentName}</p>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-5 flex flex-col gap-3 md:gap-5">
           <FieldGroup>
@@ -232,13 +259,14 @@ export default function InquiryForm({
           >
             {t("general:submit")}
           </button>
-          <button
+          <a
+            href={`tel:${agentPhone}`}
             type="button"
             className="mb-2 inline-flex w-full items-center justify-center gap-3 rounded-md border border-gray-200 bg-primary-500 py-1.5 text-lg font-medium text-white transition-colors hover:bg-primary-800 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
           >
             <PiPhoneCall />
             {t("general:call")}
-          </button>
+          </a>
         </div>
       </form>
     </div>

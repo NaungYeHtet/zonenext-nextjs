@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
@@ -44,7 +44,7 @@ export default async function Wrapper({ children, params }: LayoutProps) {
         </div>
         <main>
           <PropertyFilter filterParams={params} />
-          <div className="flex flex-col justify-between w-full gap-10 mt-3 compact-container xl:flex-row">
+          <div className="md:compact-container mt-3 flex w-full flex-col justify-between gap-10 xl:flex-row">
             <section aria-label="Property list section">
               <Breadcrumb
                 items={[

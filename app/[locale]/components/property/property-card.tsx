@@ -4,9 +4,14 @@ import { LuBedSingle } from "react-icons/lu";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
-import CarouselSlider from "../carousel-slider";
 import TranslateText from "../translate-text";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
+
+const CarouselSlider = dynamic(() => import("../carousel-slider"), {
+  ssr: false,
+  loading: () => <div></div>,
+});
 
 export type PropertyCardProps = {
   property: Property;
@@ -37,18 +42,16 @@ export const PropertyCardImage = ({
       navigation={{}}
     >
       {images.map((url, index) => (
-        <div
-          className="relative"
-          key={index}
-          style={{ width: "auto", maxWidth: "640px", height: "240px" }}
-        >
+        <div className="relative h-[250px] w-full" key={index}>
           <Image
             className={clsx(className, "aspec")}
             key={index}
             src={url}
             alt="Gallery"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "cover" }}
+            sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             // style={{ width: "auto", height: "280px" }} // Maintain aspect ratio
             priority
           />
@@ -85,19 +88,16 @@ export default function PropertyCard({
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[330px] md:w-[350px] flex flex-col shadow-lg bg-white my-4 rounded-md gap-3 h-[460px]">
-      <div className="relative group">
-        <PropertyCardImage
-          images={[cover_image, ...gallery]}
-          className="rounded-t-md"
-        />
-        <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 text-white rounded-b-md">
+    <div className="flex h-[460px] w-full flex-col gap-1 rounded-md bg-white shadow-lg">
+      <div className="group relative">
+        <PropertyCardImage images={[cover_image, ...gallery]} />
+        <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
+        <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">
           {/* Gradient shadow that smoothly spreads to the middle */}
 
           {/* Price Text */}
-          <span className="relative z-10 inline-flex justify-between w-full">
-            <span className="inline-flex flex-col text-sm text-left">
+          <span className="relative z-10 inline-flex w-full justify-between">
+            <span className="inline-flex flex-col text-left text-sm">
               <b>{price}</b>
             </span>
 
@@ -106,12 +106,12 @@ export default function PropertyCard({
         </div>
       </div>
 
-      <div className="flex flex-col justify-between h-full px-4 py-4 space-y-4 text-left">
+      <div className="flex h-full flex-col justify-around px-4 pb-7 pt-2 text-left">
         <div className="inline-flex flex-col space-y-3">
-          <p className="truncate">{title}</p>
+          <p className="truncate font-semibold">{title}</p>
           <p className="text-xs text-gray-600">{address}</p>
         </div>
-        <div className="flex flex-row gap-5 p-1 text-gray-600">
+        <div className="flex flex-row justify-between p-1 text-gray-600">
           <IconDetail text="general:bedroom" value={bedrooms_count}>
             <LuBedSingle className="text-2xl" />
           </IconDetail>
@@ -131,25 +131,25 @@ export function PropertyCardCompact({
   property: { cover_image, price, address },
 }: PropertyCardProps) {
   return (
-    <div className="relative group">
+    <div className="group relative h-[230px] w-full">
       <Image
-        className="rounded-md"
+        className="aspec rounded-md"
         src={cover_image}
         alt="Gallery"
-        width={640} // Explicit width
-        height={280} // Explicit height
-        style={{ width: "100%", height: "280px" }} // Maintain aspect ratio
+        fill
+        style={{ objectFit: "cover" }}
+        sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
         priority
       />
-      <div className="absolute bottom-0 left-0 w-full z-10 transition-opacity duration-300 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-0 rounded-b-md"></div>
-      <div className="absolute bottom-0 left-0 w-full p-4 text-white rounded-b-md">
+      <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
+      <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">
         {/* Gradient shadow that smoothly spreads to the middle */}
 
         {/* Price Text */}
-        <span className="relative z-10 inline-flex justify-between w-full">
-          <span className="inline-flex flex-col text-sm gap-1 font-bold text-left">
+        <span className="relative z-10 inline-flex w-full justify-between">
+          <span className="inline-flex flex-col gap-1 text-left text-sm font-bold">
             <b>{price}</b>
-            <span className="truncate w-[240px] text-xs">{address}</span>
+            <span className="w-[240px] truncate text-xs">{address}</span>
           </span>
         </span>
       </div>

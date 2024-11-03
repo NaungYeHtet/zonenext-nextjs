@@ -61,7 +61,7 @@ export default function Filter({
   },
   filterParams,
 }: PropertyFilterProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [priceOptions, setPriceOptions] = useState<MultiValue<Option>>();
   const [townshipParams, setTownshipParams] = useState<TopwnshipParams>();
   const [search, setSearch] = useState<string>();
@@ -98,7 +98,7 @@ export default function Filter({
           setPriceTo(option?.value);
       }
     },
-    [] // Add necessary dependencies if any state/variables outside the function are used.
+    [], // Add necessary dependencies if any state/variables outside the function are used.
   );
 
   const handlePriceOptions = useCallback(
@@ -111,7 +111,7 @@ export default function Filter({
         setPriceOptions(newest_options);
       }
     },
-    [for_rent_options, for_sale_options, newest_options] // Ensure these options are stable or memoized if needed.
+    [for_rent_options, for_sale_options, newest_options], // Ensure these options are stable or memoized if needed.
   );
 
   const handleListTypeChange = useCallback(
@@ -121,7 +121,7 @@ export default function Filter({
       }
       handleSelectOption(listTypeOption, LIST_TYPE);
     },
-    [handlePriceOptions, handleSelectOption]
+    [handlePriceOptions, handleSelectOption],
   );
 
   const handleStateChange = (option: SingleValue<Option>) => {
@@ -137,7 +137,7 @@ export default function Filter({
   };
 
   const handleSearch = () => {
-    let path = `/${i18n.language}/${listType}`;
+    let path = `/search/${listType}`;
 
     if (state) {
       path += `/state/${state}`;
@@ -167,7 +167,7 @@ export default function Filter({
   useEffect(() => {
     if (filterParams) {
       const listTypeOption = list_types.filter(
-        (option) => option.value === filterParams.list_type
+        (option) => option.value === filterParams.list_type,
       )[0];
 
       if (listTypeOption) {
@@ -203,7 +203,7 @@ export default function Filter({
   return (
     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 lg:gap-1">
       <input
-        className="block w-full p-2 bg-white border border-gray-300 md:col-span-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 focus:outline-none"
+        className="block w-full border border-gray-300 bg-white p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 md:col-span-2"
         type="text"
         name="search"
         id="search"
@@ -214,9 +214,9 @@ export default function Filter({
       />
       <Select
         options={list_types}
-        className="form-control-primary text-sm lg:col-span-2 p-0"
+        className="form-control-primary p-0 text-sm lg:col-span-2"
         defaultValue={list_types.find(
-          (filter) => filter.value === filterParams?.list_type
+          (filter) => filter.value === filterParams?.list_type,
         )}
         onChange={(option) => handleListTypeChange(option)}
         instanceId="list_types"
@@ -229,7 +229,7 @@ export default function Filter({
         isClearable
         instanceId={STATE}
         defaultValue={states.find(
-          (filter) => filter.value === filterParams?.state
+          (filter) => filter.value === filterParams?.state,
         )}
       />
       <AsyncSelect
@@ -251,7 +251,7 @@ export default function Filter({
         isClearable
         instanceId={TYPE}
         defaultValue={types.find(
-          (filter) => filter.value === decodeURI(filterParams?.type as string)
+          (filter) => filter.value === decodeURI(filterParams?.type as string),
         )}
       />
       <Select
@@ -280,7 +280,7 @@ export default function Filter({
       />
       <button
         type="button"
-        className="py-1.5 justify-center col-span-1 sm:col-span-4 md:col-span-4 lg:col-span-2 w-full mb-2 text-lg font-medium text-white focus:outline-none bg-primary-900 border border-gray-200 hover:bg-primary-700 transition-colors focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white inline-flex items-center gap-1 dark:hover:bg-gray-700"
+        className="col-span-1 mb-2 inline-flex w-full items-center justify-center gap-1 border border-gray-200 bg-primary-900 py-1.5 text-lg font-medium text-white transition-colors hover:bg-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:col-span-4 md:col-span-4 lg:col-span-2"
         onClick={handleSearch}
       >
         <CiSearch />
