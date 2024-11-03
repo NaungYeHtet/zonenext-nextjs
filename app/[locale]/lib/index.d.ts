@@ -71,6 +71,7 @@ export type Property = {
   bathrooms_count: number;
   posted_at: string;
   amenities: string[];
+  views_count: number;
 };
 
 export type PropertyFilterParams = {

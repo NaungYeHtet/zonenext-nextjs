@@ -7,12 +7,22 @@ import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Custom icons
 
 import "swiper/css";
+import { LuEye } from "react-icons/lu";
+import { fetchApi } from "../../utils/helpers";
+import { API_PATH_VIEW_PROPERTY } from "../../utils/api-paths";
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
+import { VIEWER_KEY } from "../../utils/constants";
+import { v4 as uuidv4 } from "uuid";
 
 type GalleryProps = {
   gallery: string[];
+  viewsCount: number;
+  slug: string;
 };
 
-export default function Gallery({ gallery }: GalleryProps) {
+export default function Gallery({ gallery, viewsCount, slug }: GalleryProps) {
+  const { i18n } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<any>(null);
   const prevIndexRef = useRef(activeIndex);
@@ -21,6 +31,33 @@ export default function Gallery({ gallery }: GalleryProps) {
     const newIndex = swiper.realIndex;
     setActiveIndex(newIndex);
   };
+
+  useEffect(() => {
+    async function updateViewCount() {
+      let viewerId = Cookies.get("viewer_id");
+
+      if (!viewerId) {
+        viewerId = uuidv4();
+
+        Cookies.set(VIEWER_KEY, viewerId, {
+          path: "/",
+          expires: 60,
+        });
+      }
+
+      fetchApi({
+        method: "GET",
+        path: `/${API_PATH_VIEW_PROPERTY}/${slug}`,
+        body: {
+          language: i18n.language,
+          viewer_id: viewerId,
+        },
+        options: { next: { revalidate: 0 } },
+      });
+    }
+
+    updateViewCount();
+  }, []);
 
   useEffect(() => {
     if (activeIndex !== prevIndexRef.current) {
@@ -47,14 +84,20 @@ export default function Gallery({ gallery }: GalleryProps) {
   };
 
   return (
-    <div className="relative w-full mb-9 md:mb-0 h-[300px] md:h-[600px]">
+    <div className="relative mb-9 h-[300px] w-full md:mb-0 md:h-[600px]">
+      <div className="absolute right-2 top-[10%] z-10 -translate-y-1/2 transform rounded-sm bg-white/80 p-1 text-sm text-white md:right-4 md:p-2 md:text-base">
+        <span className="inline-flex items-center gap-1 text-primary-900">
+          <LuEye className="inline text-xl" />{" "}
+          <span className="text-sm"> {viewsCount}</span>
+        </span>
+      </div>
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
         modules={[Autoplay]}
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        loop
+        loop={gallery.length > 1 ? true : false}
         style={{ height: "90%" }}
       >
         {gallery.map((image: string, index) => (
@@ -66,12 +109,13 @@ export default function Gallery({ gallery }: GalleryProps) {
               alignItems: "center",
             }}
           >
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               <Image
                 src={image}
                 alt={`Gallery image ${index + 1}`}
                 fill
                 style={{ objectFit: "cover" }}
+                sizes="(max-width: 768px) 300px, (max-width: 1200px) 400px, 600px"
                 priority
               />
             </div>
@@ -81,19 +125,19 @@ export default function Gallery({ gallery }: GalleryProps) {
 
       <button
         onClick={handlePrev}
-        className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 z-10 bg-primary-500/40 hover:bg-primary-500  transition-colors duration-200 text-white rounded-full p-1 md:p-2 lg:p-3 text-sm md:text-base lg:text-lg"
+        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-primary-500/40 p-1 text-sm text-white transition-colors duration-200 hover:bg-primary-500 md:left-4 md:p-2 md:text-base lg:p-3 lg:text-lg"
       >
-        <FaChevronLeft className="w-4 h-4 md:w-6 md:h-6" />
+        <FaChevronLeft className="h-4 w-4 md:h-6 md:w-6" />
       </button>
 
       <button
         onClick={handleNext}
-        className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 z-10 bg-primary-500/40 hover:bg-primary-500 transition-colors duration-200 text-white rounded-full p-1 md:p-2 lg:p-3 text-sm md:text-base lg:text-lg"
+        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-primary-500/40 p-1 text-sm text-white transition-colors duration-200 hover:bg-primary-500 md:right-4 md:p-2 md:text-base lg:p-3 lg:text-lg"
       >
-        <FaChevronRight className="w-4 h-4 md:w-6 md:h-6" />
+        <FaChevronRight className="h-4 w-4 md:h-6 md:w-6" />
       </button>
 
-      <div className="flex gap-1 md:gap-2 mt-2 justify-center">
+      <div className="mt-2 flex justify-center gap-1 md:gap-2">
         {gallery.map((thumbnail: string, index) => (
           <div
             key={index}
@@ -105,9 +149,9 @@ export default function Gallery({ gallery }: GalleryProps) {
             <Image
               src={thumbnail}
               alt={`Thumbnail ${index + 1}`}
-              width={70}
-              height={70}
-              className="object-cover"
+              width={50}
+              height={50}
+              className="thumbnail-image object-cover"
             />
           </div>
         ))}

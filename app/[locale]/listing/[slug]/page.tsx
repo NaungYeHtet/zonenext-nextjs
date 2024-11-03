@@ -36,7 +36,7 @@ const TitleSection = ({
       )}
     >
       <div>
-        <h3 className="text-wrap font-serif text-xl text-gray-700 lg:text-xl">
+        <h3 className="text-wrap font-serif text-xl font-semibold text-gray-700 lg:text-2xl">
           {title}
         </h3>
         <span className="text-wrap text-sm text-gray-500 lg:text-base">
@@ -90,6 +90,7 @@ export default async function Property({
     code,
     description,
     amenities,
+    views_count,
   }: PropertyType = data.property;
 
   return (
@@ -112,7 +113,11 @@ export default async function Property({
                   className="hidden md:flex"
                 />
                 <div className="md:mt-7">
-                  <Gallery gallery={gallery} />
+                  <Gallery
+                    gallery={gallery}
+                    viewsCount={views_count}
+                    slug={slug}
+                  />
                 </div>
                 <TitleSection
                   property={data.property}

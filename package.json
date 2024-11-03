@@ -30,6 +30,7 @@
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.2",
     "tailwind-toastify": "^1.0.8",
+    "uuid": "^11.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

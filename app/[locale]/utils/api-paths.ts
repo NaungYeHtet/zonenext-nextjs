@@ -12,3 +12,4 @@ export const API_PATH_PROFILE = "/profile";
 export const API_PATH_EMAIL_VERIFY = "/email/verify";
 export const API_PATH_EMAIL_VERIFICATION_NOTI =
   "/email/verification-notification";
+export const API_PATH_VIEW_PROPERTY = "view/property";
