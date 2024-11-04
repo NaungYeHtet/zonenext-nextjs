@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { MetaLink } from "../lib";
 import { cn } from "../utils/helpers";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 
 type PaginationProps = {
   links: MetaLink[];
@@ -24,7 +25,7 @@ export default function Pagination({ links }: PaginationProps) {
 
   return (
     <nav aria-label="Page navigation example">
-      <ul className="inline-flex -space-x-px text-base h-10">
+      <ul className="inline-flex h-10 -space-x-px text-base">
         {links.map(({ label, url, active }, index) => {
           const isPreviousPageUrl = label.startsWith("Previous");
           const isNextPageUrl = label.startsWith("Next");
@@ -34,18 +35,23 @@ export default function Pagination({ links }: PaginationProps) {
               <button
                 onClick={() => handlePaginate(url)}
                 className={cn(
-                  "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+                  "flex h-10 items-center justify-center border border-gray-300 px-4 leading-tight dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
                   {
-                    "ms-0 border-e-0 rounded-s-lg": isPreviousPageUrl,
+                    "ms-0 rounded-s-lg border-e-0": isPreviousPageUrl,
                     "rounded-e-lg": isNextPageUrl,
-                    "bg-gray-400 text-gray-100": active,
-                    "text-gray-200 hover:text-gray-200 hover:bg-white pointer-events-none":
+                    "bg-primary-400 text-gray-100 hover:bg-primary-600": active,
+                    "bg-white text-gray-500 hover:bg-gray-100": !active,
+                    "pointer-events-none text-gray-200 hover:bg-white hover:text-gray-200":
                       !url,
-                  }
+                  },
                 )}
                 aria-disabled={!url}
               >
-                <div dangerouslySetInnerHTML={{ __html: label }}></div>
+                {label === "&laquo; Previous" ? <BiLeftArrow /> : ""}
+                {label === "Next &raquo;" ? <BiRightArrow /> : ""}
+                {label === "&laquo; Previous" || label === "Next &raquo;"
+                  ? ""
+                  : label}
               </button>
             </li>
           );

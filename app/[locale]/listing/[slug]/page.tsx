@@ -4,7 +4,6 @@ import Navbar from "../../components/navbar/navbar";
 import { IconDetail } from "../../components/property/property-card";
 import TranslationsProvider from "../../components/translation-provider";
 import { Option, Property as PropertyType } from "../../lib";
-import { API_PATH_INQUIRY, API_PATH_PROPERTY } from "../../utils/api-paths";
 import { cn, fetchApi } from "../../utils/helpers";
 import initTranslations from "../../utils/i18n";
 import { PiShower } from "react-icons/pi";
@@ -16,6 +15,7 @@ import Breadcrumb from "../../components/breadcumb/breadcrumb";
 import dynamic from "next/dynamic";
 import GallerySkeleton from "./gallery-skeleton";
 import InquiryFormSkeleton from "./inquiry-form-skeleton";
+import apiPaths from "../../utils/api-paths";
 
 const i18nNamespaces = ["general", "validation", "default", "rating"];
 
@@ -35,7 +35,7 @@ const BreadcrumbSection = ({
   title,
 }: {
   type: Option;
-  acquisition_type: string;
+  acquisition_type: Option;
   title: string;
 }) => {
   return (
@@ -44,7 +44,7 @@ const BreadcrumbSection = ({
         { label: "home_nav", path: "/" },
         {
           label: type.label,
-          path: `/search/${acquisition_type}/type/${type.value}`,
+          path: `/search/${acquisition_type.value}/type/${type.value}`,
         },
         {
           label: title,
@@ -95,24 +95,20 @@ export default async function Property({
   const { resources } = await initTranslations(locale, i18nNamespaces);
   const inquiryData = await fetchApi({
     method: "GET",
-    path: API_PATH_INQUIRY,
+    path: apiPaths.INQUIRY,
     body: {
       language: locale,
     },
-    options: {
-      next: {
-        revalidate: 0,
-      },
-    },
+    options: { next: { revalidate: 60 * 60 * 24 } },
   });
 
   const { data } = await fetchApi({
     method: "GET",
-    path: `${API_PATH_PROPERTY}/${slug}`,
+    path: `${apiPaths.PROPERTY}/${slug}`,
     body: {
       language: locale,
     },
-    options: { next: { revalidate: 0 } },
+    options: { next: { revalidate: 60 * 60 * 24 } },
   });
   const {
     gallery,
@@ -153,7 +149,11 @@ export default async function Property({
           <div className="md:compact-container flex h-full flex-col gap-10 pt-0 md:flex-row md:pb-7">
             <div className="flex h-full w-full flex-col md:w-4/6">
               {/* Content section */}
-              <div className="rounded-md bg-white pb-4 md:pt-8">
+              <div className="relative rounded-md bg-white pb-4 md:pt-8">
+                <span className="absolute left-0 top-0 transform rounded-tl-md bg-purple-600 px-3 py-1 text-sm text-white md:text-base">
+                  {" "}
+                  {acquisition_type.label}
+                </span>
                 <TitleSection
                   property={data.property}
                   className="hidden md:flex"
@@ -191,7 +191,7 @@ export default async function Property({
                 </div>
                 <div className="mt-3 grid w-full grid-cols-2 flex-row justify-between gap-5 p-1 text-gray-600 md:grid-cols-4">
                   <p className="inline-flex w-full items-center justify-center text-center text-lg">
-                    {type.label}
+                    {type.label} | {acquisition_type.label}
                   </p>
                   <IconDetail text="general:bedroom" value={bedrooms_count}>
                     <LuBedSingle className="text-2xl" />

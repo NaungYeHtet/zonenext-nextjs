@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
 import { Option, PROPERTY_LIST_TYPE, PropertyFilterParams } from "../../../lib";
-import { API_PATH_PROPERTY_FILTER_TOWNSHIP } from "../../../utils/api-paths";
 import AsyncSelect from "../../async-select";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isEmpty } from "lodash";
 import { transformParamsToQueryString } from "@/app/[locale]/utils/helpers";
+import apiPaths from "@/app/[locale]/utils/api-paths";
 
 interface ListTypeOption extends Option {
   label: string;
@@ -73,7 +73,6 @@ export default function Filter({
   const [township, setTownship] = useState<string>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const params = Object.fromEntries(searchParams.entries());
 
   const handleSelectOption = useCallback(
     (option: SingleValue<Option>, key: FILTER_INSTANCE) => {
@@ -154,7 +153,7 @@ export default function Filter({
     const queryString = transformParamsToQueryString({
       price_from: priceFrom,
       price_to: priceTo,
-      search: search,
+      keyword: search,
     });
 
     if (queryString) {
@@ -187,18 +186,11 @@ export default function Filter({
         });
       }
       setTownship(filterParams.township);
-      setPriceFrom(params.price_from);
-      setPriceTo(params.price_to);
-      setSearch(params.search);
+      setPriceFrom(filterParams.price_from);
+      setPriceTo(filterParams.price_to);
+      setSearch(filterParams.keyword);
     }
-  }, [
-    handleListTypeChange,
-    list_types,
-    filterParams,
-    params.price_from,
-    params.price_to,
-    params.search,
-  ]);
+  }, [handleListTypeChange, list_types, filterParams]);
 
   return (
     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 lg:gap-1">
@@ -214,7 +206,7 @@ export default function Filter({
       />
       <Select
         options={list_types}
-        className="form-control-primary p-0 text-sm lg:col-span-2"
+        className="p-0 text-sm lg:col-span-2"
         defaultValue={list_types.find(
           (filter) => filter.value === filterParams?.list_type,
         )}
@@ -235,7 +227,7 @@ export default function Filter({
       <AsyncSelect
         className="w-full text-sm lg:col-span-2"
         params={townshipParams}
-        path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
+        path={apiPaths.PROPERTY_FILTER_TOWNSHIP}
         placeholder={t("general:choose_township")}
         onChange={(option: Option) => handleSelectOption(option, TOWNSHIP)}
         optionsKey="townships"
@@ -264,7 +256,7 @@ export default function Filter({
         defaultValue={for_sale_options
           .concat(for_rent_options)
           .concat(newest_options)
-          .find((option) => option.value == params.price_from)}
+          .find((option) => option.value == filterParams.price_from)}
       />
       <Select
         options={priceOptions}
@@ -276,7 +268,7 @@ export default function Filter({
         defaultValue={for_sale_options
           .concat(for_rent_options)
           .concat(newest_options)
-          .find((option) => option.value == params.price_to)}
+          .find((option) => option.value == filterParams.price_to)}
       />
       <button
         type="button"

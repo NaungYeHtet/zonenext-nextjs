@@ -12,11 +12,11 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { LuEye } from "react-icons/lu";
 import { fetchApi } from "../../utils/helpers";
-import { API_PATH_VIEW_PROPERTY } from "../../utils/api-paths";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { VIEWER_KEY } from "../../utils/constants";
 import { v4 as uuidv4 } from "uuid";
+import apiPaths from "../../utils/api-paths";
 
 type GalleryProps = {
   gallery: string[];
@@ -50,12 +50,12 @@ export default function Gallery({ gallery, viewsCount, slug }: GalleryProps) {
 
       fetchApi({
         method: "GET",
-        path: `/${API_PATH_VIEW_PROPERTY}/${slug}`,
+        path: `${apiPaths.VIEW_PROPERTY}/${slug}`,
         body: {
           language: i18n.language,
           viewer_id: viewerId,
         },
-        options: { next: { revalidate: 0 } },
+        options: { next: { revalidate: 60 * 60 * 24 } },
       });
     }
 

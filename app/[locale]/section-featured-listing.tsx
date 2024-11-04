@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { API_PATH_GROUP } from "./utils/api-paths";
+import apiPaths from "./utils/api-paths";
 import { fetchApi } from "./utils/helpers";
 import dynamic from "next/dynamic";
 import PropertyCardSkeleton from "./components/property/skeletons/property-card-skeleton";
@@ -29,13 +29,13 @@ export default async function SectionFeaturedListing({
     data: { group },
   }: ResponseData<GroupData<Property>> = await fetchApi({
     method: "GET",
-    path: API_PATH_GROUP,
+    path: apiPaths.GROUP,
     body: {
       language: locale,
       type: "FeaturedListings",
     },
     options: {
-      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 43200 },
+      next: { revalidate: 60 * 60 * 24 },
     },
   });
 

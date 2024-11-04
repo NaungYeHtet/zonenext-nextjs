@@ -4,7 +4,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Option, ValidationErrors } from "../../lib";
 import { fetchApi } from "../../utils/helpers";
-import { API_PATH_INQUIRY_PROPERTY } from "../../utils/api-paths";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
@@ -15,6 +14,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../components/providers/auth-context";
 import TranslateText from "../../components/translate-text";
 import Image from "next/image";
+import apiPaths from "../../utils/api-paths";
 
 type Inputs = {
   name: string;
@@ -91,7 +91,7 @@ export default function InquiryForm({
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await fetchApi({
       method: "POST",
-      path: API_PATH_INQUIRY_PROPERTY,
+      path: apiPaths.INQUIRY_PROPERTY,
       body: {
         ...data,
         code: propertyCode,

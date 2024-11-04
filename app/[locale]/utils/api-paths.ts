@@ -1,15 +1,20 @@
-export const API_PATH_PROPERTY_FILTER_TOWNSHIP = "/property-filters/townships";
-export const API_PATH_PROPERTY_FILTER = "/property-filters";
-export const API_PATH_INQUIRY = "/inquiry";
-export const API_PATH_INQUIRY_PROPERTY = "/inquiry/property";
-export const API_PATH_PROPERTY = "/properties";
-export const API_PATH_REVIEW_PROPERTY = "/review/property";
-export const API_PATH_GROUP = "/groups";
-export const API_PATH_SIGNUP = "/signup";
-export const API_PATH_LOGIN = "/login";
-export const API_PATH_LOGOUT = "/logout";
-export const API_PATH_PROFILE = "/profile";
-export const API_PATH_EMAIL_VERIFY = "/email/verify";
-export const API_PATH_EMAIL_VERIFICATION_NOTI =
-  "/email/verification-notification";
-export const API_PATH_VIEW_PROPERTY = "view/property";
+const apiPaths = {
+  PROPERTY_FILTER_TOWNSHIP: "/property-filters/townships",
+  PROPERTY_FILTER: "/property-filters",
+  INQUIRY: "/inquiry",
+  INQUIRY_PROPERTY: "/inquiry/property",
+  PROPERTY: "/properties",
+  REVIEW_PROPERTY: "/review/property",
+  GROUP: "/groups",
+  SIGNUP: "/signup",
+  LOGIN: "/login",
+  LOGOUT: "/logout",
+  PROFILE: "/profile",
+  EMAIL_VERIFY: "/email/verify",
+  EMAIL_VERIFICATION_NOTI: "/email/verification-notification",
+  VIEW_PROPERTY: "/view/property",
+  AGENT: "/agents",
+  FAQ: "/faqs",
+};
+
+export default apiPaths;

@@ -1,3 +1,5 @@
+import apiPaths from "./api-paths";
+
 export const TOKEN_NAME = "access_token";
 export const TOKEN_EXPIRATION = 30;
 export const VIEWER_KEY = "viewer_id";

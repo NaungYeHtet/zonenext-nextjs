@@ -2,8 +2,8 @@ import { isEmpty } from "lodash";
 import { NextRequest } from "next/server";
 import { TOKEN_NAME } from "../utils/constants";
 import { fetchApi } from "../utils/helpers";
-import { API_PATH_LOGOUT } from "../utils/api-paths";
 import Cookies from "js-cookie";
+import apiPaths from "../utils/api-paths";
 
 export const guestRoutes = ["login", "sign-up"];
 export const protectedRoutes = ["profile", "verification"];
@@ -31,7 +31,7 @@ export const isRouteGuest = (pathname: string): boolean => {
 export const logout = async () => {
   const { status, message } = await fetchApi({
     method: "POST",
-    path: API_PATH_LOGOUT,
+    path: apiPaths.LOGOUT,
     requireAuth: true,
   });
 

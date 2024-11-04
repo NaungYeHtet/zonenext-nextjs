@@ -1,10 +1,6 @@
 "use client";
 
 import { fetchApi } from "../utils/helpers";
-import {
-  API_PATH_EMAIL_VERIFICATION_NOTI,
-  API_PATH_EMAIL_VERIFY,
-} from "../utils/api-paths";
 import { useTranslation } from "react-i18next";
 import FieldGroup from "../components/field-wrapper";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +10,7 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Spinner from "../components/spinner";
+import apiPaths from "../utils/api-paths";
 
 type Inputs = {
   otp: string;
@@ -65,7 +62,7 @@ export default function VerficationForm() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await fetchApi({
       method: "POST",
-      path: API_PATH_EMAIL_VERIFY,
+      path: apiPaths.EMAIL_VERIFY,
       body: {
         ...data,
         language: i18n.language,
@@ -88,7 +85,7 @@ export default function VerficationForm() {
 
     await fetchApi({
       method: "POST",
-      path: API_PATH_EMAIL_VERIFICATION_NOTI,
+      path: apiPaths.EMAIL_VERIFICATION_NOTI,
       requireAuth: true,
     });
 
@@ -101,7 +98,7 @@ export default function VerficationForm() {
   };
 
   return (
-    <div className="flex flex-col justify-start mt-10 w-[350px] space-y-5">
+    <div className="mt-10 flex w-[350px] flex-col justify-start space-y-5">
       <h1 className="text-primary-500">{t("verification:description")}</h1>
       <div className="text-wrap">
         <p className="inline">{t("verification:send_verification_email")}</p>
@@ -112,14 +109,14 @@ export default function VerficationForm() {
           ) : (
             <button
               type="button"
-              className="text-sm inline-block text-blue-500"
+              className="inline-block text-sm text-blue-500"
               onClick={() => sendVerificationEmail()}
             >
               {t("verification:here")}
             </button>
           )
         ) : (
-          <Spinner className="w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" />
+          <Spinner className="h-5 w-5 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600" />
         )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -144,7 +141,7 @@ export default function VerficationForm() {
           </FieldGroup>
           <button
             type="submit"
-            className="py-1.5 justify-center rounded-md sm:col-span-4 md:col-span-4 w-full mb-2 text-lg font-medium text-white focus:outline-none bg-primary-700 border border-gray-200 hover:bg-primary-800 transition-colors focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white inline-flex items-center gap-1 dark:hover:bg-gray-700"
+            className="mb-2 inline-flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-primary-700 py-1.5 text-lg font-medium text-white transition-colors hover:bg-primary-800 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:col-span-4 md:col-span-4"
           >
             {t("general:verify")}
           </button>

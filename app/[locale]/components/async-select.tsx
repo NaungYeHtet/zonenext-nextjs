@@ -43,6 +43,7 @@ export default function AsyncSelect({
           language: language,
           slug: defaultVal,
         },
+        options: { next: { revalidate: 60 * 60 * 24 * 5 } },
       });
 
       setValue(data[optionsKey]);
@@ -67,6 +68,7 @@ export default function AsyncSelect({
         search: search,
         page: page,
       },
+      options: { next: { revalidate: 60 * 60 * 24 * 5 } },
     });
 
     return {

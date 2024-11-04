@@ -17,7 +17,7 @@ export function PropertySidebar({
   group: { name, items },
 }: PropertySidebarProps) {
   return (
-    <div className="w-[350px]">
+    <div className="w-full p-10 md:w-[350px] md:p-0">
       <SidebarSection>
         <SidebarSection.Item title={name}>
           <CarouselSlider

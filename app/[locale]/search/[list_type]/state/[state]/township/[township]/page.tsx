@@ -2,10 +2,13 @@ import { PropertyListPageProps } from "@/app/[locale]/search/[list_type]/page";
 import Wrapper from "@/app/[locale]/wrapper";
 import PropertyList from "@/app/[locale]/components/property/property-list";
 
-export default async function ListType({ params }: PropertyListPageProps) {
+export default async function ListType({
+  params,
+  searchParams,
+}: PropertyListPageProps) {
   return (
-    <Wrapper params={params}>
-      <PropertyList filterParams={params} />
+    <Wrapper params={{ ...params, ...searchParams }}>
+      <PropertyList params={{ ...params, ...searchParams }} />
     </Wrapper>
   );
 }

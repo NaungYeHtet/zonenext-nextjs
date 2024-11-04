@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import englishUkIcon from "@/public/icons/flags/english.svg";
 import myanmarIcon from "@/public/icons/flags/myanmar.svg";
@@ -29,7 +31,7 @@ export default function LanguageSwitch() {
       router.push("/" + newLocale + currentPathname);
     } else {
       router.push(
-        currentPathname.replace(`/${currentLocale}`, `/${newLocale}`)
+        currentPathname.replace(`/${currentLocale}`, `/${newLocale}`),
       );
     }
 

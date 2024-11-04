@@ -9,9 +9,10 @@ import "swiper/css/scrollbar";
 import PropertyFilter from "./components/property/filter";
 import { PropertySidebar } from "./components/property/property-sidebar";
 import { fetchApi } from "./utils/helpers";
-import { API_PATH_GROUP } from "./utils/api-paths";
 import Breadcrumb from "./components/breadcumb/breadcrumb";
 import { PropertyFilterParams } from "./lib";
+import apiPaths from "./utils/api-paths";
+import BaseFooter from "./components/footer";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -27,9 +28,9 @@ export default async function Wrapper({ children, params }: LayoutProps) {
     data: { group },
   } = await fetchApi({
     method: "GET",
-    path: API_PATH_GROUP,
+    path: apiPaths.GROUP,
     body: { language: params.locale, type: "FeaturedListings" },
-    options: { next: { revalidate: 0 } },
+    options: { next: { revalidate: 60 * 60 * 24 } },
   });
 
   return (
@@ -63,6 +64,9 @@ export default async function Wrapper({ children, params }: LayoutProps) {
             </section>
           </div>
         </main>
+        <div>
+          <BaseFooter />
+        </div>
       </div>
     </TranslationsProvider>
   );

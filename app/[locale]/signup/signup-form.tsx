@@ -5,7 +5,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FieldGroup from "../components/field-wrapper";
-import { API_PATH_LOGIN, API_PATH_SIGNUP } from "../utils/api-paths";
 import { toast } from "react-toastify";
 import { storeToken } from "../lib/actions";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import { fetchApi } from "../utils/helpers";
 import { ValidationErrors } from "../lib";
 import GoogleAuthButton from "../components/google-auth-button";
 import FormCard from "../components/cards/form-card";
+import apiPaths from "../utils/api-paths";
 
 type Inputs = {
   name: string;
@@ -50,7 +50,7 @@ export default function SignupForm() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await fetchApi({
       method: "POST",
-      path: API_PATH_SIGNUP,
+      path: apiPaths.SIGNUP,
       body: {
         ...data,
         language: i18n.language,
@@ -75,11 +75,11 @@ export default function SignupForm() {
 
   return (
     <FormCard>
-      <h1 className="text-xl md:text-2xl font-serif bold">
+      <h1 className="bold font-serif text-xl md:text-2xl">
         {t("general:signup_title", { appName: "Zone Next" })}
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="flex flex-col gap-5 w-full">
+        <div className="flex w-full flex-col gap-5">
           <FieldGroup>
             <FieldGroup.Label id="name" className="text-base font-normal">
               {t("general:name")}
@@ -145,7 +145,7 @@ export default function SignupForm() {
           </FieldGroup>
           <button
             type="submit"
-            className="py-1.5 justify-center rounded-md sm:col-span-4 md:col-span-4 w-full mb-2 text-lg font-medium text-white focus:outline-none bg-primary-800 border border-gray-200 hover:bg-primary-800 transition-colors focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white inline-flex items-center gap-1 dark:hover:bg-gray-700"
+            className="mb-2 inline-flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-primary-800 py-1.5 text-lg font-medium text-white transition-colors hover:bg-primary-800 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:col-span-4 md:col-span-4"
           >
             {t("general:sign_up")}
           </button>

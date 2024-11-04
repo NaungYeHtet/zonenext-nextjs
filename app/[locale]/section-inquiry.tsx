@@ -1,20 +1,15 @@
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import TranslateText from "./components/translate-text";
 import { fetchApi } from "./utils/helpers";
-import { API_PATH_INQUIRY } from "./utils/api-paths";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import InquiryFormSkeletion from "./components/inquiry/inquiry-form-skeleton";
+import apiPaths from "./utils/api-paths";
 
 const InquiryForm = dynamic(() => import("./components/inquiry/inquiry-form"), {
   ssr: false, // Only load on the client side
   loading: () => <InquiryFormSkeletion />,
 });
-
-type CardImageType = {
-  url: StaticImageData;
-  alt: string;
-};
 
 type SectionInquiryProps = {
   locale: string;
@@ -23,13 +18,13 @@ type SectionInquiryProps = {
 export default async function SectionInquiry({ locale }: SectionInquiryProps) {
   const { data } = await fetchApi({
     method: "GET",
-    path: API_PATH_INQUIRY,
+    path: apiPaths.INQUIRY,
     body: {
       language: locale,
     },
     options: {
       next: {
-        revalidate: 0,
+        revalidate: 60 * 60 * 24,
       },
     },
   });

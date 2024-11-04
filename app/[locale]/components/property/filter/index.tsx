@@ -1,7 +1,7 @@
-import { API_PATH_PROPERTY_FILTER } from "@/app/[locale]/utils/api-paths";
 import { fetchApi } from "@/app/[locale]/utils/helpers";
 import FilterWrapper from "./filter-wrapper";
 import { PropertyFilterParams } from "@/app/[locale]/lib";
+import apiPaths from "@/app/[locale]/utils/api-paths";
 
 type PropertyFilterProps = {
   filterParams: PropertyFilterParams;
@@ -12,9 +12,9 @@ export default async function PropertyFilter({
 }: PropertyFilterProps) {
   const { data } = await fetchApi({
     method: "GET",
-    path: API_PATH_PROPERTY_FILTER,
+    path: apiPaths.PROPERTY_FILTER,
     body: { language: filterParams.locale },
-    options: { cache: "no-store" },
+    options: { next: { revalidate: 60 * 60 * 24 } },
   });
 
   return <FilterWrapper filters={data} filterParams={filterParams} />;

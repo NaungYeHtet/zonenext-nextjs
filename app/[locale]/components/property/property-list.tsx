@@ -1,15 +1,11 @@
-"use client";
-
-import { usePathname, useSearchParams } from "next/navigation";
-import { CollectionData, Property, PropertyFilterParams } from "../../lib";
+import { PropertyFilterParams } from "../../lib";
 import Pagination from "../pagination";
-import { Suspense, useEffect, useState } from "react";
-import { API_PATH_PROPERTY } from "../../utils/api-paths";
-import { useTranslation } from "react-i18next";
+import { use } from "react";
 import { fetchApi } from "../../utils/helpers";
 import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "../skeletons";
 import { PropertyListView } from "./property-list-view";
 import PropertyNotFound from "./property-not-found";
+import apiPaths from "../../utils/api-paths";
 
 type PropertyHeaderProps = {
   total: number;
@@ -51,49 +47,50 @@ export const LoadingSkeleton = () => (
   </>
 );
 
-type PropertyListProps = {
-  filterParams: PropertyFilterParams;
-};
-
-function PropertyList({
-  filterParams: { list_type, state, township, type },
-}: PropertyListProps) {
-  const pathname = usePathname();
-  const [properties, setProperties] = useState<CollectionData<Property>>();
-  const { i18n } = useTranslation();
-  const searchParams = useSearchParams();
-  const [currentPage] = useState(1);
-
-  useEffect(() => {
-    async function fetchProperties() {
-      const {
-        data: { properties },
-      } = await fetchApi({
-        method: "GET",
-        path: API_PATH_PROPERTY,
-        body: {
-          language: i18n.language,
-          page: currentPage,
-          state,
-          township,
-          type: type && decodeURI(type),
-          list_type,
-          ...Object.fromEntries(searchParams.entries()),
-        },
-      });
-
-      setProperties(properties);
-    }
-    fetchProperties();
-  }, [
-    list_type,
+async function fetchProperties({
+  list_type,
+  state,
+  township,
+  page,
+  type,
+  locale,
+  keyword,
+  price_from,
+  price_to,
+}: PropertyFilterParams) {
+  const body = {
+    language: locale,
+    page,
     state,
     township,
-    type,
-    currentPage,
-    i18n.language,
-    searchParams,
-  ]);
+    type: type && decodeURI(type),
+    list_type,
+    search: keyword,
+    price_from,
+    price_to,
+  };
+
+  console.log(body);
+
+  const {
+    data: { properties },
+  } = await fetchApi({
+    method: "GET",
+    path: apiPaths.PROPERTY,
+    body,
+    options: { next: { revalidate: 0 } },
+    // options: { next: { revalidate: 60 * 60 * 24 } },
+  });
+
+  return properties;
+}
+
+type PropertyListProps = {
+  params: PropertyFilterParams;
+};
+
+function PropertyList({ params }: PropertyListProps) {
+  const properties = use(fetchProperties(params));
 
   if (!properties) {
     return (
@@ -110,7 +107,7 @@ function PropertyList({
   return (
     <section className="relative z-0 flex-grow">
       <PropertyHeader total={properties.total} />
-      <PropertyListView properties={properties.data} pathname={pathname} />
+      <PropertyListView properties={properties.data} />
       <PaginationSection links={properties.links} />
     </section>
   );

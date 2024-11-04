@@ -1,10 +1,15 @@
-import { LuBedSingle, LuEye, LuMail } from "react-icons/lu";
+import { LuBedSingle, LuEye } from "react-icons/lu";
 import {
   IconDetail,
   PropertyCardImage,
   PropertyCardProps,
 } from "./property-card";
-import { PiMailbox, PiPhoneCall, PiShower } from "react-icons/pi";
+import {
+  PiEyeLight,
+  PiMailboxLight,
+  PiPhoneLight,
+  PiShower,
+} from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import Link from "next/link";
 
@@ -21,22 +26,32 @@ export default function PropertyCardLong({
     gallery,
     views_count,
     agent_phone,
+    acquisition_type,
+    type,
     agent_email,
   },
 }: PropertyCardProps) {
   return (
-    <div className="w-[900px] bg-white">
+    <div className="max-w-full bg-white">
       <div className="flex flex-row">
         <div className="relative w-[300px]">
           <PropertyCardImage images={[cover_image, ...gallery]} width={300} />
         </div>
         <div className="flex w-full flex-col justify-between px-5 pb-7 pt-4">
-          <span className="col-span-2">
-            <h4 className="mb-3 text-wrap pr-5 text-lg font-semibold transition-colors duration-200 hover:text-blue-700">
+          <div className="flex flex-col">
+            <h4 className="text-wrap pr-5 text-lg font-semibold transition-colors duration-200 hover:text-blue-700">
               <Link href={`/listing/${slug}`}>{title}</Link>
             </h4>
+            <div className="inline-flex space-x-1">
+              <span className="my-3 rounded-md bg-gray-700 px-1.5 py-1 text-sm text-white">
+                {acquisition_type.label}
+              </span>
+              <span className="my-3 rounded-md bg-gray-700 px-1.5 py-1 text-sm text-white">
+                {type.label}
+              </span>
+            </div>
             <p className="text-sm text-gray-500">{address}</p>
-          </span>
+          </div>
 
           <span className="inline-flex w-full flex-row gap-3">
             <b>{price}</b>
@@ -61,26 +76,22 @@ export default function PropertyCardLong({
           <a
             href={`tel:${agent_phone}`}
             type="button"
-            className="mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-primary-100 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-primary-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+            className="mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-gray-50 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-gray-200 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
           >
-            <PiPhoneCall size={30} />
+            <PiPhoneLight size={30} />
           </a>
-          <button
-            type="button"
-            className="text-primarh-full y-800 mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-primary-100 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-primary-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = `mailto:${agent_email}`;
-            }}
+          <a
+            href={`mailto:${agent_email}`}
+            className="mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-gray-50 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-gray-200 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
           >
-            <LuMail size={30} />
-          </button>
+            <PiMailboxLight size={30} />
+          </a>
           <Link
             href={`/listing/${slug}`}
             type="button"
-            className="mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-primary-100 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-primary-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+            className="mb-2 inline-flex h-full w-full items-center justify-center gap-3 rounded-md border border-gray-50 bg-gray-50 py-1.5 text-lg font-medium text-primary-800 transition-colors duration-300 ease-in-out hover:bg-gray-200 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
           >
-            <LuEye size={30} />
+            <PiEyeLight size={30} />
           </Link>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import * as apiPaths from "../utils/api-paths";
+import apiPaths from "../utils/api-paths";
 
 export type ResponseData<DataType> = {
   data: DataType;
@@ -55,11 +55,23 @@ export type Option = {
   value: string;
 };
 
+export type Agent = {
+  name: string;
+  email: string;
+  phone: string;
+  image: string;
+};
+
+export type Faq = {
+  question: string;
+  answer: string;
+};
+
 export type Property = {
   slug: string;
   code: string;
   type: Option;
-  acquisition_type: string;
+  acquisition_type: Option;
   title: string;
   description: string;
   cover_image: string;
@@ -79,13 +91,23 @@ export type Property = {
   agent_email: string;
 };
 
-export type PropertyFilterParams = {
+export interface PropertyFilterRouteParams {
   locale: string;
   list_type: PROPERTY_LIST_TYPE;
   state?: string;
   township?: string;
   type?: string;
-};
+}
+
+export interface PropertyFilterQueryParams {
+  page?: number;
+  keyword?: string;
+  price_from?: string;
+  price_to?: string;
+}
+
+export type PropertyFilterParams = PropertyFilterRouteParams &
+  PropertyFilterQueryParams;
 
 export type User = {
   name: string;
@@ -99,16 +121,16 @@ export type ValidationErrors = {
 };
 
 export type API_PATH_TYPE =
-  | typeof apiPaths.API_PATH_PROPERTY_FILTER
-  | typeof apiPaths.API_PATH_PROPERTY_FILTER_TOWNSHIP
-  | typeof apiPaths.API_PATH_PROPERTY
-  | typeof apiPaths.API_PATH_GROUP
-  | typeof apiPaths.API_PATH_INQUIRY
-  | typeof apiPaths.API_PATH_PROFILE
-  | typeof apiPaths.API_PATH_EMAIL_VERIFY
-  | typeof apiPaths.API_PATH_SIGNUP
-  | typeof apiPaths.API_PATH_LOGIN
-  | typeof apiPaths.API_PATH_LOGOUT
-  | typeof apiPaths.API_PATH_EMAIL_VERIFICATION_NOTI;
+  | typeof apiPaths.PROPERTY_FILTER
+  | typeof apiPaths.PROPERTY_FILTER_TOWNSHIP
+  | typeof apiPaths.PROPERTY
+  | typeof apiPaths.GROUP
+  | typeof apiPaths.INQUIRY
+  | typeof apiPaths.PROFILE
+  | typeof apiPaths.EMAIL_VERIFY
+  | typeof apiPaths.SIGNUP
+  | typeof apiPaths.LOGIN
+  | typeof apiPaths.LOGOUT
+  | typeof apiPaths.EMAIL_VERIFICATION_NOTI;
 
 export type PROPERTY_LIST_TYPE = "for-sale" | "for-rent" | "newest";

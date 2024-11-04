@@ -2,12 +2,12 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { TOKEN_NAME } from "../../utils/constants";
 import { isEmpty } from "lodash";
-import { API_PATH_LOGOUT, API_PATH_PROFILE } from "../../utils/api-paths";
 import { isRouteProtected } from "../../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { fetchApi } from "../../utils/helpers";
 import { User } from "../../lib";
+import apiPaths from "../../utils/api-paths";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -16,7 +16,7 @@ interface AuthContextType {
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
@@ -28,7 +28,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     const { status, message } = await fetchApi({
       method: "POST",
-      path: API_PATH_LOGOUT,
+      path: apiPaths.LOGIN,
       requireAuth: true,
     });
 
@@ -52,7 +52,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       if (!user) {
         const { data } = await fetchApi({
           method: "GET",
-          path: API_PATH_PROFILE,
+          path: apiPaths.PROFILE,
           body: {
             language: "en",
           },

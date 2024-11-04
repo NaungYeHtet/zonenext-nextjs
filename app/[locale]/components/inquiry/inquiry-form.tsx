@@ -5,15 +5,12 @@ import { useTranslation } from "react-i18next";
 import Select, { MultiValue } from "react-select";
 import { Option, ValidationErrors } from "../../lib";
 import { fetchApi } from "../../utils/helpers";
-import {
-  API_PATH_INQUIRY,
-  API_PATH_PROPERTY_FILTER_TOWNSHIP,
-} from "../../utils/api-paths";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import AsyncSelect from "../async-select";
 import FieldGroup from "../field-wrapper";
+import apiPaths from "../../utils/api-paths";
 
 type Inputs = {
   first_name: string;
@@ -104,7 +101,7 @@ export default function InquiryForm({
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await fetchApi({
       method: "POST",
-      path: API_PATH_INQUIRY,
+      path: apiPaths.INQUIRY,
       body: {
         ...data,
         language: i18n.language,
@@ -299,7 +296,7 @@ export default function InquiryForm({
                     <AsyncSelect
                       id="townshipForm"
                       className="form-control-primary p-0"
-                      path={API_PATH_PROPERTY_FILTER_TOWNSHIP}
+                      path={apiPaths.PROPERTY_FILTER_TOWNSHIP}
                       placeholder={t("general:choose_township")}
                       onChange={(val: Option) => onChange(val?.value)}
                       optionsKey="townships"
