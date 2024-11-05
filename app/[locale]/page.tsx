@@ -6,6 +6,8 @@ import SectionWelcome from "./section-welcome";
 import PropertyFilter from "./components/property/filter";
 import SectionInquiry from "./section-inquiry";
 import BaseFooter from "./components/footer";
+import SectionTopTenProject from "./section-top-ten-project";
+import SectionMostPopularProperty from "./section-most-popular-proerty";
 
 const i18nNamespaces = ["general", "default", "validation"];
 
@@ -28,10 +30,7 @@ export default async function Home({ params: { locale } }: HomePageProps) {
         <div className="">
           <Navbar />
         </div>
-        <div
-          className="pt-24 md:pt-20 h-full md:h-[330px] bg-no-repeat bg-cover bg-center
-		bg-[url('../../public/images/home-banner.jpg')]"
-        ></div>
+        <div className="h-full bg-[url('../../public/images/home-banner.jpg')] bg-cover bg-center bg-no-repeat pt-24 md:h-[330px] md:pt-20"></div>
         <PropertyFilter
           filterParams={{ locale: locale, list_type: "for-sale" }}
         />
@@ -41,6 +40,10 @@ export default async function Home({ params: { locale } }: HomePageProps) {
         <SectionFeaturedListing locale={locale} />
 
         <SectionInquiry locale={locale} />
+
+        <SectionTopTenProject locale={locale} />
+
+        <SectionMostPopularProperty locale={locale} />
         <div>
           <BaseFooter />
         </div>

@@ -91,6 +91,11 @@ export type Property = {
   agent_email: string;
 };
 
+export type Project = {
+  name: string;
+  image: string;
+};
+
 export interface PropertyFilterRouteParams {
   locale: string;
   list_type: PROPERTY_LIST_TYPE;

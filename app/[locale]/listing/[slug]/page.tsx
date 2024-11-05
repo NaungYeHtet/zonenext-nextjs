@@ -16,6 +16,8 @@ import dynamic from "next/dynamic";
 import GallerySkeleton from "./gallery-skeleton";
 import InquiryFormSkeleton from "./inquiry-form-skeleton";
 import apiPaths from "../../utils/api-paths";
+import { notFound } from "next/navigation";
+import PropertyNotFound from "../../components/property/property-not-found";
 
 const i18nNamespaces = ["general", "validation", "default", "rating"];
 
@@ -110,6 +112,11 @@ export default async function Property({
     },
     options: { next: { revalidate: 60 * 60 * 24 } },
   });
+
+  if (!data.property) {
+    notFound();
+  }
+
   const {
     gallery,
     type,
