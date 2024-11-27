@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchApi } from "../utils/helpers";
 import { useTranslation } from "react-i18next";
-import { User } from "../lib";
+import { User, ValidationErrors } from "../lib";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -63,27 +63,32 @@ export default function ProfileCard() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const {
-      data: { access_token },
-      message,
-      status,
-    } = await fetchApi({
+    const response = await fetchApi({
       method: "POST",
       path: apiPaths.PROFILE,
       body: {
         ...data,
         language: i18n.language,
       },
+      requireAuth: true,
     });
 
-    console.log(access_token, message, status);
+    // console.log(user, message, status);
 
-    if (status == 422) {
+    if (response.status == 422) {
+      const validationErrors: ValidationErrors = response.errors;
+      for (const [key, value] of Object.entries(validationErrors)) {
+        setError(key as any, { type: "custom", message: value[0] as string });
+      }
     }
 
-    if (status == 200) {
-      reset();
-      toast.success(message);
+    if (response.status == 200) {
+      reset({
+        name: response.data.user.name,
+        password: "",
+        password_confirmation: "",
+      });
+      toast.success(response.message);
     }
   };
 

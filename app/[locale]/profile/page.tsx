@@ -3,6 +3,7 @@ import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
 import ProfileCard from "./profile-card";
+import TranslateText from "../components/translate-text";
 
 const i18nNamespaces = ["general", "login"];
 
@@ -21,12 +22,14 @@ export default async function Profile({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex flex-col h-screen">
+      <div className="flex h-screen flex-col">
         <div className="">
           <Navbar />
         </div>
-        <main className="flex flex-col h-full justify-center items-center py-10">
-          <h1 className="text-xl font-serif">Profile</h1>
+        <main className="flex h-full flex-col items-center justify-center py-10">
+          <h1 className="font-serif text-xl">
+            <TranslateText>general:profile</TranslateText>
+          </h1>
           <ProfileCard />
         </main>
         <div>

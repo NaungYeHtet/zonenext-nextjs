@@ -2,13 +2,12 @@
 
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Option, ValidationErrors } from "../../lib";
+import { ValidationErrors } from "../../lib";
 import { fetchApi } from "../../utils/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import FieldGroup from "../../components/field-wrapper";
-import { PiPhoneCall } from "react-icons/pi";
 import Select, { MultiValue } from "react-select";
 import { useContext } from "react";
 import { AuthContext } from "../../components/providers/auth-context";

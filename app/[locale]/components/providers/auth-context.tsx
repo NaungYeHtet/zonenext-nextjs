@@ -28,7 +28,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     const { status, message } = await fetchApi({
       method: "POST",
-      path: apiPaths.LOGIN,
+      path: apiPaths.LOGOUT,
+      body: {
+        language: "en",
+      },
       requireAuth: true,
     });
 

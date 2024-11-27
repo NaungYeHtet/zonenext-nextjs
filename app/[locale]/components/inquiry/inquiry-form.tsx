@@ -332,8 +332,8 @@ export default function InquiryForm({
 
           <div className="flex w-full flex-col gap-2 md:flex-row">
             <FieldGroup>
-              <FieldGroup.Label id="bedrooms">
-                {t("default:bedrooms")}
+              <FieldGroup.Label id="preferredContactMethod">
+                {t("default:inquiry_preferred_contact_method_label")}
               </FieldGroup.Label>
               <FieldGroup.Wrapper
                 errorMsg={errors.preferred_contact_method?.message}
@@ -480,7 +480,7 @@ export default function InquiryForm({
               <input
                 type="checkbox"
                 id="sendUpdates"
-                className="form-control-primary"
+                className="form-control-primary w-10"
                 {...register("send_updates")}
                 aria-invalid={errors.send_updates ? "true" : "false"}
                 aria-label={t("default:inquiry_send_updates_label")}

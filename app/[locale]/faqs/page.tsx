@@ -65,7 +65,7 @@ export default async function Faqs({ params: { locale } }: PageProps) {
             <h1 className="font-serif text-3xl font-semibold">
               <TranslateText>general:faq</TranslateText>
             </h1>
-            <div className="mt-4 flex max-w-[700px] flex-col">
+            <div className="mt-4 flex max-w-[700px] flex-col xl:max-w-[1200px]">
               {faqs.map(({ question, answer }, i) => (
                 <Disclosure>
                   <Disclosure.Button text={question} />

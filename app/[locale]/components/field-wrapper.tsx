@@ -10,7 +10,7 @@ type FieldLabelProps = {
 
 const FieldLabel = ({ children, id, className }: FieldLabelProps) => (
   <label
-    className={cn("inline-block text-sm font-bold mb-1", className)}
+    className={cn("mb-1 inline-block text-sm font-bold", className)}
     htmlFor={id}
   >
     {children}
@@ -25,7 +25,7 @@ const ErrorMessage = ({ children }: ErrorMessageProps) => {
   if (!children) return null;
 
   return (
-    <p className="text-red-500 text-sm mt-1" role="alert">
+    <p className="mt-1 text-sm text-red-500" role="alert">
       <TranslateText>{children}</TranslateText>
     </p>
   );
@@ -39,7 +39,7 @@ type FieldWrapperProps = {
 const FieldWrapper = ({ children, errorMsg }: FieldWrapperProps) => (
   <div
     className={cn("border-2 border-transparent", {
-      "border-2 border-red-400 ": errorMsg,
+      "border-2 border-red-400": errorMsg,
     })}
   >
     {children}
