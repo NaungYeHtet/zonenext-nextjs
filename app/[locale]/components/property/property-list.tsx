@@ -105,7 +105,7 @@ function PropertyList({ params }: PropertyListProps) {
   }
 
   return (
-    <section className="relative z-0 flex-grow">
+    <section className="relative z-0 min-h-screen flex-grow">
       <PropertyHeader total={properties.total} />
       <PropertyListView properties={properties.data} />
       <PaginationSection links={properties.links} />

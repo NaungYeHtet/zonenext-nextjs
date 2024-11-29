@@ -18,8 +18,6 @@ import apiPaths from "../../utils/api-paths";
 
 type Inputs = {
   name: string;
-  interest: string;
-  is_owner?: boolean;
   phone?: string | null;
   email?: string | null;
   message?: string | null;
@@ -39,12 +37,10 @@ type InquiryFormProps = {
 
 const schema = yup
   .object({
-    interest: yup.string().required("validation:required_select"),
     name: yup.string().required("validation:required_text"),
     phone: yup.string().nullable(),
     email: yup.string().email().nullable(),
     message: yup.string().nullable(),
-    is_owner: yup.boolean(),
   })
   .required();
 
@@ -81,12 +77,9 @@ export default function InquiryForm({
       name: user?.name,
       email: user?.email,
       phone: user?.phone,
-      is_owner: false,
-      interest: "",
     },
   });
   const { t, i18n } = useTranslation();
-  const interest = watch("interest");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await fetchApi({
@@ -201,58 +194,6 @@ export default function InquiryForm({
               {errors.message?.message}
             </FieldGroup.ErrorMessage>
           </FieldGroup>
-
-          <FieldGroup>
-            <FieldGroup.Label id="interest">
-              {t("default:inquiry_interest_label")}
-            </FieldGroup.Label>
-            <FieldGroup.Wrapper errorMsg={errors.interest?.message}>
-              <Controller
-                name="interest"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value, name, ref } }) => (
-                  <Select
-                    id="interest"
-                    options={interests}
-                    className="form-control-primary p-0"
-                    placeholder={t("general:select_placeholder")}
-                    instanceId="interest"
-                    isSearchable={false}
-                    value={interests.find((c) => c.value === value)}
-                    onChange={(val) => onChange(val?.value)}
-                    aria-invalid={errors.interest ? "true" : "false"}
-                  />
-                )}
-              />
-            </FieldGroup.Wrapper>
-            <FieldGroup.ErrorMessage>
-              {errors.interest?.message}
-            </FieldGroup.ErrorMessage>
-          </FieldGroup>
-
-          {interest == "Renting" ? (
-            <FieldGroup>
-              <FieldGroup.Label id="isOwner">
-                {t("default:inquiry_owner_label")}
-              </FieldGroup.Label>
-              <FieldGroup.Wrapper errorMsg={errors.is_owner?.message}>
-                <input
-                  type="checkbox"
-                  id="isOwner"
-                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:focus:ring-primary-600"
-                  {...register("is_owner")}
-                  aria-invalid={errors.is_owner ? "true" : "false"}
-                />
-              </FieldGroup.Wrapper>
-              <FieldGroup.ErrorMessage>
-                {errors.is_owner?.message}
-              </FieldGroup.ErrorMessage>
-            </FieldGroup>
-          ) : (
-            ""
-          )}
-
           <button
             type="submit"
             className="mb-2 inline-flex w-full items-center justify-center rounded-md border border-gray-200 bg-green-500 py-1.5 text-lg font-medium text-white transition-colors hover:bg-green-800 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"

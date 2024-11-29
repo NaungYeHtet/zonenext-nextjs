@@ -33,10 +33,6 @@ export default function InquiryFormSkeleton({
         <div className="h-[17px] w-[90px] animate-pulse bg-gray-300"></div>
         <div className="h-[70px] w-full animate-pulse rounded-md bg-gray-300"></div>
       </div>
-      <div className="flex flex-col justify-start gap-1">
-        <div className="h-[17px] w-[190px] animate-pulse bg-gray-300"></div>
-        <div className="h-[40px] w-full animate-pulse rounded-md bg-gray-300"></div>
-      </div>
       <div className="mb-2 h-[50px] w-full animate-pulse rounded-md bg-gray-300"></div>
       <div className="mb-2 h-[50px] w-full animate-pulse rounded-md bg-gray-300"></div>
     </div>
