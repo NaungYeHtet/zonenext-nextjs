@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import FieldGroup from "../../components/field-wrapper";
-import Select, { MultiValue } from "react-select";
+import Select from "react-select";
 import { useContext } from "react";
 import { AuthContext } from "../../components/providers/auth-context";
 import { RATINGS } from "../../utils/constants";
@@ -117,7 +117,7 @@ export default function RatingForm({ propertyCode }: InquiryFormProps) {
                   name="rating"
                   control={control}
                   rules={{ required: true }}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       id="interest"
                       options={RATINGS.map((option) => {

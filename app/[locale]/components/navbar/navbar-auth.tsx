@@ -2,7 +2,7 @@ import Link from "next/link";
 import LanguageSwitch from "../language-switch";
 import Logo from "../logo";
 import TranslateText from "../translate-text";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../providers/auth-context";
 import Dropdown from "../dropdown";
 import { LuLogOut, LuUser } from "react-icons/lu";
@@ -15,7 +15,7 @@ export default function NavbarAuth() {
     );
   }
 
-  const { isLoggedIn, logout, user } = authContext;
+  const { isLoggedIn, logout } = authContext;
 
   return (
     <div className="compact-container flex w-full justify-between py-2">

@@ -1,6 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ReactNode } from "react";
-import { BiDownArrow } from "react-icons/bi";
 
 type ButtonProps = {
   children: ReactNode | string;

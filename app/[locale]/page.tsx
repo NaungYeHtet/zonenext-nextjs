@@ -1,13 +1,20 @@
-import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
 import SectionFeaturedListing from "./section-featured-listing";
 import SectionWelcome from "./section-welcome";
 import PropertyFilter from "./components/property/filter";
 import SectionInquiry from "./section-inquiry";
-import BaseFooter from "./components/footer";
 import SectionTopTenProject from "./section-top-ten-project";
 import SectionMostPopularProperty from "./section-most-popular-proerty";
+import dynamic from "next/dynamic";
+
+const Navbar = dynamic(() => import("./components/navbar/navbar"), {
+  ssr: true,
+});
+
+const BaseFooter = dynamic(() => import("./components/footer"), {
+  ssr: true,
+});
 
 const i18nNamespaces = ["general", "default", "validation"];
 
@@ -18,7 +25,10 @@ type HomePageProps = {
 };
 
 export default async function Home({ params: { locale } }: HomePageProps) {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
+  // Parallelize all async operations instead of sequential fetching
+  const [{ resources }] = await Promise.all([
+    initTranslations(locale, i18nNamespaces),
+  ]);
 
   return (
     <TranslationsProvider

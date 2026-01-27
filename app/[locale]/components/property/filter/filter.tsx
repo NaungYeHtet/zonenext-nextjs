@@ -6,10 +6,10 @@ import { CiSearch } from "react-icons/ci";
 import Select, { MultiValue, SingleValue } from "react-select";
 import { Option, PROPERTY_LIST_TYPE, PropertyFilterParams } from "../../../lib";
 import AsyncSelect from "../../async-select";
-import { useRouter, useSearchParams } from "next/navigation";
-import { isEmpty } from "lodash";
+import { useRouter } from "next/navigation";
 import { transformParamsToQueryString } from "@/app/[locale]/utils/helpers";
 import apiPaths from "@/app/[locale]/utils/api-paths";
+import { isEmpty } from "lodash";
 
 interface ListTypeOption extends Option {
   label: string;
@@ -72,7 +72,6 @@ export default function Filter({
   const [priceTo, setPriceTo] = useState<string>();
   const [township, setTownship] = useState<string>();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleSelectOption = useCallback(
     (option: SingleValue<Option>, key: FILTER_INSTANCE) => {

@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";

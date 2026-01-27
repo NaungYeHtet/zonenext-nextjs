@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Option, ValidationErrors } from "../../lib";
 import { fetchApi } from "../../utils/helpers";
@@ -9,12 +9,12 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import FieldGroup from "../../components/field-wrapper";
 import { PiPhoneCall } from "react-icons/pi";
-import Select, { MultiValue } from "react-select";
 import { useContext } from "react";
 import { AuthContext } from "../../components/providers/auth-context";
 import TranslateText from "../../components/translate-text";
 import Image from "next/image";
 import apiPaths from "../../utils/api-paths";
+import { MultiValue } from "react-select";
 
 type Inputs = {
   name: string;
@@ -50,8 +50,6 @@ export default function InquiryForm({
   agentImage,
   agentPhone,
   agentName,
-  agentEmail,
-  options: { interests },
 }: InquiryFormProps) {
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -65,10 +63,8 @@ export default function InquiryForm({
   const {
     register,
     handleSubmit,
-    control,
     reset,
     setError,
-    watch,
     formState: { errors },
   } = useForm<Inputs>({
     shouldUseNativeValidation: false,

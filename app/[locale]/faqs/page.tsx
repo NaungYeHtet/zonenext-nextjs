@@ -2,14 +2,12 @@ import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
-import { Agent, CollectionData, Faq, ResponseData } from "../lib";
+import { Faq, ResponseData } from "../lib";
 import { fetchApi } from "../utils/helpers";
 import apiPaths from "../utils/api-paths";
 import Breadcrumb from "../components/breadcumb/breadcrumb";
-import Image from "next/image";
-import Pagination from "../components/pagination";
-import TranslateText from "../components/translate-text";
 import Disclosure from "../components/disclosure";
+import TranslateText from "../components/translate-text";
 
 const i18nNamespaces = ["general"];
 
@@ -66,8 +64,8 @@ export default async function Faqs({ params: { locale } }: PageProps) {
               <TranslateText>general:faq</TranslateText>
             </h1>
             <div className="mt-4 flex max-w-[700px] flex-col xl:max-w-[1200px]">
-              {faqs.map(({ question, answer }, i) => (
-                <Disclosure>
+              {faqs.map(({ question, answer }) => (
+                <Disclosure key={question}>
                   <Disclosure.Button text={question} />
                   <Disclosure.Panel>{answer}</Disclosure.Panel>
                 </Disclosure>

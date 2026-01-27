@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { isRouteProtected, logout } from "../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,9 @@ export default function LogoutButton({
 
   const handleLogout = () => {
     logout();
-    isRouteProtected(pathname) && router.push("/login");
+    if (isRouteProtected(pathname)) {
+      router.push("/login");
+    }
   };
 
   return (

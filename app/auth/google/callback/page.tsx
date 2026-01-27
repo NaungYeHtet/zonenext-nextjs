@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { storeToken } from "@/app/[locale]/lib/actions";
 
-export default function GoogleCallback() {
+function GoogleCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [authCode, setAuthCode] = useState<string | null>(null);
@@ -42,4 +42,12 @@ export default function GoogleCallback() {
   }, [authCode, router]);
 
   return <p>Logging you in...</p>;
+}
+
+export default function GoogleCallback() {
+  return (
+    <Suspense fallback={<p>Logging you in...</p>}>
+      <GoogleCallbackContent />
+    </Suspense>
+  );
 }

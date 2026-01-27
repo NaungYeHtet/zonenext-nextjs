@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { TOKEN_NAME } from "../../utils/constants";
-import { isEmpty } from "lodash";
 import { isRouteProtected } from "../../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const logout = async () => {
-    const { status, message } = await fetchApi({
+    const { status } = await fetchApi({
       method: "POST",
       path: apiPaths.LOGOUT,
       body: {
@@ -38,16 +37,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (status == 200) {
       Cookies.remove(TOKEN_NAME);
       setIsLoggedIn(false);
-      console.log(pathname, isRouteProtected(pathname));
-      isRouteProtected(pathname) && router.push("/login");
-    } else {
-      console.log(message);
+      if (isRouteProtected(pathname)) {
+        router.push("/login");
+      }
     }
   };
 
   useEffect(() => {
     const token = Cookies.get(TOKEN_NAME);
-    setIsLoggedIn(!isEmpty(token));
+    setIsLoggedIn(token != null && token !== "");
   }, []);
 
   useEffect(() => {
@@ -68,6 +66,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       fetchUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

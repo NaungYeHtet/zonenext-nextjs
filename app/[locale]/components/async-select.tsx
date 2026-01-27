@@ -4,7 +4,6 @@ import { API_PATH_TYPE, Option } from "../lib";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import { MultiValue, SingleValue } from "react-select";
-import { isEmpty } from "lodash";
 
 type AsyncSelectProps = {
   path: API_PATH_TYPE;
@@ -34,7 +33,7 @@ export default function AsyncSelect({
   } = useTranslation();
 
   const fetchData = useCallback(async () => {
-    if (!isEmpty(defaultVal)) {
+    if (defaultVal != null && defaultVal !== "") {
       const { data } = await fetchApi({
         method: "GET",
         path,

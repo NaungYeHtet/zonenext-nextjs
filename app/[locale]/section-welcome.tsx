@@ -1,30 +1,16 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
 import homeSellImg from "@/public/images/home-sell.jpg";
 import homeBuyImg from "@/public/images/home-buy.jpg";
 import homeRentImg from "@/public/images/home-rent.jpg";
-import { useTranslation } from "react-i18next";
 import TranslateText from "./components/translate-text";
 import dynamic from "next/dynamic";
-
-type CardImageType = {
-  url: StaticImageData;
-  alt: string;
-};
-
-type CardType = {
-  image: CardImageType;
-  title: string;
-  text: string;
-};
 
 const LazyCard = dynamic(() => import("./components/cards/welcome-card"), {
   ssr: true,
 });
 
 export default function SectionWelcome() {
-  const { t } = useTranslation();
   return (
     <section
       className="compact-container bg-gray-50 px-4 md:px-4 py-20 text-center"

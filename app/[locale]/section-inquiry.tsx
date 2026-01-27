@@ -1,4 +1,3 @@
-import { StaticImageData } from "next/image";
 import TranslateText from "./components/translate-text";
 import { fetchApi } from "./utils/helpers";
 import dynamic from "next/dynamic";

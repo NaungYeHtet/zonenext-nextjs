@@ -17,8 +17,6 @@ export default function FilterWrapper({
 }: PropertyFilterProps) {
   const divRef = useRef<HTMLDivElement | null>(null);
   const [endingPosition, setEndingPosition] = useState<number | null>(null);
-  const [isSticky, setIsSticky] = useState(false);
-  const [activedByButton, setActivedByButton] = useState(false);
 
   useEffect(() => {
     const handleScroll = () =>
@@ -29,15 +27,15 @@ export default function FilterWrapper({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isSticky, endingPosition]);
+  }, [endingPosition]);
 
-  useEffect(() => {
-    if (activedByButton) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-  }, [activedByButton]);
+  // useEffect(() => {
+  //   if (activedByButton) {
+  //     document.body.classList.add("no-scroll");
+  //   } else {
+  //     document.body.classList.remove("no-scroll");
+  //   }
+  // }, [activedByButton]);
 
   useEffect(() => {
     // This will ensure that the code only runs on the client side
@@ -54,9 +52,9 @@ export default function FilterWrapper({
         className={cn(
           "z-40 flex h-full w-full justify-center bg-transparent bg-white transition-all duration-300 ease-in md:align-middle",
           {
-            "compact-container py-10": !isSticky,
+            "compact-container py-10": true,
             "sticky top-0 translate-y-0 px-3 py-3 opacity-100 shadow-md":
-              isSticky,
+              false,
           },
         )}
       >

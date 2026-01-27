@@ -135,7 +135,7 @@ export default function InquiryForm({
                   name="interest"
                   control={control}
                   rules={{ required: true }}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       id="interest"
                       options={interests}
@@ -163,7 +163,7 @@ export default function InquiryForm({
                   name="property_type"
                   control={control}
                   rules={{ required: true }}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       id="propertyType"
                       options={property_types}
@@ -292,7 +292,7 @@ export default function InquiryForm({
                   name="township"
                   control={control}
                   rules={{ required: true }}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange } }) => (
                     <AsyncSelect
                       id="townshipForm"
                       className="form-control-primary p-0"
@@ -341,7 +341,7 @@ export default function InquiryForm({
                 <Controller
                   name="preferred_contact_method"
                   control={control}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       id="preferredContactMethod"
                       options={contact_methods}
@@ -372,7 +372,7 @@ export default function InquiryForm({
                 <Controller
                   name="preferred_contact_time"
                   control={control}
-                  render={({ field: { onChange, value, name, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       id="preferredContactTime"
                       options={contact_times}

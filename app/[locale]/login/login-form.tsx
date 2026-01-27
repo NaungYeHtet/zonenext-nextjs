@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { storeToken } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import { fetchApi } from "../utils/helpers";
-import Image from "next/image";
 import GoogleAuthButton from "../components/google-auth-button";
 import FormCard from "../components/cards/form-card";
 import apiPaths from "../utils/api-paths";

@@ -1,7 +1,5 @@
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { API_PATH_TYPE } from "../lib";
-import _, { remove } from "lodash";
 import { NextResponse } from "next/server";
 import { removeToken } from "../lib/actions";
 import Cookies from "js-cookie";
@@ -12,10 +10,13 @@ export function sanitizeObject(obj?: object) {
     return {};
   }
 
-  return _.omitBy(
-    obj,
-    (v) => v === null || v === undefined || v === "",
-  ) as Record<string, string>;
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== null && value !== undefined && value !== "") {
+      result[key] = value;
+    }
+  }
+  return result;
 }
 
 export function transformParamsToQueryString(params?: object): string {
@@ -119,6 +120,5 @@ export async function fetchApi({
     }
   }
 
-  console.error("ERROR >>> ", responseData, response.status);
   return responseData;
 }

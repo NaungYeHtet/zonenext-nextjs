@@ -39,8 +39,6 @@ export default async function SectionMostPopularProperty({
     },
   });
 
-  console.log(group);
-
   return (
     <section
       className="h-full bg-gray-50 px-4 py-24 text-center md:px-4"

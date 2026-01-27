@@ -1,4 +1,3 @@
-import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";

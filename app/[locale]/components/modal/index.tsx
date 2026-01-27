@@ -2,11 +2,9 @@
 
 import {
   Dialog,
-  DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { cn } from "../../utils/helpers";
 
 type ModalProps = {
   isOpen: boolean;
@@ -14,21 +12,7 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-type BackdropProps = {
-  className: string;
-};
-
-const Backdrop = ({ className }: BackdropProps) => (
-  <DialogBackdrop
-    transition
-    className={cn(
-      "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in",
-      className
-    )}
-  />
-);
-
-export default function Modal({ isOpen, onClose, children }: ModalProps) {
+export default function Modal({ isOpen, onClose }: ModalProps) {
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">

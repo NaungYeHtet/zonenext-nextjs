@@ -8,7 +8,7 @@ export default function NotFound() {
           <div className="absolute">
             <div className="">
               <h1 className="my-2 text-2xl font-bold text-gray-800">
-                Looks like you've found the doorway to the great nothing
+                Looks like you&apos;ve found the doorway to the great nothing
               </h1>
               <p className="my-2 text-gray-800">
                 Sorry about that! Please visit our hompage to get where you need
@@ -23,12 +23,14 @@ export default function NotFound() {
             </div>
           </div>
           <div>
-            <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://i.ibb.co/G9DC8S0/404-2.png" alt="404" />
           </div>
         </div>
       </div>
       <div>
-        <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="https://i.ibb.co/ck1SGFJ/Group.png" alt="decoration" />
       </div>
     </div>
   );
