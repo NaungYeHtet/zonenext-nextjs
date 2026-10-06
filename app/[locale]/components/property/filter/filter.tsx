@@ -9,7 +9,6 @@ import AsyncSelect from "../../async-select";
 import { useRouter } from "next/navigation";
 import { transformParamsToQueryString } from "@/app/[locale]/utils/helpers";
 import apiPaths from "@/app/[locale]/utils/api-paths";
-import { isEmpty } from "lodash";
 
 interface ListTypeOption extends Option {
   label: string;
@@ -123,11 +122,11 @@ export default function Filter({
   );
 
   const handleStateChange = (option: SingleValue<Option>) => {
-    if (!isEmpty(option)) {
+    if (option) {
       setTownshipParams((prevState) => {
         return {
           ...prevState,
-          state: option?.value as string,
+          state: option.value,
         };
       });
     }

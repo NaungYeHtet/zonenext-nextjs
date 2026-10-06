@@ -9,7 +9,7 @@ import Breadcrumb from "../components/breadcumb/breadcrumb";
 import Image from "next/image";
 import Pagination from "../components/pagination";
 
-const i18nNamespaces = ["general", "login"];
+const i18nNamespaces = ["general"];
 
 type PageProps = {
   params: {

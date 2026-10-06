@@ -2,10 +2,9 @@ import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
-import AuthProviderClient from "../components/providers/provider-client";
 import SignupForm from "./signup-form";
 
-const i18nNamespaces = ["general", "login"];
+const i18nNamespaces = ["general"];
 
 type PageProps = {
   params: {
@@ -27,9 +26,7 @@ export default async function Signup({ params: { locale } }: PageProps) {
           <Navbar />
         </div>
         <main className="compact-container flex h-full flex-col items-center justify-center py-7">
-          <AuthProviderClient>
-            <SignupForm />
-          </AuthProviderClient>
+          <SignupForm />
         </main>
         <div>
           <BaseFooter />

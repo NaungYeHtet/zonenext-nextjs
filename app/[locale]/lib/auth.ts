@@ -1,10 +1,10 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { TOKEN_NAME } from "../utils/constants";
 import { fetchApi } from "../utils/helpers";
-import Cookies from "js-cookie";
 import apiPaths from "../utils/api-paths";
+import { removeToken } from "./actions";
 
-export const guestRoutes = ["login", "sign-up"];
+export const guestRoutes = ["login", "signup"];
 export const protectedRoutes = ["profile", "verification"];
 
 export const isAuthenticated = (request: NextRequest): boolean => {
@@ -22,21 +22,32 @@ export const isRouteProtected = (pathname: string): boolean => {
   return protectedRoutes.some((route) => relativePath.startsWith(route));
 };
 
+export const isRouteVerification = (pathname: string): boolean => {
+  return getRelativePath(pathname)
+    .replace(/^\/+/, "")
+    .startsWith("verification");
+};
+
 export const isRouteGuest = (pathname: string): boolean => {
-  const relativePath = getRelativePath(pathname);
+  const relativePath = getRelativePath(pathname).replace(/^\/+/, "");
   return guestRoutes.some((route) => relativePath.startsWith(route));
 };
 
-export const logout = async () => {
-  const { status, message } = await fetchApi({
+export const logout = async (language: string): Promise<boolean> => {
+  const res = await fetchApi({
     method: "POST",
     path: apiPaths.LOGOUT,
+    body: {
+      language,
+    },
     requireAuth: true,
   });
 
-  if (status == 200) {
-    Cookies.remove(TOKEN_NAME);
-  } else {
-    console.log(message);
+  if (res?.status == 200) {
+    removeToken();
+    return true;
   }
+
+  console.log(res?.message);
+  return false;
 };

@@ -7,7 +7,7 @@ export default async function initTranslations(
   locale,
   namespaces,
   i18nInstance,
-  resources
+  resources,
 ) {
   i18nInstance = i18nInstance || createInstance();
 
@@ -17,8 +17,8 @@ export default async function initTranslations(
     i18nInstance.use(
       resourcesToBackend(
         (language, namespace) =>
-          import(`@/locales/${language}/${namespace}.json`)
-      )
+          import(`@/locales/${language}/${namespace}.json`),
+      ),
     );
   }
 
@@ -30,7 +30,7 @@ export default async function initTranslations(
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,
-    preload: resources ? [] : i18nConfig.locales,
+    preload: resources ? [] : [locale],
   });
 
   return {

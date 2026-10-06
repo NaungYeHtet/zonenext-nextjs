@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import NavbarItem from "./navbar-item";
 import NavbarAuth from "./navbar-auth";
-import AuthProviderClient from "../providers/provider-client";
 
 const navbarItems = [
   {
@@ -64,9 +63,7 @@ export default function Navbar() {
     <nav className="">
       <section className="flex w-full border-b border-b-primary-50 bg-white p-1 py-2 shadow-sm md:p-3 md:shadow-none">
         <ShowNavbarButton setShowNavbar={setShowNavbar} />
-        <AuthProviderClient>
-          <NavbarAuth />
-        </AuthProviderClient>
+        <NavbarAuth />
       </section>
       <div
         className={cn(

@@ -9,7 +9,6 @@ import initTranslations from "../../utils/i18n";
 import { PiShower } from "react-icons/pi";
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import TranslateText from "../../components/translate-text";
-import AuthProviderClient from "../../components/providers/provider-client";
 import RatingForm from "./rating-form";
 import Breadcrumb from "../../components/breadcumb/breadcrumb";
 import dynamic from "next/dynamic";
@@ -18,7 +17,7 @@ import InquiryFormSkeleton from "./inquiry-form-skeleton";
 import apiPaths from "../../utils/api-paths";
 import { notFound } from "next/navigation";
 
-const i18nNamespaces = ["general", "validation", "default", "rating"];
+const i18nNamespaces = ["general", "validation", "rating"];
 
 const InquiryForm = dynamic(() => import("./inquiry-form"), {
   ssr: false,
@@ -236,26 +235,22 @@ export default async function Property({
                   </h3>
                 </div>
                 <div className="">
-                  <AuthProviderClient>
-                    <RatingForm propertyCode={code} />
-                  </AuthProviderClient>
+                  <RatingForm propertyCode={code} />
                 </div>
               </section>
             </div>
 
             {/* Inquiry Form section */}
             <section className="sticky top-10 h-full w-full rounded-md bg-white shadow-lg md:w-2/6">
-              <AuthProviderClient>
-                <InquiryForm
-                  options={inquiryData.data}
-                  propertyCode={code}
-                  propertyTitle={title}
-                  agentImage={agent_image}
-                  agentPhone={agent_phone}
-                  agentName={agent_name}
-                  agentEmail={agent_email}
-                />
-              </AuthProviderClient>
+              <InquiryForm
+                options={inquiryData.data}
+                propertyCode={code}
+                propertyTitle={title}
+                agentImage={agent_image}
+                agentPhone={agent_phone}
+                agentName={agent_name}
+                agentEmail={agent_email}
+              />
             </section>
           </div>
         </main>

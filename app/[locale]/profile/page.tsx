@@ -5,7 +5,7 @@ import BaseFooter from "../components/footer";
 import ProfileCard from "./profile-card";
 import TranslateText from "../components/translate-text";
 
-const i18nNamespaces = ["general", "login"];
+const i18nNamespaces = ["general"];
 
 type PageProps = {
   params: {

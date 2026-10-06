@@ -3,7 +3,7 @@
 import { I18nextProvider } from "react-i18next";
 import { createInstance, Resource } from "i18next";
 import initTranslations from "../utils/i18n";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 interface TranslationsProviderProps {
   children: ReactNode;
@@ -18,9 +18,14 @@ export default function TranslationsProvider({
   namespaces,
   resources,
 }: TranslationsProviderProps) {
-  const i18n = createInstance();
-
-  initTranslations(locale, namespaces, i18n, resources);
+  // Build the instance once per mount. The props are fresh objects on every
+  // RSC payload, but a locale's resources never change for a given page, and
+  // switching locale remounts the tree via the [locale] segment.
+  const [i18n] = useState(() => {
+    const instance = createInstance();
+    initTranslations(locale, namespaces, instance, resources);
+    return instance;
+  });
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 }

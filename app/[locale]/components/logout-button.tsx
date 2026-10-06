@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { isRouteProtected, logout } from "../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type LogoutButtonProps = {
   children: ReactNode;
@@ -16,10 +17,11 @@ export default function LogoutButton({
 }: LogoutButtonProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { i18n } = useTranslation();
 
-  const handleLogout = () => {
-    logout();
-    if (isRouteProtected(pathname)) {
+  const handleLogout = async () => {
+    const loggedOut = await logout(i18n.language);
+    if (loggedOut && isRouteProtected(pathname)) {
       router.push("/login");
     }
   };
