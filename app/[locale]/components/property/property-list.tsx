@@ -6,6 +6,7 @@ import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "../skeletons";
 import { PropertyListView } from "./property-list-view";
 import PropertyNotFound from "./property-not-found";
 import apiPaths from "../../utils/api-paths";
+import TranslateText from "../translate-text";
 
 type PropertyHeaderProps = {
   total: number;
@@ -28,6 +29,18 @@ function PaginationSection({ links }: PaginationSectionProps) {
   return (
     <div className="flex justify-center py-5">
       <Pagination links={links} />
+    </div>
+  );
+}
+
+function PropertyListError() {
+  return (
+    <div className="relative z-0 flex-grow">
+      <div className="flex h-full items-center justify-center">
+        <span className="text-sm text-gray-500">
+          <TranslateText>property_load_error</TranslateText>
+        </span>
+      </div>
     </div>
   );
 }
@@ -91,7 +104,11 @@ type PropertyListProps = {
 function PropertyList({ propertiesPromise }: PropertyListProps) {
   const properties = use(propertiesPromise);
 
-  if (!properties || properties.total == 0) {
+  if (!properties) {
+    return <PropertyListError />;
+  }
+
+  if (properties.total == 0) {
     return <PropertyNotFound />;
   }
 
