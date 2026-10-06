@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Extract one upstream-style `Task N` section, with support for legacy `TASK-###` plans.
+set -euo pipefail
+
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+  echo "usage: task-brief PLAN_FILE TASK_ID [OUTFILE]" >&2
+  exit 2
+fi
+
+plan=$1
+raw_id=$2
+[ -f "$plan" ] || { echo "no such plan file: $plan" >&2; exit 2; }
+
+digits=${raw_id#TASK-}
+digits=${digits#Task-}
+digits=${digits#task-}
+
+case "$digits" in
+  ''|*[!0-9]*)
+    echo "invalid task identifier: $raw_id (expected 1 or TASK-001)" >&2
+    exit 2
+    ;;
+esac
+
+task_number=$((10#$digits))
+printf -v task_id 'TASK-%03d' "$task_number"
+
+if [ "$#" -eq 3 ]; then
+  out=$3
+else
+  script_dir=$(cd "$(dirname "$0")" && pwd)
+  dir=$("$script_dir/sdd-workspace" "$plan")
+  out="$dir/$(printf '%s' "$task_id" | tr '[:upper:]' '[:lower:]')-brief.md"
+fi
+
+awk -v task_id="$task_id" -v task_number="$task_number" '
+  function canonical_heading(line) {
+    return line ~ /^#{3,6}[ \t]+TASK-[0-9]+([: \t—-]|$)/
+  }
+  function legacy_heading(line) {
+    return line ~ /^#{1,6}[ \t]+Task[ \t]+[0-9]+([^0-9]|$)/
+  }
+  function canonical_match(line) {
+    return line ~ ("^#{3,6}[ \\t]+" task_id "([: \\t—-]|$)")
+  }
+  function legacy_match(line) {
+    return line ~ ("^#{1,6}[ \\t]+Task[ \\t]+0*" task_number "([^0-9]|$)")
+  }
+  /^```/ { in_fence = !in_fence }
+  !in_fence && (canonical_heading($0) || legacy_heading($0)) {
+    if (capture && !(canonical_match($0) || legacy_match($0))) exit
+    if (canonical_match($0) || legacy_match($0)) capture = 1
+  }
+  capture && !in_fence && /^##[ \t]+/ && !(canonical_match($0) || legacy_match($0)) { exit }
+  capture && !in_fence && /^###[ \t]+Implementation Phase/ { exit }
+  capture { print }
+' "$plan" > "$out"
+
+if [ ! -s "$out" ]; then
+  echo "task $task_id not found as a detailed heading in $plan" >&2
+  exit 3
+fi
+
+echo "wrote $out: $(wc -l < "$out" | tr -d ' ') lines"

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['via.placeholder.com', 'localhost'],
+        domains: ['via.placeholder.com', 'localhost', "zonenext.test"],
         formats: ['image/avif', 'image/webp'],
         minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
