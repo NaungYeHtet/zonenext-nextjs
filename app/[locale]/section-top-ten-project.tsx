@@ -6,6 +6,7 @@ import "swiper/css/scrollbar";
 import apiPaths from "./utils/api-paths";
 import { fetchApi } from "./utils/helpers";
 import CarouselSlider from "./components/carousel-slider";
+import { HOME_CAROUSEL_PROPS } from "./components/carousel-presets";
 import ProjectCardCompact from "./components/project/project-card-compact";
 
 export default async function SectionTopTenProject({
@@ -36,26 +37,8 @@ export default async function SectionTopTenProject({
       <p className="md:text-md text-sm text-gray-500">{group.description}</p>
       <div className="compact-container mx-auto mt-8 h-full">
         <CarouselSlider
+          {...HOME_CAROUSEL_PROPS}
           id="TopTenProjects"
-          centeredSlides={false}
-          centerInsufficientSlides={true}
-          spaceBetween={50}
-          loop
-          pagination={{
-            clickable: true,
-            el: ".swiper-custom-pagination",
-          }}
-          breakpoints={{
-            0: {
-              slidesPerView: 1,
-            },
-            1200: {
-              slidesPerView: 2,
-            },
-            1400: {
-              slidesPerView: 3,
-            },
-          }}
           autoplay={{
             disableOnInteraction: false, // Optional, but recommended
             delay: 5000,
