@@ -27,3 +27,23 @@
     object-fit: cover;
   }
 }
+
+/* Pre-init slide widths for HOME_CAROUSEL_PROPS (components/carousel-presets.ts),
+   so server-rendered carousels don't jump when Swiper applies breakpoints. */
+.home-carousel:not(.swiper-initialized) .swiper-slide {
+  width: 100%;
+  margin-right: 50px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1200px) {
+  .home-carousel:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 50px) / 2);
+  }
+}
+
+@media (min-width: 1400px) {
+  .home-carousel:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 100px) / 3);
+  }
+}

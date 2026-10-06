@@ -6,19 +6,8 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import apiPaths from "./utils/api-paths";
 import { fetchApi } from "./utils/helpers";
-import dynamic from "next/dynamic";
-import PropertyCardSkeleton from "./components/property/skeletons/property-card-skeleton";
-
-const CarouselSlider = dynamic(() => import("./components/carousel-slider"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-between gap-10">
-      <PropertyCardSkeleton className="hidden lg:flex" />
-      <PropertyCardSkeleton className="hidden md:flex" />
-      <PropertyCardSkeleton />
-    </div>
-  ),
-});
+import CarouselSlider from "./components/carousel-slider";
+import { HOME_CAROUSEL_PROPS } from "./components/carousel-presets";
 
 export default async function SectionFeaturedListing({
   locale,
@@ -48,25 +37,7 @@ export default async function SectionFeaturedListing({
       <p className="md:text-md text-sm text-gray-500">{group.description}</p>
       <div className="compact-container mx-auto mt-8 h-full">
         <CarouselSlider
-          centeredSlides={false}
-          centerInsufficientSlides={true}
-          spaceBetween={50}
-          loop
-          pagination={{
-            clickable: true,
-            el: ".swiper-custom-pagination",
-          }}
-          breakpoints={{
-            0: {
-              slidesPerView: 1,
-            },
-            1200: {
-              slidesPerView: 2,
-            },
-            1400: {
-              slidesPerView: 3,
-            },
-          }}
+          {...HOME_CAROUSEL_PROPS}
           autoplay={{
             disableOnInteraction: false, // Optional, but recommended
             delay: 5000,

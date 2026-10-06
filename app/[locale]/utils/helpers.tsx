@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { NextResponse } from "next/server";
+import { notFound, redirect } from "next/navigation";
 import { removeToken } from "../lib/actions";
 import Cookies from "js-cookie";
 import { TOKEN_NAME } from "./constants";
@@ -42,11 +42,13 @@ type HeaderType = {
 function redirectToRoute(route: string) {
   if (typeof window !== "undefined") {
     window.location.href = route;
+    return;
   }
 
-  return NextResponse.redirect(
-    new URL(route, process.env.NEXT_PUBLIC_SITE_URL),
-  );
+  // On the server (server components), throw Next's navigation errors so the
+  // request actually renders the 404 page or redirects.
+  if (route === "/404") notFound();
+  redirect(route);
 }
 
 type FetchMethod = "GET" | "POST";

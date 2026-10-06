@@ -232,6 +232,7 @@ export default function Filter({
         optionsKey="townships"
         isClearable
         defaultVal={filterParams?.township}
+        instanceId={TOWNSHIP}
       />
       <Select
         aria-label={t("general:choose_type", { lng: "en" })}

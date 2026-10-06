@@ -10,9 +10,8 @@ import {
 import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
 import TranslateText from "../translate-text";
-import clsx from "clsx";
 import Link from "next/link";
-import CarouselSlider from "../carousel-slider";
+import { PropertyCardImage } from "./property-card-image";
 
 export type PropertyCardProps = {
   property: Property;
@@ -23,46 +22,6 @@ type IconDetailType = {
   value: any;
   text: string;
   children: ReactNode;
-};
-
-type PropertyCardImageProps = {
-  images: string[];
-  width?: number;
-  height?: number;
-  className?: string;
-  priority?: boolean;
-};
-
-export const PropertyCardImage = ({
-  images,
-  className,
-  priority = false,
-}: PropertyCardImageProps) => {
-  return (
-    <CarouselSlider
-      spaceBetween={0}
-      pagination={false}
-      slidesPerView={1}
-      navigation={{}}
-    >
-      {images.map((url, index) => (
-        <div className="relative h-[250px] w-full" key={index}>
-          <Image
-            className={clsx(className, "aspec")}
-            key={index}
-            src={url}
-            alt="Gallery"
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
-            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            // style={{ width: "auto", height: "280px" }} // Maintain aspect ratio
-            priority={priority && index === 0}
-          />
-        </div>
-      ))}
-    </CarouselSlider>
-  );
 };
 
 export const IconDetail = ({ value, text, children }: IconDetailType) => {
@@ -104,8 +63,8 @@ export default function PropertyCard({
           images={[cover_image, ...gallery]}
           priority={priority}
         />
-        <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
-        <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">
+        <div className="pointer-events-none absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
+        <div className="pointer-events-none absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">
           {/* Gradient shadow that smoothly spreads to the middle */}
 
           {/* Price Text */}

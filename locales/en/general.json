@@ -56,5 +56,6 @@
   "rate": "Rate",
   "rating": "Rating",
   "review": "Review",
-  "submit_inquiry": "Submit Inquiry"
+  "submit_inquiry": "Submit Inquiry",
+  "property_load_error": "Couldn't load properties. Please try again later."
 }

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
@@ -13,6 +13,7 @@ import Breadcrumb from "./components/breadcumb/breadcrumb";
 import { PropertyFilterParams } from "./lib";
 import apiPaths from "./utils/api-paths";
 import BaseFooter from "./components/footer";
+import { FilterSectionSkeleton } from "./section-skeletons";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -22,16 +23,20 @@ type LayoutProps = {
 };
 
 export default async function Wrapper({ children, params }: LayoutProps) {
-  const { resources } = await initTranslations(params.locale, i18nNamespaces);
-
-  const {
-    data: { group },
-  } = await fetchApi({
-    method: "GET",
-    path: apiPaths.GROUP,
-    body: { language: params.locale, type: "FeaturedListings" },
-    options: { next: { revalidate: 60 * 60 * 24 } },
-  });
+  const [
+    { resources },
+    {
+      data: { group },
+    },
+  ] = await Promise.all([
+    initTranslations(params.locale, i18nNamespaces),
+    fetchApi({
+      method: "GET",
+      path: apiPaths.GROUP,
+      body: { language: params.locale, type: "FeaturedListings" },
+      options: { next: { revalidate: 60 * 60 * 24 } },
+    }),
+  ]);
 
   return (
     <TranslationsProvider
@@ -44,7 +49,9 @@ export default async function Wrapper({ children, params }: LayoutProps) {
           <Navbar />
         </div>
         <main>
-          <PropertyFilter filterParams={params} />
+          <Suspense fallback={<FilterSectionSkeleton />}>
+            <PropertyFilter filterParams={params} />
+          </Suspense>
           <div className="md:compact-container mt-3 flex w-full flex-col justify-between gap-10 xl:flex-row">
             <section aria-label="Property list section">
               <Breadcrumb

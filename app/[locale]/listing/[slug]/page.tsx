@@ -88,26 +88,27 @@ type PageProps = {
 export default async function Property({
   params: { locale, slug },
 }: PageProps) {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-  const inquiryData = await fetchApi({
-    method: "GET",
-    path: apiPaths.INQUIRY,
-    body: {
-      language: locale,
-    },
-    options: { next: { revalidate: 60 * 60 * 24 } },
-  });
+  const [{ resources }, inquiryData, { data }] = await Promise.all([
+    initTranslations(locale, i18nNamespaces),
+    fetchApi({
+      method: "GET",
+      path: apiPaths.INQUIRY,
+      body: {
+        language: locale,
+      },
+      options: { next: { revalidate: 60 * 60 * 24 } },
+    }),
+    fetchApi({
+      method: "GET",
+      path: `${apiPaths.PROPERTY}/${slug}`,
+      body: {
+        language: locale,
+      },
+      options: { next: { revalidate: 60 * 60 * 24 } },
+    }),
+  ]);
 
-  const { data } = await fetchApi({
-    method: "GET",
-    path: `${apiPaths.PROPERTY}/${slug}`,
-    body: {
-      language: locale,
-    },
-    options: { next: { revalidate: 60 * 60 * 24 } },
-  });
-
-  if (!data.property) {
+  if (!data?.property) {
     notFound();
   }
 

@@ -6,6 +6,7 @@ import { PropertyCardLongSkeleton, PropertyCardSkeleton } from "../skeletons";
 import { PropertyListView } from "./property-list-view";
 import PropertyNotFound from "./property-not-found";
 import apiPaths from "../../utils/api-paths";
+import TranslateText from "../translate-text";
 
 type PropertyHeaderProps = {
   total: number;
@@ -32,6 +33,18 @@ function PaginationSection({ links }: PaginationSectionProps) {
   );
 }
 
+function PropertyListError() {
+  return (
+    <div className="relative z-0 flex-grow">
+      <div className="flex h-full items-center justify-center">
+        <span className="text-sm text-gray-500">
+          <TranslateText>property_load_error</TranslateText>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export const LoadingSkeleton = () => (
   <>
     <div className="hidden flex-col gap-7 lg:flex">
@@ -47,7 +60,7 @@ export const LoadingSkeleton = () => (
   </>
 );
 
-async function fetchProperties({
+export async function fetchProperties({
   list_type,
   state,
   township,
@@ -70,8 +83,6 @@ async function fetchProperties({
     price_to,
   };
 
-  console.log(body);
-
   const {
     data: { properties },
   } = await fetchApi({
@@ -86,18 +97,15 @@ async function fetchProperties({
 }
 
 type PropertyListProps = {
-  params: PropertyFilterParams;
+  // Started by the page so the fetch runs in parallel with the layout's.
+  propertiesPromise: ReturnType<typeof fetchProperties>;
 };
 
-function PropertyList({ params }: PropertyListProps) {
-  const properties = use(fetchProperties(params));
+function PropertyList({ propertiesPromise }: PropertyListProps) {
+  const properties = use(propertiesPromise);
 
   if (!properties) {
-    return (
-      <div className="relative z-0 flex-grow">
-        <LoadingSkeleton />
-      </div>
-    );
+    return <PropertyListError />;
   }
 
   if (properties.total == 0) {
