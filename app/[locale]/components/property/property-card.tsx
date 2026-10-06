@@ -11,16 +11,12 @@ import { TfiRulerAlt2 } from "react-icons/tfi";
 import { ReactNode } from "react";
 import TranslateText from "../translate-text";
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-const CarouselSlider = dynamic(() => import("../carousel-slider"), {
-  ssr: false,
-  loading: () => <div></div>,
-});
+import CarouselSlider from "../carousel-slider";
 
 export type PropertyCardProps = {
   property: Property;
+  priority?: boolean;
 };
 
 type IconDetailType = {
@@ -34,11 +30,13 @@ type PropertyCardImageProps = {
   width?: number;
   height?: number;
   className?: string;
+  priority?: boolean;
 };
 
 export const PropertyCardImage = ({
   images,
   className,
+  priority = false,
 }: PropertyCardImageProps) => {
   return (
     <CarouselSlider
@@ -59,6 +57,7 @@ export const PropertyCardImage = ({
             sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
             // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             // style={{ width: "auto", height: "280px" }} // Maintain aspect ratio
+            priority={priority && index === 0}
           />
         </div>
       ))}
@@ -96,11 +95,15 @@ export default function PropertyCard({
     acquisition_type,
     type,
   },
+  priority,
 }: PropertyCardProps) {
   return (
     <div className="flex h-full w-full flex-col gap-1 rounded-md bg-white shadow-lg">
       <div className="group relative">
-        <PropertyCardImage images={[cover_image, ...gallery]} />
+        <PropertyCardImage
+          images={[cover_image, ...gallery]}
+          priority={priority}
+        />
         <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
         <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">
           {/* Gradient shadow that smoothly spreads to the middle */}
@@ -172,6 +175,7 @@ export default function PropertyCard({
 
 export function PropertyCardCompact({
   property: { cover_image, price, address, title, slug },
+  priority,
 }: PropertyCardProps) {
   return (
     <div className="group relative h-[230px] w-full">
@@ -182,6 +186,7 @@ export function PropertyCardCompact({
         fill
         style={{ objectFit: "cover" }}
         sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
+        priority={priority}
       />
       <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
       <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">

@@ -4,10 +4,12 @@ import Link from "next/link";
 
 type ProjectCardProps = {
   project: Project;
+  priority?: boolean;
 };
 
 export default function ProjectCardCompact({
   project: { name, image },
+  priority,
 }: ProjectCardProps) {
   return (
     <div className="group relative h-[230px] w-full">
@@ -19,6 +21,7 @@ export default function ProjectCardCompact({
           fill
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
+          priority={priority}
         />
       ) : (
         ""
