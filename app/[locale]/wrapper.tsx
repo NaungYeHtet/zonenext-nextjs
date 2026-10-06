@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
 import initTranslations from "./utils/i18n";
@@ -13,6 +13,7 @@ import Breadcrumb from "./components/breadcumb/breadcrumb";
 import { PropertyFilterParams } from "./lib";
 import apiPaths from "./utils/api-paths";
 import BaseFooter from "./components/footer";
+import { FilterSectionSkeleton } from "./section-skeletons";
 
 const i18nNamespaces = ["general", "default"];
 
@@ -48,7 +49,9 @@ export default async function Wrapper({ children, params }: LayoutProps) {
           <Navbar />
         </div>
         <main>
-          <PropertyFilter filterParams={params} />
+          <Suspense fallback={<FilterSectionSkeleton />}>
+            <PropertyFilter filterParams={params} />
+          </Suspense>
           <div className="md:compact-container mt-3 flex w-full flex-col justify-between gap-10 xl:flex-row">
             <section aria-label="Property list section">
               <Breadcrumb

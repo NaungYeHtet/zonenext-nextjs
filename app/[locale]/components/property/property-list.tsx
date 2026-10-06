@@ -47,7 +47,7 @@ export const LoadingSkeleton = () => (
   </>
 );
 
-async function fetchProperties({
+export async function fetchProperties({
   list_type,
   state,
   township,
@@ -84,11 +84,12 @@ async function fetchProperties({
 }
 
 type PropertyListProps = {
-  params: PropertyFilterParams;
+  // Started by the page so the fetch runs in parallel with the layout's.
+  propertiesPromise: ReturnType<typeof fetchProperties>;
 };
 
-function PropertyList({ params }: PropertyListProps) {
-  const properties = use(fetchProperties(params));
+function PropertyList({ propertiesPromise }: PropertyListProps) {
+  const properties = use(propertiesPromise);
 
   if (!properties || properties.total == 0) {
     return <PropertyNotFound />;

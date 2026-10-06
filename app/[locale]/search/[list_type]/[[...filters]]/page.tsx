@@ -5,6 +5,7 @@ import {
 } from "@/app/[locale]/lib";
 import Wrapper from "@/app/[locale]/wrapper";
 import PropertyList, {
+  fetchProperties,
   LoadingSkeleton,
 } from "@/app/[locale]/components/property/property-list";
 import { Suspense } from "react";
@@ -26,6 +27,7 @@ export default async function Search({
     ...parseSearchFilters(filters),
     ...searchParams,
   };
+  const propertiesPromise = fetchProperties(filterParams);
 
   return (
     <Wrapper params={filterParams}>
@@ -36,7 +38,7 @@ export default async function Search({
           </div>
         }
       >
-        <PropertyList params={filterParams} />
+        <PropertyList propertiesPromise={propertiesPromise} />
       </Suspense>
     </Wrapper>
   );
