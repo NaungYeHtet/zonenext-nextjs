@@ -4,7 +4,7 @@ import { fetchApi } from "../utils/helpers";
 import Cookies from "js-cookie";
 import apiPaths from "../utils/api-paths";
 
-export const guestRoutes = ["login", "sign-up"];
+export const guestRoutes = ["login", "signup"];
 export const protectedRoutes = ["profile", "verification"];
 
 export const isAuthenticated = (request: NextRequest): boolean => {
@@ -23,7 +23,7 @@ export const isRouteProtected = (pathname: string): boolean => {
 };
 
 export const isRouteGuest = (pathname: string): boolean => {
-  const relativePath = getRelativePath(pathname);
+  const relativePath = getRelativePath(pathname).replace(/^\/+/, "");
   return guestRoutes.some((route) => relativePath.startsWith(route));
 };
 
