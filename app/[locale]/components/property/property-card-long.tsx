@@ -1,9 +1,6 @@
 import { LuBedSingle, LuEye } from "react-icons/lu";
-import {
-  IconDetail,
-  PropertyCardImage,
-  PropertyCardProps,
-} from "./property-card";
+import { IconDetail, PropertyCardProps } from "./property-card";
+import { PropertyCardImage } from "./property-card-image";
 import {
   PiEyeLight,
   PiMailboxLight,
@@ -38,7 +35,6 @@ export default function PropertyCardLong({
         <div className="relative w-[300px]">
           <PropertyCardImage
             images={[cover_image, ...gallery]}
-            width={300}
             priority={priority}
           />
         </div>
