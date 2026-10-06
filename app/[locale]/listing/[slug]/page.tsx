@@ -13,17 +13,12 @@ import AuthProviderClient from "../../components/providers/provider-client";
 import RatingForm from "./rating-form";
 import Breadcrumb from "../../components/breadcumb/breadcrumb";
 import dynamic from "next/dynamic";
-import GallerySkeleton from "./gallery-skeleton";
+import Gallery from "./gallery";
 import InquiryFormSkeleton from "./inquiry-form-skeleton";
 import apiPaths from "../../utils/api-paths";
 import { notFound } from "next/navigation";
 
 const i18nNamespaces = ["general", "validation", "default", "rating"];
-
-const Gallery = dynamic(() => import("./gallery"), {
-  ssr: false,
-  loading: () => <GallerySkeleton />,
-});
 
 const InquiryForm = dynamic(() => import("./inquiry-form"), {
   ssr: false,

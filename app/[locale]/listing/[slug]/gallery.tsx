@@ -118,7 +118,7 @@ export default function Gallery({ gallery, viewsCount, slug }: GalleryProps) {
                 alt={`Gallery image ${index + 1}`}
                 fill
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 768px) 300px, (max-width: 1200px) 400px, 600px"
+                sizes="(max-width: 768px) 100vw, 66vw"
                 priority={index === 0}
               />
             </div>
