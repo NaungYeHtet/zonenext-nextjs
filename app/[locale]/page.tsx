@@ -7,6 +7,8 @@ import SectionInquiry from "./section-inquiry";
 import SectionTopTenProject from "./section-top-ten-project";
 import SectionMostPopularProperty from "./section-most-popular-proerty";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import homeBannerImg from "@/public/images/home-banner.jpg";
 
 const Navbar = dynamic(() => import("./components/navbar/navbar"), {
   ssr: true,
@@ -40,7 +42,16 @@ export default async function Home({ params: { locale } }: HomePageProps) {
         <div className="">
           <Navbar />
         </div>
-        <div className="h-full bg-[url('../../public/images/home-banner.jpg')] bg-cover bg-center bg-no-repeat pt-24 md:h-[330px] md:pt-20"></div>
+        <div className="relative h-full pt-24 md:h-[330px] md:pt-20">
+          <Image
+            src={homeBannerImg}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
         <PropertyFilter
           filterParams={{ locale: locale, list_type: "for-sale" }}
         />
