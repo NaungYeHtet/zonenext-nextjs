@@ -10,13 +10,21 @@ export function PropertyListView({ properties }: PropertyListViewProps) {
   return (
     <>
       <div className="hidden flex-col gap-7 lg:flex">
-        {properties.map((property) => (
-          <PropertyCardLong key={property.slug} property={property} />
+        {properties.map((property, i) => (
+          <PropertyCardLong
+            key={property.slug}
+            property={property}
+            priority={i === 0}
+          />
         ))}
       </div>
       <div className="grid grid-cols-1 items-center md:grid-cols-2 md:gap-3 lg:hidden">
-        {properties.map((property) => (
-          <PropertyCard key={property.slug} property={property} />
+        {properties.map((property, i) => (
+          <PropertyCard
+            key={property.slug}
+            property={property}
+            priority={i === 0}
+          />
         ))}
       </div>
     </>

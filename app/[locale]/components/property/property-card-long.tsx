@@ -30,12 +30,17 @@ export default function PropertyCardLong({
     type,
     agent_email,
   },
+  priority,
 }: PropertyCardProps) {
   return (
     <div className="max-w-full bg-white">
       <div className="flex flex-row">
         <div className="relative w-[300px]">
-          <PropertyCardImage images={[cover_image, ...gallery]} width={300} />
+          <PropertyCardImage
+            images={[cover_image, ...gallery]}
+            width={300}
+            priority={priority}
+          />
         </div>
         <div className="flex w-full flex-col justify-between px-5 pb-7 pt-4">
           <div className="flex flex-col">

@@ -2,6 +2,8 @@ import TranslateText from "./components/translate-text";
 import { fetchApi } from "./utils/helpers";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import Image from "next/image";
+import inquiryBgImg from "@/public/images/inquiry-bg.jpg";
 import InquiryFormSkeletion from "./components/inquiry/inquiry-form-skeleton";
 import apiPaths from "./utils/api-paths";
 
@@ -29,11 +31,16 @@ export default async function SectionInquiry({ locale }: SectionInquiryProps) {
   });
 
   return (
-    <section
-      className="bg-[url('../../public/images/inquiry-bg.jpg')] bg-cover bg-fixed bg-center bg-no-repeat backdrop-grayscale"
-      aria-label="Types"
-    >
-      <div className="backdrop-grayscale-1 h-full w-full bg-secondary-900/80 px-4 py-20 text-center text-white backdrop-blur-sm md:px-4">
+    <section className="relative" aria-label="Types">
+      <Image
+        src={inquiryBgImg}
+        alt=""
+        fill
+        sizes="50vw"
+        quality={40}
+        className="object-cover"
+      />
+      <div className="relative h-full w-full bg-secondary-900/80 px-4 py-20 text-center text-white backdrop-blur-sm md:px-4">
         <h2 className="mb-3 text-xl md:text-2xl">
           <TranslateText>default:inquiry</TranslateText>
         </h2>
