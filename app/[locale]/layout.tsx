@@ -3,6 +3,7 @@ import "./globals.css";
 import { noto_sans, poppins } from "./utils/fonts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EmotionRegistry from "./components/providers/emotion-registry";
 
 export const metadata: Metadata = {
   title: "Zone Next",
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${noto_sans} ${poppins} bg-gray-100`}>
         <ToastContainer />
-        <main>{children}</main>
+        <main>
+          <EmotionRegistry>{children}</EmotionRegistry>
+        </main>
       </body>
     </html>
   );
