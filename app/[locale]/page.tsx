@@ -9,6 +9,12 @@ import SectionMostPopularProperty from "./section-most-popular-proerty";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import homeBannerImg from "@/public/images/home-banner.jpg";
+import { Suspense } from "react";
+import {
+  CarouselSectionSkeleton,
+  FilterSectionSkeleton,
+  InquirySectionSkeleton,
+} from "./section-skeletons";
 
 const Navbar = dynamic(() => import("./components/navbar/navbar"), {
   ssr: true,
@@ -27,10 +33,7 @@ type HomePageProps = {
 };
 
 export default async function Home({ params: { locale } }: HomePageProps) {
-  // Parallelize all async operations instead of sequential fetching
-  const [{ resources }] = await Promise.all([
-    initTranslations(locale, i18nNamespaces),
-  ]);
+  const { resources } = await initTranslations(locale, i18nNamespaces);
 
   return (
     <TranslationsProvider
@@ -52,19 +55,29 @@ export default async function Home({ params: { locale } }: HomePageProps) {
             className="object-cover object-center"
           />
         </div>
-        <PropertyFilter
-          filterParams={{ locale: locale, list_type: "for-sale" }}
-        />
+        <Suspense fallback={<FilterSectionSkeleton />}>
+          <PropertyFilter
+            filterParams={{ locale: locale, list_type: "for-sale" }}
+          />
+        </Suspense>
 
         <SectionWelcome />
 
-        <SectionFeaturedListing locale={locale} />
+        <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
+          <SectionFeaturedListing locale={locale} />
+        </Suspense>
 
-        <SectionInquiry locale={locale} />
+        <Suspense fallback={<InquirySectionSkeleton />}>
+          <SectionInquiry locale={locale} />
+        </Suspense>
 
-        <SectionTopTenProject locale={locale} />
+        <Suspense fallback={<CarouselSectionSkeleton card="compact" />}>
+          <SectionTopTenProject locale={locale} />
+        </Suspense>
 
-        <SectionMostPopularProperty locale={locale} />
+        <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
+          <SectionMostPopularProperty locale={locale} />
+        </Suspense>
         <div>
           <BaseFooter />
         </div>
