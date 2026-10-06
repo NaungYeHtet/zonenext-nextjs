@@ -18,7 +18,7 @@ import InquiryFormSkeleton from "./inquiry-form-skeleton";
 import apiPaths from "../../utils/api-paths";
 import { notFound } from "next/navigation";
 
-const i18nNamespaces = ["general", "validation", "default", "rating"];
+const i18nNamespaces = ["general", "validation", "rating"];
 
 const InquiryForm = dynamic(() => import("./inquiry-form"), {
   ssr: false,

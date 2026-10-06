@@ -15,7 +15,7 @@ import apiPaths from "./utils/api-paths";
 import BaseFooter from "./components/footer";
 import { FilterSectionSkeleton } from "./section-skeletons";
 
-const i18nNamespaces = ["general", "default"];
+const i18nNamespaces = ["general"];
 
 type LayoutProps = {
   children: ReactNode;

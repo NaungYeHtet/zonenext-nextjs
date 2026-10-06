@@ -110,7 +110,7 @@ export default function RatingForm({ propertyCode }: InquiryFormProps) {
 
             <FieldGroup>
               <FieldGroup.Label id="rating">
-                {t("default:rating")}
+                {t("general:rating")}
               </FieldGroup.Label>
               <FieldGroup.Wrapper errorMsg={errors.rating?.message}>
                 <Controller

@@ -5,7 +5,7 @@ import BaseFooter from "../components/footer";
 import AuthProviderClient from "../components/providers/provider-client";
 import SignupForm from "./signup-form";
 
-const i18nNamespaces = ["general", "login"];
+const i18nNamespaces = ["general"];
 
 type PageProps = {
   params: {
