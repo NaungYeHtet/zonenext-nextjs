@@ -1,6 +1,12 @@
 {
   "welcome": "Welcome to Zone Next",
   "welcome_paragraph": "Search and browse your properties by one click",
+  "welcome_selling": "Selling",
+  "welcome_selling_text": "Sell properties by contacting company agents and posting in a day",
+  "welcome_buying": "Buying",
+  "welcome_buying_text": "Buy properties by contacting company agents and finding a home in a day",
+  "welcome_renting": "Renting",
+  "welcome_renting_text": "Rent properties by contacting company agents and posting in a day",
   "inquiry": "Inquiry",
   "inquiry_interest_label": "What is your interest?",
   "inquiry_property_type_label": "What kind of property?",

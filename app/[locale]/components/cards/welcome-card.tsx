@@ -1,5 +1,6 @@
 // Card.tsx
 import Image, { StaticImageData } from "next/image";
+import TranslateText from "../translate-text";
 
 type CardImageType = {
   url: StaticImageData;
@@ -14,15 +15,19 @@ type CardType = {
 
 export default function Card({ image, title, text }: CardType) {
   return (
-    <div className="w-72 md:w-[350px] bg-white shadow border p-6">
+    <div className="w-72 border bg-white p-6 shadow md:w-[350px]">
       <Image
         className="bg-cover bg-no-repeat"
         src={image.url}
         alt={image.alt}
-        loading="lazy" // Lazy load each image
+        sizes="(max-width: 768px) 288px, 350px"
       />
-      <p className="text-2xl my-5">{title}</p>
-      <p className="text-sm font-extralight text-gray-500">{text}</p>
+      <p className="my-5 text-2xl">
+        <TranslateText>{title}</TranslateText>
+      </p>
+      <p className="text-sm font-extralight text-gray-500">
+        <TranslateText>{text}</TranslateText>
+      </p>
     </div>
   );
 }

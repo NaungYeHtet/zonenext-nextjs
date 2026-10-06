@@ -19,18 +19,18 @@ export default function SectionWelcome() {
       <div className="mt-5 flex flex-col items-center justify-center gap-3 md:flex-row md:gap-7 lg:gap-10">
         <WelcomeCard
           image={{ url: homeSellImg, alt: "Selling" }}
-          title="Selling"
-          text=" Sell properties by contacting company agents and posting in a day"
+          title="default:welcome_selling"
+          text="default:welcome_selling_text"
         />
         <WelcomeCard
           image={{ url: homeBuyImg, alt: "Buying" }}
-          title="Buying"
-          text=" Sell properties by contacting company agents and posting in a day"
+          title="default:welcome_buying"
+          text="default:welcome_buying_text"
         />
         <WelcomeCard
           image={{ url: homeRentImg, alt: "Renting" }}
-          title="Renting"
-          text=" Rent properties by contacting company agents and posting in a day"
+          title="default:welcome_renting"
+          text="default:welcome_renting_text"
         />
       </div>
     </section>
