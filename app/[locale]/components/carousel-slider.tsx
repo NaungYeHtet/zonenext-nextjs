@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperProps, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperProps, SwiperSlide } from "swiper/react";
 import { SwiperOptions } from "swiper/types";
 
 interface CarouselProps extends SwiperProps {
@@ -12,10 +12,54 @@ interface CarouselProps extends SwiperProps {
 
 export default function CarouselSlider({
   children,
+  onSwiper,
   ...otherSwiperProps
 }: CarouselProps) {
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
+
+  // Stop autoplay while the carousel is off-screen so it doesn't keep
+  // sliding (and loading slide images) where nobody can see it.
+  useEffect(() => {
+    // swiper/react destroys and re-creates the instance on remount (React
+    // strict mode), calling onSwiper again with the new one.
+    if (!swiper || swiper.destroyed) return;
+
+    const { autoplay } = swiper.params;
+    if (
+      !autoplay ||
+      // The Autoplay module merges `enabled: false` into params by default.
+      (typeof autoplay === "object" &&
+        "enabled" in autoplay &&
+        autoplay.enabled === false)
+    ) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (swiper.destroyed) return;
+        if (!entry.isIntersecting && swiper.autoplay.running) {
+          swiper.autoplay.stop();
+        } else if (entry.isIntersecting && !swiper.autoplay.running) {
+          swiper.autoplay.start();
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(swiper.el);
+
+    return () => observer.disconnect();
+  }, [swiper]);
+
   return (
-    <Swiper modules={[Navigation, Pagination, Autoplay]} {...otherSwiperProps}>
+    <Swiper
+      modules={[Navigation, Pagination, Autoplay]}
+      onSwiper={(instance) => {
+        setSwiper(instance);
+        onSwiper?.(instance);
+      }}
+      {...otherSwiperProps}
+    >
       {children.map((child, index) => (
         <SwiperSlide key={index}>{child}</SwiperSlide>
       ))}
