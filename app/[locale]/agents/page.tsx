@@ -81,7 +81,6 @@ export default async function Agents({
                       fill
                       style={{ objectFit: "cover" }}
                       sizes="(max-width: 768px) 300px, (max-width: 1200px) 400px, 600px"
-                      priority
                     />
                   </div>
                   <div className="flex w-3/5 flex-col gap-2">

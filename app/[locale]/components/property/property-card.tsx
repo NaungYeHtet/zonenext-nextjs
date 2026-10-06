@@ -59,7 +59,6 @@ export const PropertyCardImage = ({
             sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
             // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             // style={{ width: "auto", height: "280px" }} // Maintain aspect ratio
-            priority
           />
         </div>
       ))}
@@ -183,7 +182,6 @@ export function PropertyCardCompact({
         fill
         style={{ objectFit: "cover" }}
         sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
-        priority
       />
       <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-b-md bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-0"></div>
       <div className="absolute bottom-0 left-0 w-full rounded-b-md p-4 text-white">

@@ -19,7 +19,6 @@ export default function ProjectCardCompact({
           fill
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 200px, (max-width: 1200px) 300px, 500px"
-          priority
         />
       ) : (
         ""

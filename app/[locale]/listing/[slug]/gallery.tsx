@@ -119,7 +119,7 @@ export default function Gallery({ gallery, viewsCount, slug }: GalleryProps) {
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 300px, (max-width: 1200px) 400px, 600px"
-                priority
+                priority={index === 0}
               />
             </div>
           </SwiperSlide>
