@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { TOKEN_NAME } from "../../utils/constants";
-import { isRouteProtected } from "../../lib/auth";
+import { isRouteProtected, logout as logoutRequest } from "../../lib/auth";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { fetchApi } from "../../utils/helpers";
@@ -27,18 +27,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
 
   const logout = async () => {
-    const { status } = await fetchApi({
-      method: "POST",
-      path: apiPaths.LOGOUT,
-      body: {
-        language: i18n.language,
-      },
-      requireAuth: true,
-    });
-
-    if (status == 200) {
-      Cookies.remove(TOKEN_NAME);
+    if (await logoutRequest(i18n.language)) {
       setIsLoggedIn(false);
+      setUser(undefined);
       if (isRouteProtected(pathname)) {
         router.push("/login");
       }
@@ -53,7 +44,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function fetchUser() {
       if (!user) {
-        const { data } = await fetchApi({
+        const res = await fetchApi({
           method: "GET",
           path: apiPaths.PROFILE,
           body: {
@@ -61,7 +52,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           },
           requireAuth: true,
         });
-        setUser(data.user);
+        if (res?.data?.user) setUser(res.data.user);
       }
     }
     const token = Cookies.get(TOKEN_NAME);

@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { TOKEN_NAME } from "../utils/constants";
 import { fetchApi } from "../utils/helpers";
-import Cookies from "js-cookie";
 import apiPaths from "../utils/api-paths";
+import { removeToken } from "./actions";
 
 export const guestRoutes = ["login", "signup"];
 export const protectedRoutes = ["profile", "verification"];
@@ -27,16 +27,21 @@ export const isRouteGuest = (pathname: string): boolean => {
   return guestRoutes.some((route) => relativePath.startsWith(route));
 };
 
-export const logout = async () => {
-  const { status, message } = await fetchApi({
+export const logout = async (language: string): Promise<boolean> => {
+  const res = await fetchApi({
     method: "POST",
     path: apiPaths.LOGOUT,
+    body: {
+      language,
+    },
     requireAuth: true,
   });
 
-  if (status == 200) {
-    Cookies.remove(TOKEN_NAME);
-  } else {
-    console.log(message);
+  if (res?.status == 200) {
+    removeToken();
+    return true;
   }
+
+  console.log(res?.message);
+  return false;
 };
