@@ -31,15 +31,16 @@ export default async function SectionInquiry({ locale }: SectionInquiryProps) {
   });
 
   return (
-    <section className="relative backdrop-grayscale" aria-label="Types">
+    <section className="relative" aria-label="Types">
       <Image
         src={inquiryBgImg}
         alt=""
         fill
-        sizes="100vw"
-        className="object-cover object-center"
+        sizes="50vw"
+        quality={40}
+        className="object-cover"
       />
-      <div className="backdrop-grayscale-1 relative h-full w-full bg-secondary-900/80 px-4 py-20 text-center text-white backdrop-blur-sm md:px-4">
+      <div className="relative h-full w-full bg-secondary-900/80 px-4 py-20 text-center text-white backdrop-blur-sm md:px-4">
         <h2 className="mb-3 text-xl md:text-2xl">
           <TranslateText>default:inquiry</TranslateText>
         </h2>
