@@ -108,7 +108,7 @@ export default async function Property({
     }),
   ]);
 
-  if (!data.property) {
+  if (!data?.property) {
     notFound();
   }
 
