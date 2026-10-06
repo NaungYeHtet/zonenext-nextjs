@@ -1,13 +1,7 @@
-import dynamic from "next/dynamic";
+import CarouselSlider from "../carousel-slider";
 import { Group, Property } from "../../lib";
 import SidebarSection from "../sidebar-section";
 import { PropertyCardCompact } from "./property-card";
-import PropertyCardCompactSkeleton from "./skeletons/property-card-compact-skeleton";
-
-const CarouselSlider = dynamic(() => import("../carousel-slider"), {
-  ssr: false,
-  loading: () => <PropertyCardCompactSkeleton />,
-});
 
 type PropertySidebarProps = {
   group: Group<Property>;

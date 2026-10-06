@@ -6,19 +6,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import apiPaths from "./utils/api-paths";
 import { fetchApi } from "./utils/helpers";
-import dynamic from "next/dynamic";
-import PropertyCardSkeleton from "./components/property/skeletons/property-card-skeleton";
-
-const CarouselSlider = dynamic(() => import("./components/carousel-slider"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-between gap-10">
-      <PropertyCardSkeleton className="hidden lg:flex" />
-      <PropertyCardSkeleton className="hidden md:flex" />
-      <PropertyCardSkeleton />
-    </div>
-  ),
-});
+import CarouselSlider from "./components/carousel-slider";
 
 export default async function SectionFeaturedListing({
   locale,
