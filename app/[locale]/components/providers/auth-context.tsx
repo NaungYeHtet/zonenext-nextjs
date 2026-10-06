@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { fetchApi } from "../../utils/helpers";
 import { User } from "../../lib";
 import apiPaths from "../../utils/api-paths";
+import { useTranslation } from "react-i18next";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -23,13 +24,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>();
   const pathname = usePathname();
   const router = useRouter();
+  const { i18n } = useTranslation();
 
   const logout = async () => {
     const { status } = await fetchApi({
       method: "POST",
       path: apiPaths.LOGOUT,
       body: {
-        language: "en",
+        language: i18n.language,
       },
       requireAuth: true,
     });
@@ -55,7 +57,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           method: "GET",
           path: apiPaths.PROFILE,
           body: {
-            language: "en",
+            language: i18n.language,
           },
           requireAuth: true,
         });

@@ -1,5 +1,6 @@
 import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
+import AuthProviderClient from "../components/providers/provider-client";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
 import { Faq, ResponseData } from "../lib";
@@ -42,41 +43,43 @@ export default async function Faqs({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex flex-col">
-        <div className="">
-          <Navbar />
-        </div>
-        <main className="min-h-screen bg-gray-100">
-          <div className="md:compact-container mt-5 flex">
-            <Breadcrumb
-              items={[
-                { label: "home_nav", path: "/" },
-                {
-                  label: "general:faq",
-                  path: "#",
-                },
-              ]}
-            />
+      <AuthProviderClient>
+        <div className="flex flex-col">
+          <div className="">
+            <Navbar />
           </div>
-
-          <section className="compact-container w-full md:flex-row md:pb-7">
-            <h1 className="font-serif text-3xl font-semibold">
-              <TranslateText>general:faq</TranslateText>
-            </h1>
-            <div className="mt-4 flex max-w-[700px] flex-col xl:max-w-[1200px]">
-              {faqs.map(({ question, answer }) => (
-                <Disclosure key={question}>
-                  <Disclosure.Button text={question} />
-                  <Disclosure.Panel>{answer}</Disclosure.Panel>
-                </Disclosure>
-              ))}
+          <main className="min-h-screen bg-gray-100">
+            <div className="md:compact-container mt-5 flex">
+              <Breadcrumb
+                items={[
+                  { label: "home_nav", path: "/" },
+                  {
+                    label: "general:faq",
+                    path: "#",
+                  },
+                ]}
+              />
             </div>
-          </section>
-        </main>
-        <div>
-          <BaseFooter />
+
+            <section className="compact-container w-full md:flex-row md:pb-7">
+              <h1 className="font-serif text-3xl font-semibold">
+                <TranslateText>general:faq</TranslateText>
+              </h1>
+              <div className="mt-4 flex max-w-[700px] flex-col xl:max-w-[1200px]">
+                {faqs.map(({ question, answer }) => (
+                  <Disclosure key={question}>
+                    <Disclosure.Button text={question} />
+                    <Disclosure.Panel>{answer}</Disclosure.Panel>
+                  </Disclosure>
+                ))}
+              </div>
+            </section>
+          </main>
+          <div>
+            <BaseFooter />
+          </div>
         </div>
-      </div>
+      </AuthProviderClient>
     </TranslationsProvider>
   );
 }

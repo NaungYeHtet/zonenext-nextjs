@@ -1,4 +1,5 @@
 import TranslationsProvider from "./components/translation-provider";
+import AuthProviderClient from "./components/providers/provider-client";
 import initTranslations from "./utils/i18n";
 import SectionFeaturedListing from "./section-featured-listing";
 import SectionWelcome from "./section-welcome";
@@ -41,47 +42,49 @@ export default async function Home({ params: { locale } }: HomePageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex flex-col">
-        <div className="">
-          <Navbar />
+      <AuthProviderClient>
+        <div className="flex flex-col">
+          <div className="">
+            <Navbar />
+          </div>
+          <div className="relative h-full pt-24 md:h-[330px] md:pt-20">
+            <Image
+              src={homeBannerImg}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <Suspense fallback={<FilterSectionSkeleton />}>
+            <PropertyFilter
+              filterParams={{ locale: locale, list_type: "for-sale" }}
+            />
+          </Suspense>
+
+          <SectionWelcome />
+
+          <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
+            <SectionFeaturedListing locale={locale} />
+          </Suspense>
+
+          <Suspense fallback={<InquirySectionSkeleton />}>
+            <SectionInquiry locale={locale} />
+          </Suspense>
+
+          <Suspense fallback={<CarouselSectionSkeleton card="compact" />}>
+            <SectionTopTenProject locale={locale} />
+          </Suspense>
+
+          <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
+            <SectionMostPopularProperty locale={locale} />
+          </Suspense>
+          <div>
+            <BaseFooter />
+          </div>
         </div>
-        <div className="relative h-full pt-24 md:h-[330px] md:pt-20">
-          <Image
-            src={homeBannerImg}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        </div>
-        <Suspense fallback={<FilterSectionSkeleton />}>
-          <PropertyFilter
-            filterParams={{ locale: locale, list_type: "for-sale" }}
-          />
-        </Suspense>
-
-        <SectionWelcome />
-
-        <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
-          <SectionFeaturedListing locale={locale} />
-        </Suspense>
-
-        <Suspense fallback={<InquirySectionSkeleton />}>
-          <SectionInquiry locale={locale} />
-        </Suspense>
-
-        <Suspense fallback={<CarouselSectionSkeleton card="compact" />}>
-          <SectionTopTenProject locale={locale} />
-        </Suspense>
-
-        <Suspense fallback={<CarouselSectionSkeleton card="property" />}>
-          <SectionMostPopularProperty locale={locale} />
-        </Suspense>
-        <div>
-          <BaseFooter />
-        </div>
-      </div>
+      </AuthProviderClient>
     </TranslationsProvider>
   );
 }

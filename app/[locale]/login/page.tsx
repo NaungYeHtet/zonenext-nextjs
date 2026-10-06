@@ -22,19 +22,19 @@ export default async function Login({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <div className="flex h-screen flex-col">
-        <div className="">
-          <Navbar />
-        </div>
-        <main className="compact-container flex h-full flex-col items-center justify-center py-7">
-          <AuthProviderClient>
+      <AuthProviderClient>
+        <div className="flex h-screen flex-col">
+          <div className="">
+            <Navbar />
+          </div>
+          <main className="compact-container flex h-full flex-col items-center justify-center py-7">
             <LoginForm />
-          </AuthProviderClient>
-        </main>
-        <div>
-          <BaseFooter />
+          </main>
+          <div>
+            <BaseFooter />
+          </div>
         </div>
-      </div>
+      </AuthProviderClient>
     </TranslationsProvider>
   );
 }
