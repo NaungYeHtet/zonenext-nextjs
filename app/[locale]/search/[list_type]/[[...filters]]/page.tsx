@@ -4,7 +4,10 @@ import {
   PropertyFilterQueryParams,
 } from "@/app/[locale]/lib";
 import Wrapper from "@/app/[locale]/wrapper";
-import PropertyList from "@/app/[locale]/components/property/property-list";
+import PropertyList, {
+  LoadingSkeleton,
+} from "@/app/[locale]/components/property/property-list";
+import { Suspense } from "react";
 import { parseSearchFilters } from "./parse-filters";
 
 type SearchPageProps = {
@@ -26,7 +29,15 @@ export default async function Search({
 
   return (
     <Wrapper params={filterParams}>
-      <PropertyList params={filterParams} />
+      <Suspense
+        fallback={
+          <div className="relative z-0 flex-grow">
+            <LoadingSkeleton />
+          </div>
+        }
+      >
+        <PropertyList params={filterParams} />
+      </Suspense>
     </Wrapper>
   );
 }

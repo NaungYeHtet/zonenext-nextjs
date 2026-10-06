@@ -70,8 +70,6 @@ async function fetchProperties({
     price_to,
   };
 
-  console.log(body);
-
   const {
     data: { properties },
   } = await fetchApi({
@@ -92,15 +90,7 @@ type PropertyListProps = {
 function PropertyList({ params }: PropertyListProps) {
   const properties = use(fetchProperties(params));
 
-  if (!properties) {
-    return (
-      <div className="relative z-0 flex-grow">
-        <LoadingSkeleton />
-      </div>
-    );
-  }
-
-  if (properties.total == 0) {
+  if (!properties || properties.total == 0) {
     return <PropertyNotFound />;
   }
 
