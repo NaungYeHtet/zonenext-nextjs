@@ -80,7 +80,8 @@ export default async function Agents({
                       alt={`Agent image `}
                       fill
                       style={{ objectFit: "cover" }}
-                      sizes="(max-width: 768px) 300px, (max-width: 1200px) 400px, 600px"
+                      sizes="128px"
+                      priority={i === 0}
                     />
                   </div>
                   <div className="flex w-3/5 flex-col gap-2">
