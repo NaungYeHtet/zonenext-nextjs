@@ -1,6 +1,5 @@
 import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
-import AuthProviderClient from "../components/providers/provider-client";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
 import ProfileCard from "./profile-card";
@@ -23,22 +22,20 @@ export default async function Profile({ params: { locale } }: PageProps) {
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <AuthProviderClient>
-        <div className="flex h-screen flex-col">
-          <div className="">
-            <Navbar />
-          </div>
-          <main className="flex h-full flex-col items-center justify-center py-10">
-            <h1 className="font-serif text-xl">
-              <TranslateText>general:profile</TranslateText>
-            </h1>
-            <ProfileCard />
-          </main>
-          <div>
-            <BaseFooter />
-          </div>
+      <div className="flex h-screen flex-col">
+        <div className="">
+          <Navbar />
         </div>
-      </AuthProviderClient>
+        <main className="flex h-full flex-col items-center justify-center py-10">
+          <h1 className="font-serif text-xl">
+            <TranslateText>general:profile</TranslateText>
+          </h1>
+          <ProfileCard />
+        </main>
+        <div>
+          <BaseFooter />
+        </div>
+      </div>
     </TranslationsProvider>
   );
 }

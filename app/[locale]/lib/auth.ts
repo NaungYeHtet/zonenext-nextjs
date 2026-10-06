@@ -22,6 +22,12 @@ export const isRouteProtected = (pathname: string): boolean => {
   return protectedRoutes.some((route) => relativePath.startsWith(route));
 };
 
+export const isRouteVerification = (pathname: string): boolean => {
+  return getRelativePath(pathname)
+    .replace(/^\/+/, "")
+    .startsWith("verification");
+};
+
 export const isRouteGuest = (pathname: string): boolean => {
   const relativePath = getRelativePath(pathname).replace(/^\/+/, "");
   return guestRoutes.some((route) => relativePath.startsWith(route));

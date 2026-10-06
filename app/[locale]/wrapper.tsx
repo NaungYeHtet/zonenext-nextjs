@@ -1,7 +1,6 @@
 import { ReactNode, Suspense } from "react";
 import Navbar from "./components/navbar/navbar";
 import TranslationsProvider from "./components/translation-provider";
-import AuthProviderClient from "./components/providers/provider-client";
 import initTranslations from "./utils/i18n";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -45,39 +44,37 @@ export default async function Wrapper({ children, params }: LayoutProps) {
       locale={params.locale}
       namespaces={i18nNamespaces}
     >
-      <AuthProviderClient>
-        <div className="flex flex-col">
-          <div>
-            <Navbar />
-          </div>
-          <main>
-            <Suspense fallback={<FilterSectionSkeleton />}>
-              <PropertyFilter filterParams={params} />
-            </Suspense>
-            <div className="md:compact-container mt-3 flex w-full flex-col justify-between gap-10 xl:flex-row">
-              <section aria-label="Property list section">
-                <Breadcrumb
-                  items={[
-                    { label: "home_nav", path: "/" },
-                    {
-                      label: params.list_type.replace("-", "_"),
-                      path: params.list_type,
-                    },
-                  ]}
-                />
-                {children}
-              </section>
-
-              <section aria-label="Sidebar section" className="z-0">
-                <PropertySidebar group={group} />
-              </section>
-            </div>
-          </main>
-          <div>
-            <BaseFooter />
-          </div>
+      <div className="flex flex-col">
+        <div>
+          <Navbar />
         </div>
-      </AuthProviderClient>
+        <main>
+          <Suspense fallback={<FilterSectionSkeleton />}>
+            <PropertyFilter filterParams={params} />
+          </Suspense>
+          <div className="md:compact-container mt-3 flex w-full flex-col justify-between gap-10 xl:flex-row">
+            <section aria-label="Property list section">
+              <Breadcrumb
+                items={[
+                  { label: "home_nav", path: "/" },
+                  {
+                    label: params.list_type.replace("-", "_"),
+                    path: params.list_type,
+                  },
+                ]}
+              />
+              {children}
+            </section>
+
+            <section aria-label="Sidebar section" className="z-0">
+              <PropertySidebar group={group} />
+            </section>
+          </div>
+        </main>
+        <div>
+          <BaseFooter />
+        </div>
+      </div>
     </TranslationsProvider>
   );
 }

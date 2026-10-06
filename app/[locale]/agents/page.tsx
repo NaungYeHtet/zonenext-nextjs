@@ -1,6 +1,5 @@
 import Navbar from "../components/navbar/navbar";
 import TranslationsProvider from "../components/translation-provider";
-import AuthProviderClient from "../components/providers/provider-client";
 import initTranslations from "../utils/i18n";
 import BaseFooter from "../components/footer";
 import { Agent, CollectionData, ResponseData } from "../lib";
@@ -50,62 +49,60 @@ export default async function Agents({
       locale={locale}
       namespaces={i18nNamespaces}
     >
-      <AuthProviderClient>
-        <div className="flex flex-col">
-          <div className="">
-            <Navbar />
-          </div>
-          <main className="min-h-screen bg-gray-100">
-            <div className="md:compact-container mt-5 flex">
-              <Breadcrumb
-                items={[
-                  { label: "home_nav", path: "/" },
-                  {
-                    label: "agents",
-                    path: "#",
-                  },
-                ]}
-              />
-            </div>
-
-            <section className="compact-container w-full md:flex-row md:pb-7">
-              <h1 className="font-serif text-3xl font-semibold">Agents</h1>
-              <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {agents.data.map(({ name, image, email, phone }, i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col gap-4 rounded-md bg-white p-5 md:flex-row"
-                  >
-                    <div className="relative h-32 w-32 md:h-28 md:w-28">
-                      <Image
-                        src={image}
-                        alt={`Agent image `}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        sizes="128px"
-                        priority={i === 0}
-                      />
-                    </div>
-                    <div className="flex w-3/5 flex-col gap-2">
-                      <p className="text-wrap text-xl">{name}</p>
-                      <span className="inline-block truncate text-wrap">
-                        {email}
-                      </span>
-                      <p className="">{phone}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center py-5">
-                <Pagination links={agents.links} />
-              </div>
-            </section>
-          </main>
-          <div>
-            <BaseFooter />
-          </div>
+      <div className="flex flex-col">
+        <div className="">
+          <Navbar />
         </div>
-      </AuthProviderClient>
+        <main className="min-h-screen bg-gray-100">
+          <div className="md:compact-container mt-5 flex">
+            <Breadcrumb
+              items={[
+                { label: "home_nav", path: "/" },
+                {
+                  label: "agents",
+                  path: "#",
+                },
+              ]}
+            />
+          </div>
+
+          <section className="compact-container w-full md:flex-row md:pb-7">
+            <h1 className="font-serif text-3xl font-semibold">Agents</h1>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {agents.data.map(({ name, image, email, phone }, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col gap-4 rounded-md bg-white p-5 md:flex-row"
+                >
+                  <div className="relative h-32 w-32 md:h-28 md:w-28">
+                    <Image
+                      src={image}
+                      alt={`Agent image `}
+                      fill
+                      style={{ objectFit: "cover" }}
+                      sizes="128px"
+                      priority={i === 0}
+                    />
+                  </div>
+                  <div className="flex w-3/5 flex-col gap-2">
+                    <p className="text-wrap text-xl">{name}</p>
+                    <span className="inline-block truncate text-wrap">
+                      {email}
+                    </span>
+                    <p className="">{phone}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-center py-5">
+              <Pagination links={agents.links} />
+            </div>
+          </section>
+        </main>
+        <div>
+          <BaseFooter />
+        </div>
+      </div>
     </TranslationsProvider>
   );
 }

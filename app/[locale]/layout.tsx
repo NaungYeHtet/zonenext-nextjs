@@ -4,6 +4,7 @@ import { noto_sans, poppins } from "./utils/fonts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmotionRegistry from "./components/providers/emotion-registry";
+import AuthProvider from "./components/providers/auth-context";
 
 export const metadata: Metadata = {
   title: "Zone Next",
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body className={`${noto_sans} ${poppins} bg-gray-100`}>
         <ToastContainer />
         <main>
-          <EmotionRegistry>{children}</EmotionRegistry>
+          <EmotionRegistry>
+            <AuthProvider>{children}</AuthProvider>
+          </EmotionRegistry>
         </main>
       </body>
     </html>
