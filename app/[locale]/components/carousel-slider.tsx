@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { A11y, Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperProps, SwiperSlide } from "swiper/react";
 import { SwiperOptions } from "swiper/types";
 
@@ -53,7 +53,7 @@ export default function CarouselSlider({
 
   return (
     <Swiper
-      modules={[Navigation, Pagination, Autoplay]}
+      modules={[Navigation, Pagination, Autoplay, A11y]}
       onSwiper={(instance) => {
         setSwiper(instance);
         onSwiper?.(instance);
