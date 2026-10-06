@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { TOKEN_NAME } from "../utils/constants";
 import { fetchApi } from "../utils/helpers";
 import Cookies from "js-cookie";
