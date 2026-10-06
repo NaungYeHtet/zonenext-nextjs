@@ -1,5 +1,6 @@
 import InquiryFormSkeletion from "./components/inquiry/inquiry-form-skeleton";
 import FilterSkeleton from "./components/property/filter/filter-skeleton";
+import { FilterContainer } from "./components/property/filter/filter-wrapper";
 import PropertyCardCompactSkeleton from "./components/property/skeletons/property-card-compact-skeleton";
 import PropertyCardSkeleton from "./components/property/skeletons/property-card-skeleton";
 
@@ -45,13 +46,8 @@ export function InquirySectionSkeleton() {
 
 export function FilterSectionSkeleton() {
   return (
-    <div
-      className="compact-container z-40 flex h-full w-full justify-center bg-white py-10"
-      aria-busy="true"
-    >
-      <div className="w-full">
-        <FilterSkeleton />
-      </div>
-    </div>
+    <FilterContainer aria-busy="true">
+      <FilterSkeleton />
+    </FilterContainer>
   );
 }
