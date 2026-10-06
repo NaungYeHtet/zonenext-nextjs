@@ -22,16 +22,20 @@ type LayoutProps = {
 };
 
 export default async function Wrapper({ children, params }: LayoutProps) {
-  const { resources } = await initTranslations(params.locale, i18nNamespaces);
-
-  const {
-    data: { group },
-  } = await fetchApi({
-    method: "GET",
-    path: apiPaths.GROUP,
-    body: { language: params.locale, type: "FeaturedListings" },
-    options: { next: { revalidate: 60 * 60 * 24 } },
-  });
+  const [
+    { resources },
+    {
+      data: { group },
+    },
+  ] = await Promise.all([
+    initTranslations(params.locale, i18nNamespaces),
+    fetchApi({
+      method: "GET",
+      path: apiPaths.GROUP,
+      body: { language: params.locale, type: "FeaturedListings" },
+      options: { next: { revalidate: 60 * 60 * 24 } },
+    }),
+  ]);
 
   return (
     <TranslationsProvider
