@@ -35,12 +35,17 @@ export default function CarouselSlider({
       return;
     }
 
+    // Only restart autoplay this observer stopped, never one stopped by user
+    // interaction or by the caller.
+    let pausedByVisibility = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (swiper.destroyed) return;
         if (!entry.isIntersecting && swiper.autoplay.running) {
           swiper.autoplay.stop();
-        } else if (entry.isIntersecting && !swiper.autoplay.running) {
+          pausedByVisibility = true;
+        } else if (entry.isIntersecting && pausedByVisibility) {
+          pausedByVisibility = false;
           swiper.autoplay.start();
         }
       },
