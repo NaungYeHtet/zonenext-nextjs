@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmotionRegistry from "./components/providers/emotion-registry";
 import AuthProvider from "./components/providers/auth-context";
+import { cn } from "./utils/helpers";
 
 export const metadata: Metadata = {
   title: "Zone Next",
@@ -13,12 +14,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
-    <html lang="en">
-      <body className={`${noto_sans} ${poppins} bg-gray-100`}>
+    <html lang={locale}>
+      <body
+        className={cn(noto_sans, poppins, "bg-gray-100", {
+          "font-noto_sans": locale === "my",
+        })}
+      >
         <ToastContainer />
         <main>
           <EmotionRegistry>
